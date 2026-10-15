@@ -1,0 +1,62 @@
+\section{Orden topol\'ogico}
+\whenuse{Procesar dependencias de un DAG, hacer DP en grafo dirigido o detectar
+ciclos comprobando si se ordenaron todos los v\'ertices.}
+
+Kahn devuelve un orden solamente si el grafo dirigido es un DAG.
+
+\begin{lstlisting}[style=cpp]
+vector<int> topological_sort(const vector<vector<int>> &graph) {
+    int n = graph.size();
+    vector<int> indegree(n, 0), order;
+    for (int v = 0; v < n; ++v)
+        for (int to : graph[v]) ++indegree[to];
+
+    queue<int> q;
+    for (int v = 0; v < n; ++v) if (indegree[v] == 0) q.push(v);
+    while (!q.empty()) {
+        int v = q.front(); q.pop();
+        order.push_back(v);
+        for (int to : graph[v]) if (--indegree[to] == 0) q.push(to);
+    }
+    if ((int)order.size() != n) return {}; // existe un ciclo
+    return order;
+}
+\end{lstlisting}
+
+\complexity{$O(V+E)$ tiempo y memoria.}
+
+\section{Componentes fuertemente conexas (Kosaraju)}
+\whenuse{Contraer ciclos de un grafo dirigido, obtener su DAG de componentes o
+resolver problemas de alcanzabilidad y 2-SAT.}
+
+\begin{lstlisting}[style=cpp]
+vector<int> strongly_connected_components(
+        const vector<vector<int>> &graph) {
+    int n = graph.size();
+    vector<vector<int>> reversed(n);
+    for (int v = 0; v < n; ++v)
+        for (int to : graph[v]) reversed[to].push_back(v);
+
+    vector<char> visited(n, false);
+    vector<int> order;
+    function<void(int)> dfs1 = [&](int v) {
+        visited[v] = true;
+        for (int to : graph[v]) if (!visited[to]) dfs1(to);
+        order.push_back(v);
+    };
+    for (int v = 0; v < n; ++v) if (!visited[v]) dfs1(v);
+
+    vector<int> component(n, -1);
+    function<void(int,int)> dfs2 = [&](int v, int id) {
+        component[v] = id;
+        for (int to : reversed[v]) if (component[to] == -1) dfs2(to, id);
+    };
+    reverse(order.begin(), order.end());
+    int count = 0;
+    for (int v : order) if (component[v] == -1) dfs2(v, count++);
+    return component;
+}
+\end{lstlisting}
+
+\complexity{$O(V+E)$ tiempo y memoria.}
+\warning{Las DFS recursivas pueden desbordar el stack para grafos muy grandes.}

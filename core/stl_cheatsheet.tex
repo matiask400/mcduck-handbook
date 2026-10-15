@@ -1,0 +1,35 @@
+\section{STL esencial}
+
+\begin{center}
+\begin{tabular}{lll}
+Estructura & Operaciones principales & Complejidad \\
+\hline
+\texttt{vector} & acceso / push al final & $O(1)$ / amortizado $O(1)$ \\
+\texttt{deque} & push/pop en ambos extremos & $O(1)$ \\
+\texttt{stack, queue} & push/pop/top/front & $O(1)$ \\
+\texttt{priority\_queue} & push/pop/top & $O(\log n)$ / $O(1)$ \\
+\texttt{set, map} & find/insert/erase por clave & $O(\log n)$ \\
+\texttt{unordered\_*} & find/insert/erase & promedio $O(1)$ \\
+\end{tabular}
+\end{center}
+
+\begin{lstlisting}[style=cpp]
+void stl_examples(vector<ll> &v, ll x) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+
+    auto lo = lower_bound(v.begin(), v.end(), x); // primero >= x
+    auto hi = upper_bound(v.begin(), v.end(), x); // primero > x
+    if (lo != v.end()) { ll value = *lo; (void)value; }
+    (void)hi;
+
+    priority_queue<int> max_heap;
+    priority_queue<int, vector<int>, greater<int>> min_heap;
+
+    ll total = accumulate(v.begin(), v.end(), 0LL);
+    (void)max_heap; (void)min_heap; (void)total;
+}
+\end{lstlisting}
+
+\warning{\texttt{reserve(n)} reserva capacidad pero no crea elementos. Un
+arreglo local suele vivir en el stack; uno global o \texttt{static}, no.}

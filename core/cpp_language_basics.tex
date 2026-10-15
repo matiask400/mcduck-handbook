@@ -1,0 +1,52 @@
+\section{Sintaxis C++ m\'as usada}
+
+\subsection{Funciones, referencias y lambdas}
+
+Pasar objetos grandes por referencia constante si no se modifican; usar
+referencia normal cuando la funci\'on debe modificarlos.
+
+\begin{lstlisting}[style=cpp]
+ll sum_values(const vector<int> &values) {
+    ll result = 0;
+    for (int value : values) result += value;
+    return result;
+}
+
+void normalize(vector<int> &values) {
+    sort(values.begin(), values.end());
+    values.erase(unique(values.begin(), values.end()), values.end());
+}
+
+int apply_operation(int a, int b, const function<int(int,int)> &operation) {
+    return operation(a, b);
+}
+
+void lambda_example() {
+    int offset = 5;
+    auto add_offset = [offset](int value) { return value + offset; };
+    assert(add_offset(3) == 8);
+}
+\end{lstlisting}
+
+\subsection{Pair, tuple, array y optional}
+
+\begin{lstlisting}[style=cpp]
+void aggregate_types_example() {
+    pair<int,string> person{20, "Ada"};
+    auto [age, name] = person;
+
+    tuple<int,int,ll> edge{0, 1, 15};
+    auto [from, to, weight] = edge;
+
+    array<int, 4> fixed{1, 2, 3, 4};
+    optional<int> answer;
+    if (!fixed.empty()) answer = fixed.front();
+    if (answer) cout << *answer << '\n';
+
+    (void)age; (void)name; (void)from; (void)to; (void)weight;
+}
+\end{lstlisting}
+
+\warning{Comparar \texttt{int} con \texttt{size()} mezcla tipos firmados y sin
+signo. En competencia suele ser m\'as simple convertir el tama\~no una vez a
+\texttt{int}.}

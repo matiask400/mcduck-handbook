@@ -1,0 +1,68 @@
+\section{Geometr\'ia 3D y planos}
+\whenuse{Problemas espaciales con normales de caras, lado de un plano,
+proyecci\'on o intersecci\'on de una recta con un plano.}
+
+Usar para normales de caras, orientaci\'on respecto de un plano, proyecciones y
+distancias en el espacio. Un plano por $A,B,C$ tiene normal
+$n=(B-A)\times(C-A)$ y ecuaci\'on $n\cdot(X-A)=0$.
+
+\complexity{cada operaci\'on $O(1)$ tiempo y memoria.}
+
+\begin{lstlisting}[style=cpp]
+struct Point3D {
+    long double x = 0, y = 0, z = 0;
+    Point3D operator+(Point3D other) const { return {x + other.x, y + other.y, z + other.z}; }
+    Point3D operator-(Point3D other) const { return {x - other.x, y - other.y, z - other.z}; }
+    Point3D operator*(long double scalar) const { return {x * scalar, y * scalar, z * scalar}; }
+    Point3D operator/(long double scalar) const { return {x / scalar, y / scalar, z / scalar}; }
+};
+
+long double dot3d(Point3D a, Point3D b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+Point3D cross3d(Point3D a, Point3D b) {
+    return {a.y * b.z - a.z * b.y,
+            a.z * b.x - a.x * b.z,
+            a.x * b.y - a.y * b.x};
+}
+long double norm3d(Point3D vector) { return sqrtl(dot3d(vector, vector)); }
+long double signed_plane_value(Point3D point, Point3D plane_point, Point3D normal) {
+    return dot3d(point - plane_point, normal);
+}
+Point3D project_on_plane(Point3D point, Point3D plane_point, Point3D normal) {
+    long double squared_norm = dot3d(normal, normal);
+    assert(squared_norm > 1e-24L);
+    return point - normal * (signed_plane_value(point, plane_point, normal) / squared_norm);
+}
+long double distance_to_plane(Point3D point, Point3D plane_point, Point3D normal) {
+    long double normal_length = norm3d(normal);
+    assert(normal_length > 1e-12L);
+    return fabsl(signed_plane_value(point, plane_point, normal)) / normal_length;
+}
+optional<Point3D> line_plane_intersection(Point3D point, Point3D direction,
+                                          Point3D plane_point, Point3D normal) {
+    assert(norm3d(direction) > 1e-12L && norm3d(normal) > 1e-12L);
+    long double denominator = dot3d(direction, normal);
+    if (fabsl(denominator) < 1e-12L) return nullopt;
+    long double parameter = dot3d(plane_point - point, normal) / denominator;
+    return point + direction * parameter;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=cpp]
+Point3D a{0,0,0},b{1,0,0},c{0,1,0};
+Point3D normal=cross3d(b-a,c-a); // (0,0,1): plano z=0
+Point3D point{2,3,5};
+cout<<(double)signed_plane_value(point,a,normal)<<'\n'; // 5: lado positivo
+Point3D projected=project_on_plane(point,a,normal);
+cout<<(double)projected.x<<' '<<(double)projected.y<<' '
+    <<(double)projected.z<<'\n'; // 2 3 0
+cout<<(double)distance_to_plane(point,a,normal)<<'\n'; // 5
+auto hit=line_plane_intersection({0,0,5},{0,0,-1},a,normal);
+cout<<(double)hit->x<<' '<<(double)hit->y<<' '
+    <<(double)hit->z<<'\n'; // 0 0 0
+// nullopt: la recta es paralela al plano; puede estar fuera o contenida.
+\end{lstlisting}
+
+\warning{La orientaci\'on de la normal depende del orden $A,B,C$. Normalizar s\'olo
+si se necesita una distancia; para signos, evitar la ra\'iz mejora estabilidad.}

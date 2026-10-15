@@ -1,0 +1,89 @@
+\section{Miller--Rabin determinista para 64 bits}
+\whenuse{Testear primalidad de enteros de 64 bits demasiado grandes para una
+criba o divisi\'on hasta la ra\'iz.}
+\complexity{$O(\log^3 n)$ con una cantidad constante de bases; memoria $O(1)$.}
+
+\begin{lstlisting}[style=cpp]
+using u64 = uint64_t;
+
+u64 multiply_mod_u64(u64 a, u64 b, u64 mod) {
+    return (u128)a * b % mod;
+}
+
+u64 power_mod_u64(u64 base, u64 exponent, u64 mod) {
+    u64 result = 1;
+    while (exponent) {
+        if (exponent & 1) result = multiply_mod_u64(result, base, mod);
+        base = multiply_mod_u64(base, base, mod);
+        exponent >>= 1;
+    }
+    return result;
+}
+
+bool is_prime_u64(u64 n) {
+    if (n < 2) return false;
+    for (u64 prime : {2ULL, 3ULL, 5ULL, 7ULL, 11ULL, 13ULL, 17ULL,
+                      19ULL, 23ULL, 29ULL, 31ULL, 37ULL})
+        if (n % prime == 0) return n == prime;
+
+    int power_of_two = 0;
+    u64 odd = n - 1;
+    while ((odd & 1) == 0) odd >>= 1, ++power_of_two;
+
+    for (u64 base : {2ULL, 325ULL, 9375ULL, 28178ULL, 450775ULL,
+                     9780504ULL, 1795265022ULL}) {
+        if (base % n == 0) continue;
+        u64 value = power_mod_u64(base % n, odd, n);
+        if (value == 1 || value == n - 1) continue;
+        bool witness = true;
+        for (int round = 1; round < power_of_two; ++round) {
+            value = multiply_mod_u64(value, value, n);
+            if (value == n - 1) { witness = false; break; }
+        }
+        if (witness) return false;
+    }
+    return true;
+}
+\end{lstlisting}
+
+\section{Pollard--Rho}
+\whenuse{Factorizar enteros compuestos de 64 bits sin factores peque\~nos; combinar
+con Miller--Rabin para detener la recursi\'on en primos.}
+\complexity{tiempo esperado aproximadamente $O(n^{1/4})$ por factor encontrado;
+memoria $O(\log n)$ por la recursi\'on.}
+
+\begin{lstlisting}[style=cpp]
+u64 pollard_rho(u64 n) {
+    if (n % 2 == 0) return 2;
+    if (n % 3 == 0) return 3;
+    static mt19937_64 rng(chrono::steady_clock::now()
+                          .time_since_epoch().count());
+
+    while (true) {
+        u64 c = uniform_int_distribution<u64>(1, n - 1)(rng);
+        u64 x = uniform_int_distribution<u64>(0, n - 1)(rng);
+        u64 y = x, divisor = 1;
+        auto advance = [&](u64 value) {
+            return (u64)(((u128)multiply_mod_u64(value, value, n) + c) % n);
+        };
+        while (divisor == 1) {
+            x = advance(x);
+            y = advance(advance(y));
+            u64 difference = x > y ? x - y : y - x;
+            divisor = gcd(difference, n);
+        }
+        if (divisor != n) return divisor;
+    }
+}
+
+void factor_u64(u64 n, map<u64,int> &factors) {
+    if (n == 1) return;
+    if (is_prime_u64(n)) { ++factors[n]; return; }
+    u64 divisor = pollard_rho(n);
+    factor_u64(divisor, factors);
+    factor_u64(n / divisor, factors);
+}
+\end{lstlisting}
+
+El algoritmo es probabil\'istico en tiempo, pero los factores devueltos se
+validan recursivamente con Miller--Rabin.

@@ -1,0 +1,41 @@
+\section{Template C++17}
+
+Base com\'un para los snippets del handbook. Incluye el template cl\'asico del
+equipo; las macros son opcionales, pero permiten pegar c\'odigo viejo sin
+traducir nombres durante una competencia.
+
+\begin{lstlisting} [style=cpp]
+#include <bits/stdc++.h>
+#define pb push_back
+#define fst first
+#define snd second
+#define fore(i,a,b) for (int i = (a), ThxDem = (b); i < ThxDem; ++i)
+#define SZ(x) ((int)(x).size())
+#define ALL(x) (x).begin(), (x).end()
+#define mset(a,v) memset((a), (v), sizeof(a))
+#define FIN ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr)
+using namespace std;
+
+using ll = long long;
+using ull = unsigned ll;
+using i128 = __int128_t;
+using u128 = __uint128_t;
+using ii = pair<int,int>;
+using pii = pair<int,int>;
+using pll = pair<ll,ll>;
+
+const int INF = numeric_limits<int>::max() / 4;
+const ll LINF = numeric_limits<ll>::max() / 4;
+
+int main() {FIN;
+
+    return 0;
+}
+\end{lstlisting}
+
+Para llenar memoria byte a byte, usar \texttt{memset} solamente con valores
+seguros como cero o $-1$. Para otros valores, usar \texttt{fill}.
+
+\warning{\texttt{fore} guarda el l\'imite una sola vez: no usarlo si ese l\'imite
+debe cambiar dentro del loop. (Es decir, no se recalcula con cada iteraci\'on como si lo har\'ia i < SZ(v) \texttt{pb/fst/snd/ALL/SZ} son abreviaturas; ante
+un error de tipos, expandirlas mentalmente antes de depurar.}

@@ -1,0 +1,32 @@
+\section{BFS multiorigen}
+\whenuse{Distancia al origen m\'as cercano o expansi\'on simult\'anea desde muchas
+fuentes en un grafo sin pesos.}
+
+Usar cuando se pide la distancia al origen m\'as cercano, expansi\'on simult\'anea,
+Voronoi sobre un grafo no pesado o el instante en que llega primero alguna fuente.
+Es una BFS normal inicializando la cola con todas las fuentes a distancia cero.
+
+\complexity{tiempo $O(n+m)$; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+vector<int> multi_source_bfs(const vector<vector<int>> &graph,
+                             const vector<int> &sources) {
+    int node_count = (int)graph.size();
+    vector<int> distance(node_count, -1);
+    queue<int> pending;
+    for (int source : sources) if (distance[source] == -1) {
+        distance[source] = 0;
+        pending.push(source);
+    }
+    while (!pending.empty()) {
+        int vertex = pending.front(); pending.pop();
+        for (int to : graph[vertex]) if (distance[to] == -1) {
+            distance[to] = distance[vertex] + 1;
+            pending.push(to);
+        }
+    }
+    return distance;
+}
+\end{lstlisting}
+
+Para recuperar qu\'e fuente gan\'o, propagar adem\'as un arreglo \texttt{owner}.

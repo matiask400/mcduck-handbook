@@ -1,0 +1,38 @@
+\section{Entrada y salida}
+
+\begin{lstlisting}[style=cpp]
+void read_test_cases() {
+    int t; cin >> t;
+    while (t--) {
+        int n; cin >> n;
+        vector<ll> a(n);
+        for (ll &x : a) cin >> x;
+    }
+}
+
+void read_until_eof() {
+    int a, b;
+    while (cin >> a >> b) cout << a + b << '\n';
+}
+
+vector<string> read_grid() {
+    int n, m; cin >> n >> m;
+    vector<string> grid(n);
+    for (string &row : grid) cin >> row;
+    return grid;
+}
+
+string read_line_after_token() {
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    string line;
+    getline(cin, line);
+    return line;
+}
+\end{lstlisting}
+
+Para salida decimal:
+\begin{lstlisting}[style=cpp]
+void print_decimal(long double answer) {
+    cout << fixed << setprecision(10) << answer << '\n';
+}
+\end{lstlisting}

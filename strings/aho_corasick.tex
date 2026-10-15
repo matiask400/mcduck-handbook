@@ -1,0 +1,95 @@
+\section{Aho--Corasick}
+\whenuse{Buscar simult\'aneamente muchas palabras en uno o varios textos,
+reportando coincidencias mientras se recorre cada texto una sola vez.}
+
+Busca simult\'aneamente muchos patrones. Esta versi\'on usa letras min\'usculas
+inglesas y devuelve el ID de cada patr\'on junto con su posici\'on final.
+
+\complexity{construcci\'on $O(\sum |p|\cdot\Sigma)$ con transiciones completas;
+b\'usqueda $O(|texto|+\#coincidencias)$; memoria $O(\sum |p|\cdot\Sigma)$.}
+
+\begin{lstlisting}[style=cpp]
+struct AhoCorasick {
+    static const int ALPHABET = 26;
+    struct Node {
+        array<int, ALPHABET> next;
+        int suffix_link = 0;
+        vector<int> output;
+        Node() { next.fill(-1); }
+    };
+    vector<Node> nodes{Node()};
+
+    void insert(const string &pattern, int pattern_id) {
+        int v = 0;
+        for (char character : pattern) {
+            int letter = character - 'a';
+            assert(0 <= letter && letter < ALPHABET);
+            if (nodes[v].next[letter] == -1) {
+                nodes[v].next[letter] = nodes.size();
+                nodes.emplace_back();
+            }
+            v = nodes[v].next[letter];
+        }
+        nodes[v].output.push_back(pattern_id);
+    }
+
+    void build() {
+        queue<int> q;
+        for (int letter = 0; letter < ALPHABET; ++letter) {
+            int child = nodes[0].next[letter];
+            if (child == -1) nodes[0].next[letter] = 0;
+            else nodes[child].suffix_link = 0, q.push(child);
+        }
+
+        while (!q.empty()) {
+            int v = q.front(); q.pop();
+            int link = nodes[v].suffix_link;
+            nodes[v].output.insert(nodes[v].output.end(),
+                                   nodes[link].output.begin(),
+                                   nodes[link].output.end());
+            for (int letter = 0; letter < ALPHABET; ++letter) {
+                int child = nodes[v].next[letter];
+                if (child == -1) {
+                    nodes[v].next[letter] = nodes[link].next[letter];
+                } else {
+                    nodes[child].suffix_link = nodes[link].next[letter];
+                    q.push(child);
+                }
+            }
+        }
+    }
+
+    vector<pair<int,int>> find_all(const string &text) const {
+        vector<pair<int,int>> matches; // (end_position, pattern_id)
+        int state = 0;
+        for (int position = 0; position < (int)text.size(); ++position) {
+            int letter = text[position] - 'a';
+            assert(0 <= letter && letter < ALPHABET);
+            state = nodes[state].next[letter];
+            for (int pattern_id : nodes[state].output)
+                matches.push_back({position, pattern_id});
+        }
+        return matches;
+    }
+};
+\end{lstlisting}
+
+Llamar \texttt{build()} exactamente una vez despu\'es de insertar todos los
+patrones. Para contar sin enumerar coincidencias, acumular visitas por el
+\'arbol de suffix links.
+
+\begin{lstlisting}[style=cpp]
+vector<string> patterns={"he","she","his","hers"};
+AhoCorasick aho;
+for(int id=0;id<(int)patterns.size();++id)
+    aho.insert(patterns[id],id);
+aho.build(); // Una vez, despues de insertar todos.
+
+string text="ahishers";
+for(auto [end,id]:aho.find_all(text)) {
+    int start=end-(int)patterns[id].size()+1;
+    cout<<patterns[id]<<" ["<<start<<","<<end+1<<")\n";
+}
+// his [1,4), she [3,6), he [4,6), hers [4,8)
+// find_all devuelve (posicion final,id); admite coincidencias superpuestas.
+\end{lstlisting}

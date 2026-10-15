@@ -1,0 +1,103 @@
+\section{Comparadores, bits y aleatoriedad}
+
+\subsection{Orden personalizado}
+
+El comparador debe ser estricto: nunca puede decir que $a<a$. No usar una
+tolerancia EPS como comparador directo de \texttt{set} o \texttt{sort}.
+
+\begin{lstlisting} [style=cpp]
+struct BySecondThenFirst {
+    bool operator()(const pair<int,int> &a, const pair<int,int> &b) const {
+        return tie(a.second, a.first) < tie(b.second, b.first);
+    }
+};
+
+void comparator_example(vector<pair<int,int>> &items) {
+    sort(items.begin(), items.end(), BySecondThenFirst{});
+    sort(items.begin(), items.end(), [](const auto &a, const auto &b) {
+        if (a.first != b.first) return a.first > b.first;
+        return a.second < b.second;
+    });
+}
+\end{lstlisting}
+
+\subsection{Operaciones de bits}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Consulta & \texttt{oper} & \texttt{NEUT} \\
+\hline
+XOR & \texttt{\^} & \texttt{0} \\
+OR & \texttt{|} & \texttt{0} \\
+AND & \texttt{\&} & \texttt{(\textasciitilde 0)} \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{lstlisting}[style=cpp]
+int count_bits(unsigned long long value) {
+    return __builtin_popcountll(value);
+} //cuenta cuantos bits estan en 1
+
+int least_significant_bit_index(unsigned long long value) {
+    assert(value != 0);
+    return __builtin_ctzll(value);
+} // devuelve cuantos ceros hay al final, o sea el indice del bit 1 mas bajo
+
+int most_significant_bit_index(unsigned long long value) {
+    assert(value != 0);
+    return 63 - __builtin_clzll(value);
+} // obtiene el indice del bit 1 mas alto
+
+unsigned long long lowest_set_bit(unsigned long long value) {
+    return value & (~value + 1); // tambien value & -value para unsigned
+} // devuelve solo el bit 1 mas bajo
+
+void bitset_example() {
+    bits.set(5);    // pone el bit 5 en 1
+    bits.flip(7);   // invierte el bit 7
+    bits.reset(5);  // pone el bit 5 en 0
+    bits.test(7);   // consulta si el bit 7 esta en 1
+    bits.count();   // cuenta bits en 1
+    (void)seventh; (void)active;
+}
+\end{lstlisting}
+
+\warning{\texttt{\_\_builtin\_clz(0)} y \texttt{\_\_builtin\_ctz(0)} son
+indefinidos. Para \texttt{long long}, usar las versiones terminadas en
+\texttt{ll}.}
+
+\subsection{Random y shuffle}
+
+\begin{lstlisting}[style=cpp]
+mt19937_64& random_engine() {
+    static mt19937_64 engine(chrono::steady_clock::now()
+                             .time_since_epoch().count());
+    return engine;
+}
+
+ll random_integer(ll left, ll right) {
+    return uniform_int_distribution<ll>(left, right)(random_engine());
+}
+
+void shuffle_values(vector<int> &values) {
+    shuffle(values.begin(), values.end(), random_engine());
+}
+\end{lstlisting}
+
+\subsection{Errores frecuentes}
+
+\begin{itemize}
+  \item \texttt{map[key]} y \texttt{unordered\_map[key]} insertan la clave si
+  no existe; usar \texttt{find} para consultar sin modificar.
+  \item No desreferenciar \texttt{end()}, ni llamar \texttt{front/back/top}
+  sobre un contenedor vac\'io.
+  \item \texttt{erase(value)} en \texttt{multiset} borra todas las copias;
+  \texttt{erase(find(value))} borra una.
+  \item Un comparador de \texttt{sort/set/map} debe cumplir orden estricto.
+  \item Evitar \texttt{endl} salvo que se necesite forzar el flush; usar
+  \texttt{'\textbackslash n'}.
+  \item En expresiones modulares, normalizar negativos con
+  $((x\bmod m)+m)\bmod m$.
+\end{itemize}

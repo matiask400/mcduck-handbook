@@ -1,0 +1,38 @@
+\section{Longest Increasing Subsequence}
+\whenuse{Encontrar la subsecuencia estrictamente creciente m\'as larga; aparece
+tambi\'en tras ordenar una dimensi\'on en problemas bidimensionales.}
+
+Devuelve una subsecuencia estrictamente creciente y no solamente su longitud.
+
+\begin{lstlisting}[style=cpp]
+vector<ll> longest_increasing_subsequence(const vector<ll> &a) {
+    int n = a.size();
+    vector<ll> tails;
+    vector<int> tail_index, parent(n, -1);
+
+    for (int i = 0; i < n; ++i) {
+        int position = lower_bound(tails.begin(), tails.end(), a[i])
+                     - tails.begin();
+        if (position == (int)tails.size()) {
+            tails.push_back(a[i]);
+            tail_index.push_back(i);
+        } else {
+            tails[position] = a[i];
+            tail_index[position] = i;
+        }
+        if (position > 0) parent[i] = tail_index[position - 1];
+    }
+
+    vector<ll> answer;
+    if (!tail_index.empty())
+        for (int i = tail_index.back(); i != -1; i = parent[i])
+            answer.push_back(a[i]);
+    reverse(answer.begin(), answer.end());
+    return answer;
+}
+\end{lstlisting}
+
+\complexity{$O(n\log n)$ tiempo y $O(n)$ memoria.}
+
+Para subsecuencia no decreciente, reemplazar \texttt{lower\_bound} por
+\texttt{upper\_bound}.

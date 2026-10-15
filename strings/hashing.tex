@@ -1,0 +1,62 @@
+\section{Rolling hash}
+\whenuse{Comparar substrings, detectar repeticiones o hacer binary search sobre
+longitudes aceptando una probabilidad peque\~na de colisi\'on.}
+
+Hash doble para comparar substrings en $O(1)$ tras preprocesar. Los rangos son
+semiabiertos $[l,r)$. Una igualdad de hashes sigue siendo probabil\'istica.
+
+\begin{lstlisting}[style=cpp]
+struct RollingHash {
+    static const int MOD1 = 1000000007;
+    static const int MOD2 = 1000000009;
+    static const int BASE = 911382323;
+    vector<int> power1, power2, hash1, hash2;
+
+    explicit RollingHash(const string &s) {
+        int n = s.size();
+        power1.assign(n + 1, 1); power2.assign(n + 1, 1);
+        hash1.assign(n + 1, 0);  hash2.assign(n + 1, 0);
+        for (int i = 0; i < n; ++i) {
+            int value = (unsigned char)s[i] + 1;
+            power1[i + 1] = (ll)power1[i] * BASE % MOD1;
+            power2[i + 1] = (ll)power2[i] * BASE % MOD2;
+            hash1[i + 1] = ((ll)hash1[i] * BASE + value) % MOD1;
+            hash2[i + 1] = ((ll)hash2[i] * BASE + value) % MOD2;
+        }
+    }
+
+    pair<int,int> get(int l, int r) const {
+        ll first = hash1[r] - (ll)hash1[l] * power1[r - l] % MOD1;
+        ll second = hash2[r] - (ll)hash2[l] * power2[r - l] % MOD2;
+        if (first < 0) first += MOD1;
+        if (second < 0) second += MOD2;
+        return {(int)first, (int)second};
+    }
+};
+\end{lstlisting}
+
+\complexity{construcci\'on $O(n)$; consulta $O(1)$; memoria $O(n)$.}
+
+Comparar dos substrings de la misma longitud:
+
+\begin{lstlisting}[style=cpp]
+string s="banana";
+RollingHash hash(s);
+bool equal=hash.get(1,4)==hash.get(3,6);
+cout<<equal<<'\n'; // 1: "ana" == "ana"
+\end{lstlisting}
+
+Buscar apariciones de un patrón:
+
+\begin{lstlisting}[style=cpp]
+string text="bananana",pattern="ana";
+RollingHash text_hash(text),pattern_hash(pattern);
+auto target=pattern_hash.get(0,pattern.size());
+for(int i=0;i+(int)pattern.size()<=(int)text.size();++i)
+    if(text_hash.get(i,i+pattern.size())==target)
+        cout<<i<<' '; // 1 3 5
+\end{lstlisting}
+
+\texttt{get(l,r)} devuelve el hash del substring semiabierto $[l,r)$. Sólo
+deben compararse substrings de igual longitud. Aunque se use hash doble, existe
+una probabilidad muy pequeña de colisión.

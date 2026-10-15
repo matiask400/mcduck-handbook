@@ -1,0 +1,61 @@
+\section{Puentes y puntos de articulaci\'on}
+\whenuse{Detectar una arista o v\'ertice cuya eliminaci\'on aumenta el n\'umero de
+componentes de un grafo no dirigido.}
+
+Versi\'on para multigrafos no dirigidos: identifica la arista padre por ID, no
+solamente por v\'ertice.
+
+\begin{lstlisting}[style=cpp]
+struct LowLink {
+    int timer = 0;
+    vector<vector<pair<int,int>>> graph; // (to, edge_id)
+    vector<int> tin, low;
+    vector<char> articulation;
+    vector<pair<int,int>> bridges;
+
+    explicit LowLink(int n) : graph(n), tin(n, -1), low(n),
+                              articulation(n, false) {}
+
+    void add_edge(int u, int v, int id) {
+        graph[u].push_back({v, id});
+        graph[v].push_back({u, id});
+    }
+
+    void dfs(int v, int parent_edge = -1) {
+        tin[v] = low[v] = timer++;
+        int children = 0;
+        for (auto [to, edge_id] : graph[v]) {
+            if (edge_id == parent_edge) continue;
+            if (tin[to] != -1) {
+                low[v] = min(low[v], tin[to]);
+            } else {
+                dfs(to, edge_id);
+                low[v] = min(low[v], low[to]);
+                if (low[to] > tin[v]) bridges.push_back({v, to});
+                if (parent_edge != -1 && low[to] >= tin[v])
+                    articulation[v] = true;
+                ++children;
+            }
+        }
+        if (parent_edge == -1 && children > 1) articulation[v] = true;
+    }
+
+    void run() {
+        for (int v = 0; v < (int)graph.size(); ++v)
+            if (tin[v] == -1) dfs(v);
+    }
+};
+
+LowLink lowlink(5);
+
+int id = 0;
+lowlink.add_edge(0, 1, id++); // 5 veces con los q correspondan conexiones
+lowlink.run();
+for (auto [u, v] : lowlink.bridges)
+    cout << "Puente: " << u << ' ' << v << '\n';
+for (int v = 0; v < 5; ++v)
+    if (lowlink.articulation[v])
+        cout << "Articulacion: " << v << '\n';
+\end{lstlisting}
+
+\complexity{$O(V+E)$ tiempo y $O(V+E)$ memoria.}

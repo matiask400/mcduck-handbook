@@ -1,0 +1,144 @@
+\section{Dijkstra}
+\whenuse{Caminos m\'inimos desde una fuente con pesos no negativos. Para pesos
+0/1 usar 0--1 BFS; con negativos, Bellman--Ford.}
+
+Distancias desde una fuente con pesos no negativos.
+
+\begin{lstlisting}[style=cpp]
+vector<ll> dijkstra(const vector<vector<pair<int,ll>>> &graph, int source) {
+    int n = graph.size();
+    vector<ll> distance(n, LINF);
+    priority_queue<pair<ll,int>, vector<pair<ll,int>>,
+                   greater<pair<ll,int>>> pending;
+    distance[source] = 0;
+    pending.push({0, source});
+
+    while (!pending.empty()) {
+        auto [dist_v, v] = pending.top(); pending.pop();
+        if (dist_v != distance[v]) continue;
+        for (auto [to, weight] : graph[v]) {
+            if (weight < 0) throw invalid_argument("negative edge");
+            if (distance[to] > dist_v + weight) {
+                distance[to] = dist_v + weight;
+                pending.push({distance[to], to});
+            }
+        }
+    }
+    return distance;
+}
+vector<WeightedEdge> edges = {
+    {0, 1, 4},
+    {0, 2, 5},
+    {1, 2, -2},
+    {2, 3, 3}
+};
+auto [distance, negative_cycle] = bellman_ford(4, edges, 0);
+if (negative_cycle) cout << "Hay ciclo negativo\n";
+else cout << distance[3] << '\n'; // 5: 0 -> 1 -> 2 -> 3
+\end{lstlisting}
+
+\complexity{$O((V+E)\log V)$; memoria $O(V+E)$.}
+
+\section{0--1 BFS}
+\whenuse{Caminos m\'inimos cuando cada arista pesa exactamente 0 o 1; evita el
+factor logar\'itmico de Dijkstra usando una deque.}
+
+Para pesos exclusivamente cero o uno.
+
+\begin{lstlisting}[style=cpp]
+vector<int> zero_one_bfs(const vector<vector<pair<int,int>>> &graph,
+                         int source) {
+    int n = graph.size();
+    vector<int> distance(n, INF);
+    deque<int> q;
+    distance[source] = 0; q.push_front(source);
+    while (!q.empty()) {
+        int v = q.front(); q.pop_front();
+        for (auto [to, weight] : graph[v]) {
+            assert(weight == 0 || weight == 1);
+            if (distance[to] > distance[v] + weight) {
+                distance[to] = distance[v] + weight;
+                if (weight == 0) q.push_front(to);
+                else q.push_back(to);
+            }
+        }
+    }
+    return distance;
+}
+vector<vector<pair<int,int>>> graph(4);
+graph[0].push_back({1, 0}); // 0 -> 1, costo 0
+graph[0].push_back({2, 1}); // 0 -> 2, costo 1
+graph[1].push_back({2, 0}); // 1 -> 2, costo 0
+graph[2].push_back({3, 1}); // 2 -> 3, costo 1
+
+vector<int> distance = zero_one_bfs(graph, 0);
+cout << distance[3] << '\n'; // 1
+\end{lstlisting}
+
+\complexity{$O(V+E)$ tiempo y memoria.}
+
+\section{Bellman--Ford}
+\whenuse{Caminos m\'inimos con pesos negativos y detecci\'on de ciclos negativos
+alcanzables; s\'olo para grafos moderados por su costo cuadr\'atico.}
+
+Admite pesos negativos. Tras $V-1$ rondas, una relajaci\'on adicional indica
+un ciclo negativo alcanzable desde la fuente.
+
+\begin{lstlisting}[style=cpp]
+struct WeightedEdge { int from, to; ll weight; };
+
+pair<vector<ll>, bool> bellman_ford(
+        int n, const vector<WeightedEdge> &edges, int source) {
+    vector<ll> distance(n, LINF);
+    distance[source] = 0;
+    for (int iteration = 0; iteration < n - 1; ++iteration) {
+        bool changed = false;
+        for (auto [from, to, weight] : edges) {
+            if (distance[from] == LINF) continue;
+            i128 raw = (i128)distance[from] + weight;
+            ll candidate = raw < -LINF ? -LINF
+                         : raw > LINF ? LINF : (ll)raw;
+            if (candidate < distance[to]) {
+                distance[to] = candidate;
+                changed = true;
+            }
+        }
+        if (!changed) break;
+    }
+    bool negative_cycle = false;
+    for (auto [from, to, weight] : edges)
+        if (distance[from] != LINF &&
+            (i128)distance[from] + weight < distance[to])
+            negative_cycle = true;
+    return {distance, negative_cycle};
+}
+\end{lstlisting}
+
+\complexity{$O(VE)$ tiempo y $O(V)$ memoria.}
+
+\section{Floyd--Warshall}
+\whenuse{Distancias entre todos los pares cuando $V$ es peque\~no; tambi\'en para
+clausura transitiva o detectar ciclos negativos mediante la diagonal.}
+
+Todos contra todos. Inicializar diagonal en cero, aristas en su peso m\'inimo y
+el resto en \texttt{LINF}.
+
+\begin{lstlisting}[style=cpp]
+void floyd_warshall(vector<vector<ll>> &distance) {
+    int n = distance.size();
+    for (int k = 0; k < n; ++k)
+        for (int i = 0; i < n; ++i) if (distance[i][k] != LINF)
+            for (int j = 0; j < n; ++j) if (distance[k][j] != LINF)
+                distance[i][j] = min(distance[i][j],
+                    distance[i][k] + distance[k][j]);
+}
+
+bool negative_cycle_between(const vector<vector<ll>> &d, int a, int b) {
+    for (int k = 0; k < (int)d.size(); ++k)
+        if (d[a][k] != LINF && d[k][k] < 0 && d[k][b] != LINF)
+            return true;
+    return false;
+}
+\end{lstlisting}
+
+\complexity{$O(V^3)$ tiempo y $O(V^2)$ memoria.}

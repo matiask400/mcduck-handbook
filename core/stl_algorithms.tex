@@ -1,0 +1,65 @@
+\section{Algoritmos STL comunes}
+
+\begin{lstlisting}[style=cpp]
+void common_algorithms(vector<int> values) {
+    sort(values.begin(), values.end());
+    sort(values.rbegin(), values.rend());
+    stable_sort(values.begin(), values.end()); // conserva el orden relativo de elementos que empatan (noo mas rapido si mas memo)
+
+    int minimum = *min_element(values.begin(), values.end());
+    int maximum = *max_element(values.begin(), values.end());
+    auto [minimum_it, maximum_it] = minmax_element(values.begin(), values.end());
+
+    ll sum = accumulate(values.begin(), values.end(), 0LL);
+    int amount = count(values.begin(), values.end(), 5); // Cuantas veces aparece 5
+    int positives = count_if(values.begin(), values.end(),
+                             [](int value) { return value > 0; });
+    bool all_positive = all_of(values.begin(), values.end(),
+                               [](int value) { return value > 0; });
+
+    reverse(values.begin(), values.end());
+    rotate(values.begin(), values.begin() + values.size() / 2, values.end()); // {1, 2, 3, 4, 5, 6} -> {4, 5, 6, 1, 2, 3}
+    (void)minimum; (void)maximum; (void)minimum_it; (void)maximum_it;
+    (void)sum; (void)amount; (void)positives; (void)all_positive; //: no la uso; es intencional
+}
+\end{lstlisting}
+
+\subsection{Bounds, duplicados y selecci\'on}
+
+\begin{lstlisting}[style=cpp]
+void ordered_range_algorithms(vector<int> values, int target) {
+    sort(values.begin(), values.end());
+    auto first_equal = lower_bound(values.begin(), values.end(), target);
+    auto after_equal = upper_bound(values.begin(), values.end(), target);
+    int occurrences = after_equal - first_equal;
+    bool exists = binary_search(values.begin(), values.end(), target);
+
+    values.erase(unique(values.begin(), values.end()), values.end());
+    if (!values.empty()) {
+        int middle = values.size() / 2;
+        nth_element(values.begin(), values.begin() + middle, values.end());
+        int median = values[middle];
+        (void)median;
+    }
+    (void)occurrences; (void)exists;
+}
+\end{lstlisting}
+
+\subsection{Permutaciones y sumas acumuladas}
+
+\begin{lstlisting}[style=cpp]
+void sequence_algorithms() {
+    vector<int> permutation{1, 2, 3};
+    do {
+        // procesar permutation
+    } while (next_permutation(permutation.begin(), permutation.end()));
+
+    vector<int> values(5);
+    iota(values.begin(), values.end(), 10); // 10,11,12,13,14
+    vector<ll> prefix(values.size());
+    partial_sum(values.begin(), values.end(), prefix.begin());
+}
+\end{lstlisting}
+
+\warning{\texttt{lower\_bound}, \texttt{upper\_bound} y
+\texttt{binary\_search} requieren el rango ordenado con el mismo comparador.}

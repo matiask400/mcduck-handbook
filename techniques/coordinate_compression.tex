@@ -1,0 +1,27 @@
+\section{Compresi\'on de coordenadas}
+\whenuse{Los valores son enormes pero s\'olo importa su orden/igualdad; mapearlos
+a $[0,k)$ para usar Fenwick, Segment Tree o arreglos.}
+
+Reemplaza valores grandes por sus posiciones ordenadas conservando igualdad y
+orden relativo.
+
+\complexity{$O(n\log n)$ de construcci\'on; $O(\log n)$ por consulta; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+template<class T>
+struct Compressor {
+    vector<T> values;
+
+    explicit Compressor(vector<T> a) : values(move(a)) {
+        sort(values.begin(), values.end());
+        values.erase(unique(values.begin(), values.end()), values.end());
+    }
+
+    int id(const T &x) const {
+        return lower_bound(values.begin(), values.end(), x) - values.begin();
+    }
+
+    const T& value(int id) const { return values[id]; }
+    int size() const { return (int)values.size(); }
+};
+\end{lstlisting}

@@ -1,0 +1,51 @@
+\section{Rerooting DP}
+\whenuse{Se necesita una respuesta para cada vértice considerando que ese
+vértice es la raíz o punto de inicio: suma de distancias a todos, cantidad de
+nodos alcanzables, mejor costo al elegir una capital o valor de una DP para
+cada raíz. La respuesta de raíces vecinas debe poder actualizarse reutilizando
+la información de sus subárboles. Evita ejecutar una DFS $O(n)$ desde cada
+vértice, lo que costaría $O(n^2)$.}
+
+\complexity{tiempo $O(n)$; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct DistanceRerooting {
+    int node_count;
+    const vector<vector<int>> &tree;
+    vector<int> subtree_size;
+    vector<ll> distance_sum;
+
+    explicit DistanceRerooting(const vector<vector<int>> &input_tree)
+        : node_count(input_tree.size()), tree(input_tree),
+          subtree_size(node_count), distance_sum(node_count) {
+        dfs_down(0, -1);
+        dfs_up(0, -1);
+    }
+
+    void dfs_down(int vertex, int parent) {
+        subtree_size[vertex] = 1;
+        for (int to : tree[vertex]) if (to != parent) {
+            dfs_down(to, vertex);
+            subtree_size[vertex] += subtree_size[to];
+            distance_sum[vertex] += distance_sum[to] + subtree_size[to];
+        }
+    }
+    void dfs_up(int vertex, int parent) {
+        for (int to : tree[vertex]) if (to != parent) {
+            distance_sum[to] = distance_sum[vertex]
+                             - subtree_size[to] + (node_count - subtree_size[to]);
+            dfs_up(to, vertex);
+        }
+    }
+};
+\end{lstlisting}
+\begin{lstlisting}[style=cpp]
+tree[u].push_back(v);
+tree[v].push_back(u);
+
+DistanceRerooting rerooting(tree);
+for(int v=0;v<n;++v)
+    cout<<rerooting.distance_sum[v]<<'\n';
+\end{lstlisting}
+Para una combinaci\'on gen\'erica no invertible, usar prefijos y sufijos de las
+contribuciones de los hijos para excluir uno en $O(1)$.

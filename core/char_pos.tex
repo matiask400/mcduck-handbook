@@ -1,0 +1,20 @@
+\section{Letras a posiciones}
+
+\begin{lstlisting}[style=cpp]
+char c = 'C';
+
+int zero_indexed = c - 'A';     // A -> 0, B -> 1, ..., Z -> 25
+int one_indexed = c - 'A' + 1; // A -> 1, B -> 2, ..., Z -> 26
+
+char lower = 'c';
+int lower_indexed = lower - 'a'; // a -> 0, ..., z -> 25
+\end{lstlisting}
+
+\begin{lstlisting}[style=py]
+c = 'C'
+zero_indexed = ord(c) - ord('A')      # A -> 0
+one_indexed = ord(c) - ord('A') + 1   # A -> 1
+
+lower = 'c'
+lower_indexed = ord(lower) - ord('a') # a -> 0
+\end{lstlisting}

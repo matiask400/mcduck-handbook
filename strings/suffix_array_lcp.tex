@@ -1,0 +1,90 @@
+\section{Suffix Array y LCP}
+\whenuse{Ordenar todos los sufijos para comparar substrings, buscar patrones,
+contar substrings distintos o conocer prefijos comunes sin usar hashing.}
+
+\texttt{sa[i]} es la posición donde comienza el $i$-ésimo sufijo en orden
+lexicográfico. \texttt{lcp[i]} es la longitud del prefijo común entre los
+sufijos \texttt{sa[i]} y \texttt{sa[i+1]}. Esta versión usa doubling y
+Con sa podés:
+- Ordenar los sufijos.
+- Buscar un patrón con búsqueda binaria.
+- Comparar substrings.
+- Encontrar repeticiones.
+Con lcp podés:
+- Encontrar el substring repetido más largo.
+- Contar substrings distintos.
+- Consultar cuánto coinciden dos sufijos.
+\texttt{sort}.
+
+\complexity{Suffix Array $O(n\log^2 n)$; LCP $O(n)$; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+vector<int> suffix_array(const string &s) {
+    int n=s.size();
+    vector<int> order(n),rank(n),new_rank(n);
+    iota(order.begin(),order.end(),0);
+    for(int i=0;i<n;++i) rank[i]=(unsigned char)s[i];
+    for(int length=1;length<n;length<<=1) {
+        auto key=[&](int position) {
+            return pair<int,int>{
+                rank[position],
+                position+length<n?rank[position+length]:-1
+            };
+        };
+        sort(order.begin(),order.end(),
+             [&](int a,int b){ return key(a)<key(b); });
+        new_rank[order[0]]=0;
+        for(int i=1;i<n;++i)
+            new_rank[order[i]]=new_rank[order[i-1]]
+                +(key(order[i-1])!=key(order[i]));
+        rank.swap(new_rank);
+        if(rank[order.back()]==n-1) break;
+    }
+    return order;
+}
+
+vector<int> lcp_array(const string &s,const vector<int> &sa) {
+    int n=s.size();
+    assert((int)sa.size()==n);
+    if(n<=1) return {};
+    vector<int> rank(n),lcp(n-1);
+    for(int i=0;i<n;++i) rank[sa[i]]=i;
+    for(int position=0,length=0;position<n;++position) {
+        int index=rank[position];
+        if(index==n-1) {
+            length=0;
+            continue;
+        }
+        int next=sa[index+1];
+        while(position+length<n&&next+length<n&&
+              s[position+length]==s[next+length]) ++length;
+        lcp[index]=length;
+        if(length) --length;
+    }
+    return lcp;
+}
+\end{lstlisting}
+
+Ejemplo de uso:
+
+\begin{lstlisting}[style=cpp]
+string s="banana";
+vector<int> sa=suffix_array(s);  // 5 3 1 0 4 2
+vector<int> lcp=lcp_array(s,sa); // 1 3 0 0 2
+ll distinct=(ll)s.size()*(s.size()+1)/2
+            -accumulate(lcp.begin(),lcp.end(),0LL);
+cout<<distinct<<'\n'; // 15
+// Cantidad de substrings distintos:
+ll total=(ll)n*(n+1)/2;
+ll repeated=accumulate(lcp.begin(),lcp.end(),0LL);
+ll distinct=total-repeated;
+//Porque hay \(n(n+1)/2\) substrings en total, pero cada lcp[i] representa prefijos ya vistos en el sufijo anterior.
+\end{lstlisting}
+
+La cantidad de substrings distintos es
+\[
+\frac{n(n+1)}2-\sum_i lcp[i].
+\]
+Para consultar repetidamente el LCP entre dos sufijos cualesquiera, guardar la
+posición de cada sufijo en \texttt{sa} y construir un RMQ sobre el arreglo
+\texttt{lcp}.

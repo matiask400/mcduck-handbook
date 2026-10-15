@@ -1,0 +1,71 @@
+\section{LCA $O(1)$ con Euler tour y RMQ}
+\whenuse{Árbol estático con muchísimas consultas de LCA. Usar binary lifting si
+también se necesita subir $k$ niveles o ahorrar memoria.}
+
+El Euler tour guarda un vértice al visitarlo y cada vez que el DFS regresa a él.
+El LCA de $a$ y $b$ es el vértice de menor profundidad entre sus primeras
+apariciones en el recorrido. Una Sparse Table responde este mínimo en $O(1)$.
+
+\complexity{Preproceso $O(n\log n)$; consulta $O(1)$; memoria $O(n\log n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct EulerRMQLCA {
+    vector<int> first, depth, euler, logarithm;
+    vector<vector<int>> table;
+    EulerRMQLCA(const vector<vector<int>> &tree, int root = 0)
+        : first(tree.size(), -1), depth(tree.size()) {
+        assert(!tree.empty());
+        dfs(root, -1, tree);
+        int length = euler.size();
+        logarithm.assign(length + 1, 0);
+        for (int i = 2; i <= length; ++i)
+            logarithm[i] = logarithm[i / 2] + 1;
+        // table[k][i]: vertice de menor profundidad
+        // en euler[i .. i + 2^k).
+        table.push_back(euler);
+
+        for (int k = 1; (1 << k) <= length; ++k) {
+            int half = 1 << (k - 1);
+            int count = length - (1 << k) + 1;
+            table.push_back(vector<int>(count));
+            for (int i = 0; i < count; ++i) {
+                int a = table[k - 1][i];
+                int b = table[k - 1][i + half];
+                table[k][i] = depth[a] < depth[b] ? a : b;
+            }
+        }
+    }
+    void dfs(int v, int parent,
+             const vector<vector<int>> &tree) {
+        first[v] = euler.size();
+        euler.push_back(v);
+        for (int to : tree[v]) {
+            if (to == parent) continue;
+            depth[to] = depth[v] + 1;
+            dfs(to, v, tree);
+            euler.push_back(v); // Regreso desde el hijo.
+        }
+    }
+    int lca(int a, int b) const {
+        int left = first[a], right = first[b];
+        if (left > right) swap(left, right);
+        int k = logarithm[right - left + 1];
+        int x = table[k][left];
+        int y = table[k][right - (1 << k) + 1];
+
+        return depth[x] < depth[y] ? x : y;
+    }
+    int distance(int a, int b) const {
+        int ancestor = lca(a, b);
+        return depth[a] + depth[b] - 2 * depth[ancestor];
+    }
+};
+
+EulerRMQLCA lca(tree, 0);
+cout << lca.lca(3, 4) << '\n';      // Ancestro comun
+cout << lca.distance(3, 2) << '\n'; // Distancia en aristas
+\end{lstlisting}
+
+
+\warning{El grafo debe ser un árbol conectado. El DFS recursivo puede desbordar
+la pila en árboles muy profundos.}

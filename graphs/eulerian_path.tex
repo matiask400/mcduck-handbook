@@ -1,0 +1,95 @@
+\section{Camino euleriano}
+\whenuse{Recorrer cada arista exactamente una vez; tambi\'en cuando objetos son
+aristas entre dos tipos de entidad, como filas y columnas.}
+
+Hierholzer usa cada arista exactamente una vez. El chequeo final de longitud
+tamb\'ien valida que todas las aristas pertenezcan al componente recorrido.
+
+\complexity{$O(V+E)$ tiempo y memoria.}
+
+\begin{lstlisting}[style=cpp]
+vector<int> directed_eulerian_path(
+        const vector<vector<pair<int,int>>> &graph, int edge_count) {
+    int n = graph.size();
+    if (n == 0) return edge_count == 0 ? vector<int>{} : vector<int>{};
+    vector<int> indegree(n, 0), outdegree(n, 0);
+    for (int v = 0; v < n; ++v)
+        for (auto [to, id] : graph[v]) {
+            (void)id;
+            ++outdegree[v]; ++indegree[to];
+        }
+
+    int start = -1, finish = -1;
+    for (int v = 0; v < n; ++v) {
+        int difference = outdegree[v] - indegree[v];
+        if (difference == 1) {
+            if (start != -1) return {};
+            start = v;
+        } else if (difference == -1) {
+            if (finish != -1) return {};
+            finish = v;
+        } else if (difference != 0) return {};
+    }
+    if ((start == -1) != (finish == -1)) return {};
+    if (start == -1) {
+        start = 0;
+        while (start < n && outdegree[start] == 0) ++start;
+        if (start == n) return {0};
+    }
+
+    vector<int> next_edge(n, 0), stack{start}, path;
+    vector<char> used(edge_count, false);
+    while (!stack.empty()) {
+        int v = stack.back();
+        while (next_edge[v] < (int)graph[v].size() &&
+               used[graph[v][next_edge[v]].second]) ++next_edge[v];
+        if (next_edge[v] == (int)graph[v].size()) {
+            path.push_back(v); stack.pop_back();
+        } else {
+            auto [to, id] = graph[v][next_edge[v]++];
+            if (id < 0 || id >= edge_count) return {};
+            used[id] = true;
+            stack.push_back(to);
+        }
+    }
+    if ((int)path.size() != edge_count + 1) return {};
+    reverse(path.begin(), path.end());
+    return path;
+}
+
+vector<int> undirected_eulerian_path(
+        const vector<vector<pair<int,int>>> &graph, int edge_count) {
+    int n = graph.size();
+    if (n == 0) return {};
+    vector<int> odd;
+    for (int v = 0; v < n; ++v)
+        if (graph[v].size() % 2 == 1) odd.push_back(v);
+    if (!odd.empty() && odd.size() != 2) return {};
+
+    int start = odd.empty() ? 0 : odd[0];
+    while (start < n && graph[start].empty()) ++start;
+    if (start == n) return {0};
+
+    vector<int> next_edge(n, 0), stack{start}, path;
+    vector<char> used(edge_count, false);
+    while (!stack.empty()) {
+        int v = stack.back();
+        while (next_edge[v] < (int)graph[v].size() &&
+               used[graph[v][next_edge[v]].second]) ++next_edge[v];
+        if (next_edge[v] == (int)graph[v].size()) {
+            path.push_back(v); stack.pop_back();
+        } else {
+            auto [to, id] = graph[v][next_edge[v]++];
+            if (id < 0 || id >= edge_count) return {};
+            used[id] = true;
+            stack.push_back(to);
+        }
+    }
+    if ((int)path.size() != edge_count + 1) return {};
+    reverse(path.begin(), path.end());
+    return path;
+}
+\end{lstlisting}
+
+En el grafo no dirigido, cada arista debe aparecer dos veces en la lista de
+adyacencia con el mismo ID. En el dirigido aparece una sola vez.

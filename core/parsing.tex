@@ -1,0 +1,17 @@
+\section{Parsing seguro}
+
+\begin{lstlisting}[style=cpp]
+bool parse_int(const string &s, int &value) {
+    if (s.empty()) return false;
+    const char *first = s.data();
+    const char *last = first + s.size();
+    auto [ptr, ec] = from_chars(first, last, value);
+    return ec == errc{} && ptr == last;
+}
+
+bool is_digit(char c) { return '0' <= c && c <= '9'; }
+\end{lstlisting}
+
+\texttt{from\_chars} detecta valores fuera del rango y no acepta espacios
+sobrantes. Para dividir una l\'inea en tokens puede usarse
+\texttt{istringstream}.

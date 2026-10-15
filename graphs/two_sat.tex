@@ -1,0 +1,107 @@
+\section{2-SAT}
+\whenuse{Elegir verdadero/falso para cada variable bajo restricciones de dos
+literales: ``al menos uno'', incompatibilidades e implicaciones.}
+
+Cada variable tiene dos nodos: falso $2v$ y verdadero $2v+1$. La negación se
+obtiene con XOR 1. Una cláusula $(a\lor b)$ equivale a las implicaciones
+$(\neg a\Rightarrow b)$ y $(\neg b\Rightarrow a)$.
+
+\complexity{$O(V+E)$ tiempo y memoria usando SCC sobre $2V$ literales.}
+
+\begin{lstlisting}[style=cpp]
+struct TwoSAT {
+    int variables;
+    vector<vector<int>> implication;
+
+    explicit TwoSAT(int variable_count)
+        : variables(variable_count),
+          implication(2 * variable_count) {}
+
+    // Nodo que representa (variable == value).
+    int literal(int variable, bool value) const {
+        return 2 * variable + (value ? 1 : 0);
+    }
+
+    void add_implication(int from, int to) {
+        implication[from].push_back(to);
+    }
+
+    // (x == value_x) OR (y == value_y).
+    void add_or(int x, bool value_x, int y, bool value_y) {
+        int a = literal(x, value_x);
+        int b = literal(y, value_y);
+        add_implication(a ^ 1, b);
+        add_implication(b ^ 1, a);
+    }
+
+    // Obliga a que variable == value.
+    void force(int variable, bool value) {
+        add_or(variable, value, variable, value);
+    }
+
+    // (x == value_x) implica (y == value_y).
+    void imply(int x, bool value_x, int y, bool value_y) {
+        add_or(x, !value_x, y, value_y);
+    }
+
+    // Exactamente una de las dos condiciones debe cumplirse.
+    void add_xor(int x, bool value_x, int y, bool value_y) {
+        add_or(x, value_x, y, value_y);
+        add_or(x, !value_x, y, !value_y);
+    }
+
+    // x e y deben tener el mismo valor.
+    void add_equal(int x, int y) {
+        imply(x, true, y, true);
+        imply(y, true, x, true);
+    }
+
+    // x e y deben tener valores diferentes.
+    void add_different(int x, int y) {
+        add_xor(x, true, y, true);
+    }
+
+    optional<vector<bool>> solve() const {
+        vector<int> component =
+            strongly_connected_components(implication);
+
+        vector<bool> assignment(variables);
+        for (int variable = 0; variable < variables; ++variable) {
+            int is_false = literal(variable, false);
+            int is_true = literal(variable, true);
+
+            if (component[is_false] == component[is_true])
+                return nullopt;
+
+            assignment[variable] =
+                component[is_true] > component[is_false];
+        }
+        return assignment;
+    }
+};
+\end{lstlisting}
+
+Operaciones frecuentes:
+
+\begin{lstlisting}[style=cpp]
+TwoSAT sat(3);
+int A = 0, B = 1, C = 2;
+sat.add_or(A, true, B, true);  // A o B
+sat.force(C, true);            // C debe ser verdadero
+sat.imply(A, true, C, true);   // A => C
+sat.add_xor(A, true, B, true); // Exactamente uno: A o B
+sat.add_equal(A, C);           // A == C
+sat.add_different(B, C);       // B != C
+auto answer = sat.solve();
+if (!answer) { cout << "Imposible\n";
+} else {
+    for (bool value : *answer)
+        cout << value << ' ';
+    cout << '\n';
+}
+\end{lstlisting}
+
+\warning{\texttt{strongly\_connected\_components} debe devolver las componentes
+en orden topológico compatible con la comparación usada en \texttt{solve}.
+Según la implementación de SCC, puede ser necesario cambiar
+\texttt{>} por \texttt{<}. También se requiere \texttt{\#include <optional>}.}

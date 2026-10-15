@@ -1,0 +1,132 @@
+\section{Imports y utilidades de Python}
+
+\begin{lstlisting}[style=py]
+import sys
+from collections import Counter, defaultdict, deque
+from functools import lru_cache
+from heapq import heappop, heappush
+from bisect import bisect_left, bisect_right
+from math import gcd, isqrt, lcm, inf
+# sys.setrecursionlimit(1_000_000) no se limite
+input = sys.stdin.buffer.readline
+\end{lstlisting}
+
+\subsection{Entrada rapida}
+
+\begin{lstlisting}[style=py]
+n = int(input())
+values = list(map(int, input().split()))
+\end{lstlisting}
+
+Lee una linea en $O(L)$, donde $L$ es su cantidad de bytes.
+
+\subsection{Counter}
+
+Cuenta frecuencias.
+
+\begin{lstlisting}[style=py]
+frequency = Counter([2, 1, 2, 3, 2])
+print(frequency[2])       # 3
+print(frequency.most_common(1)) # [(2, 3)]
+\end{lstlisting}
+
+Construirlo cuesta $O(n)$; consultar una frecuencia cuesta $O(1)$ promedio.
+
+\subsection{defaultdict}
+
+Crea un valor inicial automaticamente para claves nuevas.
+
+\begin{lstlisting}[style=py]
+graph = defaultdict(list)
+graph[1].append(4)
+graph[1].append(7)
+print(graph[1]) # [4, 7]
+
+count = defaultdict(int)
+count[5] += 1
+print(count[5]) # 1
+\end{lstlisting}
+
+Acceso e insercion: $O(1)$ promedio.
+
+\subsection{deque}
+
+Cola doble: insertar o quitar en ambos extremos.
+
+\begin{lstlisting}[style=py]
+q = deque([2, 3])
+q.append(4)
+q.appendleft(1)
+print(q.popleft()) # 1
+print(q.pop())     # 4
+\end{lstlisting}
+
+\texttt{append}, \texttt{appendleft}, \texttt{pop} y \texttt{popleft} cuestan
+$O(1)$.
+
+\subsection{lru\_cache}
+
+Memoiza resultados de una funcion recursiva.
+
+\begin{lstlisting}[style=py]
+@lru_cache(None) # None almacena y si pongo nro ultimos x 
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+print(fibonacci(10)) # 55
+\end{lstlisting}
+
+Cada estado se calcula una vez. En este ejemplo: $O(n)$ tiempo y $O(n)$ memoria.
+
+\subsection{heapq}
+
+Heap minimo: permite obtener siempre el menor elemento.
+
+\begin{lstlisting}[style=py]
+heap = []
+heappush(heap, 5)
+heappush(heap, 2)
+heappush(heap, 7)
+
+print(heappop(heap)) # 2
+print(heappop(heap)) # 5
+\end{lstlisting}
+
+\texttt{heappush} y \texttt{heappop} cuestan $O(\log n)$.
+Para un max-heap, guardar los valores negados.
+
+\subsection{bisect}
+
+Busca posiciones en un vector ordenado.
+
+\begin{lstlisting}[style=py]
+values = [1, 2, 2, 2, 5]
+
+print(bisect_left(values, 2))  # 1
+print(bisect_right(values, 2)) # 4
+print(bisect_left(values, 4))  # 4
+\end{lstlisting}
+
+\texttt{bisect\_left} busca la primera posicion posible; \texttt{bisect\_right},
+la posterior a las repeticiones. Ambos cuestan $O(\log n)$.
+Insertar en una lista sigue costando $O(n)$.
+
+\subsection{Matematica}
+
+\begin{lstlisting}[style=py]
+print(gcd(18, 24)) # 6
+print(lcm(6, 8))   # 24
+print(isqrt(20))   # 4
+print(inf > 10**100) # True
+a = int("ABCDEF", 16)
+b = int("123456", 16)
+
+result = a * b
+print(format(result, "X"))
+\end{lstlisting}
+
+\texttt{gcd} cuesta $O(\log(\min(a,b)))$; \texttt{lcm} tiene costo equivalente.
+\texttt{isqrt(n)} devuelve $\lfloor\sqrt n\rfloor$ sin errores de punto flotante.
+\texttt{inf} representa infinito para inicializar minimos o distancias.

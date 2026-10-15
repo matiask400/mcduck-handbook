@@ -1,0 +1,32 @@
+\section{Tipos, l\'imites y overflow}
+
+\begin{itemize}
+  \item \texttt{int}: aproximadamente $[-2\cdot10^9,2\cdot10^9]$.
+  \item \texttt{long long}: aproximadamente $[-9\cdot10^{18},9\cdot10^{18}]$.
+  \item \texttt{double}: unas 15 cifras decimales de precisi\'on.
+  \item \texttt{long double}: precisi\'on dependiente de la plataforma.
+  \item \texttt{\_\_int128}: entero no est\'andar disponible en GCC/Clang.
+\end{itemize}
+
+Promover \emph{antes} de operar:
+
+\begin{lstlisting}[style=cpp]
+ll promoted_product(int a, int b) { return 1LL * a * b; }
+bool square_leq(ll x, ll n) { return x <= n / x; } // x > 0
+
+void print_i128(i128 x) {
+    if (x == 0) { cout << 0; return; }
+    bool negative = x < 0;
+    u128 value = negative ? (u128)(-(x + 1)) + 1 : (u128)x;
+    if (negative) cout << '-';
+    string s;
+    while (value) {
+        s.push_back(char('0' + value % 10));
+        value /= 10;
+    }
+    reverse(s.begin(), s.end());
+    cout << s;
+}
+\end{lstlisting}
+
+El overflow de enteros con signo es comportamiento indefinido en C++.

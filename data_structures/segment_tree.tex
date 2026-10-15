@@ -1,0 +1,61 @@
+\section{Segment Tree iterativo}
+\whenuse{Arreglo din\'amico con updates puntuales y consultas de una operaci\'on
+asociativa sobre rangos; tambi\'en para buscar la primera posici\'on que cumple.}
+
+Versi\'on para suma, actualizaci\'on puntual y consultas semiabiertas $[l,r)$.
+Cambiar \texttt{combine} y \texttt{NEUTRAL} para min, max, gcd, etc.
+
+\textbf{Operaciones comunes}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Consulta & \texttt{oper} & \texttt{NEUT} \\
+\hline
+Minimo & \texttt{min} & \texttt{INF} \\
+Maximo & \texttt{max} & \texttt{-INF} \\
+Suma & \texttt{+} & \texttt{0} \\
+Producto & \texttt{*} & \texttt{1} \\
+XOR & \texttt{\^} & \texttt{0} \\
+OR bit a bit & \texttt{|} & \texttt{0} \\
+AND bit a bit & \texttt{\&} & \texttt{(\textasciitilde 0)} \\
+GCD & \texttt{gcd} & \texttt{0} \\
+LCM & \texttt{lcm} & \texttt{1} \\
+\hline
+\end{tabular}
+\end{center}
+
+\complexity{build $O(n)$; update/query $O(\log n)$; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct SegmentTree {
+    int n = 1;
+    vector<ll> tree;
+
+    explicit SegmentTree(int size) {
+        while (n < size) n <<= 1;
+        tree.assign(2 * n, 0);
+    }
+
+    explicit SegmentTree(const vector<ll> &a) : SegmentTree(a.size()) {
+        copy(a.begin(), a.end(), tree.begin() + n);
+        for (int p = n - 1; p; --p)
+            tree[p] = tree[p << 1] + tree[p << 1 | 1];
+    }
+
+    void set_value(int pos, ll value) {
+        int p = pos + n;
+        tree[p] = value;
+        while (p >>= 1)
+            tree[p] = tree[p << 1] + tree[p << 1 | 1];
+    }
+
+    ll query(int l, int r) const { // [l, r)
+        ll left = 0, right = 0;
+        for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+            if (l & 1) left += tree[l++];
+            if (r & 1) right = tree[--r] + right;
+        }
+        return left + right;
+    }
+};
+\end{lstlisting}

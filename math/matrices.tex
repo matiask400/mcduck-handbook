@@ -1,0 +1,35 @@
+\section{Exponenciaci\'on de matrices}
+\whenuse{Acelerar una recurrencia lineal o transiciones repetidas un n\'umero
+enorme de veces, expresando un paso como multiplicaci\'on por una matriz.}
+
+\begin{lstlisting}[style=cpp]
+using Matrix = vector<vector<ll>>;
+
+Matrix matrix_multiply(const Matrix &a, const Matrix &b, ll mod) {
+    assert(!a.empty() && !b.empty() && !b[0].empty());
+    assert(!a[0].empty() && a[0].size() == b.size() && mod > 0);
+    int rows = a.size(), inner = b.size(), columns = b[0].size();
+    Matrix result(rows, vector<ll>(columns, 0));
+    for (int i = 0; i < rows; ++i)
+        for (int k = 0; k < inner; ++k)
+            for (int j = 0; j < columns; ++j)
+                result[i][j] = (result[i][j] +
+                    (i128)a[i][k] * b[k][j]) % mod;
+    return result;
+}
+
+Matrix matrix_power(Matrix base, unsigned long long exponent, ll mod) {
+    int n = base.size();
+    assert(n > 0 && (int)base[0].size() == n);
+    Matrix result(n, vector<ll>(n, 0));
+    for (int i = 0; i < n; ++i) result[i][i] = 1;
+    while (exponent) {
+        if (exponent & 1ULL) result = matrix_multiply(result, base, mod);
+        base = matrix_multiply(base, base, mod);
+        exponent >>= 1;
+    }
+    return result;
+}
+\end{lstlisting}
+
+\complexity{$O(n^3\log e)$ tiempo; $O(n^2)$ memoria.}

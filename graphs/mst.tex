@@ -1,0 +1,52 @@
+\section{\'Arbol de expansi\'on m\'inima (Kruskal)}
+\whenuse{Conectar todos los v\'ertices con costo total m\'inimo. Kruskal es
+c\'omodo con lista de aristas; Prim con adyacencias y grafos densos/impl\'icitos.}
+
+Kruskal acepta pesos negativos. Si usa menos de $n-1$ aristas, el grafo es
+disconexo y el resultado es un bosque de expansi\'on m\'inima.
+
+\begin{lstlisting}[style=cpp]
+struct MstEdge { int u, v; ll weight; };
+
+pair<ll, vector<MstEdge>> kruskal(int n, vector<MstEdge> edges) {
+    sort(edges.begin(), edges.end(), [](const MstEdge &a, const MstEdge &b) {
+        return a.weight < b.weight;
+    });
+    DSU dsu(n);
+    ll cost = 0;
+    vector<MstEdge> chosen;
+    for (const auto &edge : edges) if (dsu.unite(edge.u, edge.v)) {
+        cost += edge.weight;
+        chosen.push_back(edge);
+    }
+    return {cost, chosen};
+}
+\end{lstlisting}
+
+\complexity{Kruskal $O(E\log E)$ tiempo y $O(V+E)$ memoria.}
+
+Prim es conveniente cuando el grafo ya est\'a en listas de adyacencia.
+
+\begin{lstlisting}[style=cpp]
+optional<ll> prim(const vector<vector<pair<int,ll>>> &graph) {
+    int n = graph.size();
+    if (n == 0) return 0LL;
+    vector<char> used(n, false);
+    priority_queue<pair<ll,int>, vector<pair<ll,int>>,
+                   greater<pair<ll,int>>> q;
+    q.push({0, 0});
+    ll cost = 0;
+    int visited = 0;
+    while (!q.empty()) {
+        auto [weight, v] = q.top(); q.pop();
+        if (used[v]) continue;
+        used[v] = true; ++visited; cost += weight;
+        for (auto [to, edge_weight] : graph[v])
+            if (!used[to]) q.push({edge_weight, to});
+    }
+    if (visited != n) return nullopt;
+    return cost;
+}
+\end{lstlisting}
+
+\complexity{Prim $O(E\log V)$ tiempo y $O(V+E)$ memoria.}

@@ -1,0 +1,142 @@
+\documentclass[10pt,landscape,twocolumn,a4paper,notitlepage]{book}
+
+\usepackage{graphicx}
+
+\input{config/preamble}
+\input{config/listings}
+
+\begin{document}
+
+% CARATULA
+\begin{titlepage}
+    \thispagestyle{empty}
+    \centering
+
+    \vspace*{1.5cm}
+    {\Huge\bfseries Handbook de Programación Competitiva\par}
+
+    \vfill
+
+    \includegraphics[width=8cm]{fotoMcDuck.jpg}
+
+    \vfill
+
+    {\Large McDuck Team\par}
+    \vspace{0.5cm}
+    {\large \today\par}
+
+    \vspace*{1.5cm}
+\end{titlepage}
+
+\tableofcontents
+
+\chapter{Base de competencia}
+\input{core/template_cpp}
+\input{core/includes_reference}
+\input{core/math_cpp}
+\input{core/template_python}
+\input{core/extension_python}
+\input{core/tipos_y_overflow}
+\input{core/cpp_language_basics}
+\input{core/stl_cheatsheet}
+\input{core/containers}
+\input{core/stl_algorithms}
+\input{core/cpp_utilities}
+\input{core/input_output}
+\input{core/parsing}
+\input{core/char_pos}
+
+\chapter{T\'ecnicas}
+\input{techniques/binary_search}
+\input{techniques/prefix_sums}
+\input{techniques/two_pointers}
+\input{techniques/bitmasks_and_bases}
+\input{techniques/coordinate_compression}
+\input{techniques/sqrt_heavy_light}
+
+\chapter{Estructuras de datos}
+\input{data_structures/dsu}
+\input{data_structures/fenwick}
+\input{data_structures/segment_tree}
+\input{data_structures/lazy_segment_tree}
+\input{data_structures/persistent_segment_tree}
+\input{data_structures/sparse_table}
+\input{data_structures/disjoint_sparse_table}
+\input{data_structures/monotonic_structures}
+\input{data_structures/pbds}
+\input{data_structures/fenwick_2d_offline}
+\input{data_structures/wavelet_tree}
+\input{data_structures/implicit_treap}
+\input{data_structures/cht_li_chao}
+\input{data_structures/disjoint_intervals}
+
+\chapter{Grafos}
+\input{graphs/traversal}
+------------------------------------------------------------------------------------------------------
+\input{graphs/multisource_bfs}
+------------------------------------------------------------------------------------------------------
+\input{graphs/dag_and_scc}
+------------------------------------------------------------------------------------------------------
+\input{graphs/two_sat}
+------------------------------------------------------------------------------------------------------
+\input{graphs/shortest_paths}
+------------------------------------------------------------------------------------------------------
+\input{graphs/mst}
+------------------------------------------------------------------------------------------------------
+\input{graphs/bridges_articulation}
+------------------------------------------------------------------------------------------------------
+\input{graphs/biconnected_components}
+------------------------------------------------------------------------------------------------------
+\input{graphs/trees_lca}
+------------------------------------------------------------------------------------------------------
+\input{graphs/lca_euler_rmq}
+------------------------------------------------------------------------------------------------------
+\input{graphs/virtual_tree}
+------------------------------------------------------------------------------------------------------
+\input{graphs/heavy_light_decomposition}
+------------------------------------------------------------------------------------------------------
+\input{graphs/centroid_decomposition}
+------------------------------------------------------------------------------------------------------
+\input{graphs/rerooting_dp}
+------------------------------------------------------------------------------------------------------
+\input{graphs/eulerian_path}
+------------------------------------------------------------------------------------------------------
+\input{graphs/flows}
+------------------------------------------------------------------------------------------------------
+\input{graphs/matching}
+
+\chapter{Strings}
+\input{strings/hashing}
+\input{strings/prefix_and_z}
+\input{strings/trie}
+\input{strings/manacher}
+\input{strings/aho_corasick}
+\input{strings/suffix_array_lcp}
+
+\chapter{Matem\'atica}
+\input{math/essential_theorems}
+\input{math/gcd_and_modular}
+\input{math/combinatorics}
+\input{math/lucas}
+\input{math/sieve_and_factorization}
+\input{math/miller_rabin_pollard_rho}
+\input{math/matrices}
+\input{math/gaussian_elimination}
+\input{math/ntt}
+
+\chapter{Geometr\'ia}
+\input{geometry/geometry_2d}
+\input{geometry/lines_circles_polygons}
+\input{geometry/geometry_3d}
+\input{geometry/convex_detour}
+
+\chapter{Programaci\'on din\'amica}
+\input{dp/lis}
+\input{dp/knapsack_and_bitmask}
+\input{dp/divide_conquer_optimization}
+\input{dp/triangular_bound_dp}
+
+\chapter{Algoritmos offline}
+\input{techniques/mos_algorithm}
+
+\end{document}

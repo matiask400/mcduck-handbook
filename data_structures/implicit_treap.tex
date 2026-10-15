@@ -1,0 +1,141 @@
+\section{Treap impl\'icito}
+\whenuse{Secuencia cuyo largo u orden cambia: insertar/borrar en el medio,
+invertir, cortar o consultar segmentos. Para un arreglo de largo fijo suele ser
+m\'as simple un Segment Tree.}
+
+El recorrido inorder del \'arbol es la secuencia. No guarda claves: el tama\~no
+de cada sub\'arbol determina la posici\'on. \texttt{split(t,k)} separa los
+primeros $k$ elementos del resto y \texttt{merge(a,b)} concatena dos secuencias.
+Para operar sobre $[l,r)$ se lo a\'isla con dos splits y luego se vuelven a unir
+las tres partes.
+
+\complexity{split, merge, inserci\'on, borrado, inversi\'on y consulta
+$O(\log n)$ esperado; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct ImplicitTreap {
+    struct Node {
+        ll value, sum;
+        unsigned priority;
+        int size = 1;
+        bool reversed = false;
+        Node *left_child = nullptr, *right_child = nullptr;
+        Node(ll initial_value, unsigned initial_priority)
+            : value(initial_value), sum(initial_value),
+              priority(initial_priority) {}
+    };
+
+    Node *root = nullptr;
+
+    static unsigned next_priority() {
+        static mt19937 generator(chrono::steady_clock::now()
+                                 .time_since_epoch().count());
+        return generator();
+    }
+
+    static int node_size(Node *node) { return node ? node->size : 0; }
+    static ll node_sum(Node *node) { return node ? node->sum : 0; }
+    static void push(Node *node) {
+        if (!node || !node->reversed) return;
+        swap(node->left_child, node->right_child);
+        if (node->left_child) node->left_child->reversed ^= true;
+        if (node->right_child) node->right_child->reversed ^= true;
+        node->reversed = false;
+    }
+    static void pull(Node *node) {
+        node->size = 1 + node_size(node->left_child)
+                       + node_size(node->right_child);
+        node->sum = node->value + node_sum(node->left_child)
+                                + node_sum(node->right_child);
+    }
+
+    static void split(Node *node, int left_size,
+                      Node *&left_tree, Node *&right_tree) {
+        if (!node) { left_tree = right_tree = nullptr; return; }
+        push(node);
+        if (node_size(node->left_child) >= left_size) {
+            split(node->left_child, left_size,
+                  left_tree, node->left_child);
+            right_tree = node; pull(right_tree);
+        } else {
+            int remaining = left_size - node_size(node->left_child) - 1;
+            split(node->right_child, remaining,
+                  node->right_child, right_tree);
+            left_tree = node; pull(left_tree);
+        }
+    }
+
+    static Node *merge(Node *left_tree, Node *right_tree) {
+        if (!left_tree || !right_tree)
+            return left_tree ? left_tree : right_tree;
+        push(left_tree); push(right_tree);
+        if (left_tree->priority > right_tree->priority) {
+            left_tree->right_child = merge(left_tree->right_child, right_tree);
+            pull(left_tree); return left_tree;
+        }
+        right_tree->left_child = merge(left_tree, right_tree->left_child);
+        pull(right_tree); return right_tree;
+    }
+
+    void insert(int position, ll value) {
+        assert(0 <= position && position <= node_size(root));
+        Node *left, *right;
+        split(root, position, left, right);
+        Node *node = new Node(value, next_priority());
+        root = merge(merge(left, node), right);
+    }
+
+    void erase(int position) {
+        assert(0 <= position && position < node_size(root));
+        Node *left, *middle, *right;
+        split(root, position, left, middle);
+        split(middle, 1, middle, right);
+        delete middle;
+        root = merge(left, right);
+    }
+
+    void reverse_range(int left, int right) { // [left,right)
+        assert(0 <= left && left <= right && right <= node_size(root));
+        Node *prefix, *middle, *suffix;
+        split(root, right, middle, suffix);
+        split(middle, left, prefix, middle);
+        if (middle) middle->reversed ^= true;
+        root = merge(merge(prefix, middle), suffix);
+    }
+
+    ll range_sum(int left, int right) { // [left,right)
+        assert(0 <= left && left <= right && right <= node_size(root));
+        Node *prefix, *middle, *suffix;
+        split(root, right, middle, suffix);
+        split(middle, left, prefix, middle);
+        ll answer = node_sum(middle);
+        root = merge(merge(prefix, middle), suffix);
+        return answer;
+    }
+};
+\end{lstlisting}
+
+\subsection{Ejemplo de uso}
+
+\begin{lstlisting}[style=cpp]
+void implicit_treap_example() {
+    ImplicitTreap sequence;
+    sequence.insert(0, 10); // [10]
+    sequence.insert(1, 20); // [10,20]
+    sequence.insert(2, 30); // [10,20,30]
+    sequence.insert(1, 5);  // [10,5,20,30]
+
+    cout << sequence.range_sum(1, 4) << '\n'; // 55
+    sequence.reverse_range(0, 3);              // [20,5,10,30]
+    cout << sequence.range_sum(0, 2) << '\n'; // 25
+    sequence.erase(1);                         // [20,10,30]
+}
+\end{lstlisting}
+
+La prioridad aleatoria mantiene el \'arbol balanceado en esperanza. La bandera
+\texttt{reversed} es lazy: invertir un segmento s\'olo marca su ra\'iz y el
+cambio se propaga cuando se baja por ese sub\'arbol.
+
+\warning{Esta versi\'on reserva nodos con \texttt{new}. Si se crean y destruyen
+muchas secuencias, agregar un destructor o usar un pool de memoria. No copiar la
+estructura directamente: dos copias compartir\'ian los mismos punteros.}

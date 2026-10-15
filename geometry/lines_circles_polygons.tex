@@ -1,0 +1,172 @@
+\section{Rectas con punto flotante}
+\whenuse{Proyecci\'on, distancia e intersecci\'on de rectas cuando el resultado no
+necesita ser entero y se controla el error con epsilon.}
+\complexity{cada operaci\'on de rectas $O(1)$ tiempo y memoria.}
+
+\begin{lstlisting}[style=cpp]
+const long double GEOMETRY_EPS = 1e-12L;
+
+struct DPoint {
+    long double x, y;
+    DPoint operator+(DPoint other) const { return {x + other.x, y + other.y}; }
+    DPoint operator-(DPoint other) const { return {x - other.x, y - other.y}; }
+    DPoint operator*(long double scale) const { return {x * scale, y * scale}; }
+    DPoint operator/(long double scale) const { return {x / scale, y / scale}; }
+};
+
+long double dot(DPoint a, DPoint b) { return a.x * b.x + a.y * b.y; }
+long double cross(DPoint a, DPoint b) { return a.x * b.y - a.y * b.x; }
+long double norm(DPoint a) { return sqrtl(dot(a, a)); }
+
+optional<DPoint> line_intersection(DPoint a, DPoint b,
+                                   DPoint c, DPoint d) {
+    DPoint first = b - a, second = d - c;
+    long double denominator = cross(first, second);
+    if (fabsl(denominator) <= GEOMETRY_EPS) return nullopt;
+    long double parameter = cross(c - a, second) / denominator;
+    return a + first * parameter;
+}
+
+DPoint projection_on_line(DPoint point, DPoint a, DPoint b) {
+    DPoint direction = b - a;
+    assert(norm(direction) > GEOMETRY_EPS);
+    return a + direction * (dot(point - a, direction) / dot(direction, direction));
+}
+
+long double distance_to_line(DPoint point, DPoint a, DPoint b) {
+    DPoint direction = b - a;
+    assert(norm(direction) > GEOMETRY_EPS);
+    return fabsl(cross(direction, point - a)) / norm(direction);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=cpp]
+DPoint a{0,0},b{4,0},c{2,-2},d{2,2},p{3,3};
+auto intersection=line_intersection(a,b,c,d);
+cout<<(double)intersection->x<<' '<<(double)intersection->y<<'\n'; // 2 0
+DPoint projected=projection_on_line(p,a,b);
+cout<<(double)projected.x<<' '<<(double)projected.y<<'\n'; // 3 0
+cout<<(double)distance_to_line(p,a,b)<<'\n'; // 3
+// nullopt en line_intersection significa rectas paralelas o coincidentes.
+\end{lstlisting}
+
+\section{C\'irculos}
+\whenuse{Intersecciones recta--c\'irculo o c\'irculo--c\'irculo, tangencias y
+distancias asociadas a discos.}
+\complexity{cada operaci\'on de c\'irculos $O(1)$ tiempo; memoria $O(1)$ m\'as la salida.}
+
+\begin{lstlisting}[style=cpp]
+struct Circle { DPoint center; long double radius; };
+
+// nullopt: circulos coincidentes (infinitas intersecciones).
+optional<vector<DPoint>> circle_intersections(Circle first, Circle second) {
+    DPoint difference = second.center - first.center;
+    long double distance = norm(difference);
+    if (distance <= GEOMETRY_EPS &&
+        fabsl(first.radius - second.radius) <= GEOMETRY_EPS) return nullopt;
+    if (distance > first.radius + second.radius + GEOMETRY_EPS ||
+        distance < fabsl(first.radius - second.radius) - GEOMETRY_EPS)
+        return vector<DPoint>{};
+
+    long double along = (first.radius * first.radius
+                        - second.radius * second.radius
+                        + distance * distance) / (2 * distance);
+    long double height_squared = first.radius * first.radius - along * along;
+    if (height_squared < 0 && height_squared > -GEOMETRY_EPS) height_squared = 0;
+    if (height_squared < 0) return vector<DPoint>{};
+
+    DPoint unit = difference / distance;
+    DPoint base = first.center + unit * along;
+    long double height = sqrtl(height_squared);
+    DPoint perpendicular{-unit.y, unit.x};
+    if (height <= GEOMETRY_EPS) return vector<DPoint>{base};
+    return vector<DPoint>{base + perpendicular * height,
+                          base - perpendicular * height};
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=cpp]
+Circle first{{0,0},2},second{{2,0},2};
+auto intersections=circle_intersections(first,second);
+if(!intersections) cout<<"Coincidentes\n"; // Infinitos puntos comunes.
+else cout<<intersections->size()<<'\n';     // 2: (1,+sqrt(3)), (1,-sqrt(3))
+// size 0: separados/contenidos; size 1: tangentes; size 2: se cortan.
+\end{lstlisting}
+
+\section{Punto en pol\'igono}
+\whenuse{Decidir si un punto est\'a dentro, fuera o sobre el borde de un pol\'igono
+simple, incluso no convexo.}
+\complexity{$O(n)$ tiempo y $O(1)$ memoria adicional.}
+
+Devuelve 0 afuera, 1 adentro y 2 sobre el borde. Funciona para pol\'igonos
+simples en cualquier orientaci\'on.
+
+\begin{lstlisting}[style=cpp]
+bool on_segment(DPoint a, DPoint b, DPoint point) {
+    if (fabsl(cross(b - a, point - a)) > GEOMETRY_EPS) return false;
+    return dot(point - a, point - b) <= GEOMETRY_EPS;
+}
+
+int point_in_polygon(const vector<DPoint> &polygon, DPoint point) {
+    bool inside = false;
+    int n = polygon.size();
+    for (int i = 0; i < n; ++i) {
+        DPoint a = polygon[i], b = polygon[(i + 1) % n];
+        if (on_segment(a, b, point)) return 2;
+        bool crosses = (a.y > point.y) != (b.y > point.y);
+        if (crosses) {
+            long double intersection_x = a.x
+                + (b.x - a.x) * (point.y - a.y) / (b.y - a.y);
+            if (point.x < intersection_x) inside = !inside;
+        }
+    }
+    return inside ? 1 : 0;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=cpp]
+vector<DPoint> polygon={{0,0},{4,0},{4,4},{0,4}};
+cout<<point_in_polygon(polygon,{2,2})<<'\n'; // 1: adentro
+cout<<point_in_polygon(polygon,{0,2})<<'\n'; // 2: sobre el borde
+cout<<point_in_polygon(polygon,{5,2})<<'\n'; // 0: afuera
+\end{lstlisting}
+
+\section{Rotating calipers: di\'ametro convexo}
+\whenuse{Obtener el par de puntos m\'as alejados de un pol\'igono convexo; aplicar
+primero convex hull si la entrada es un conjunto desordenado.}
+\complexity{$O(n)$ tiempo y $O(1)$ memoria adicional.}
+
+El pol\'igono debe ser convexo, sin puntos repetidos y en orden c\'iclico.
+
+\begin{lstlisting}[style=cpp]
+i128 convex_diameter_squared(const vector<Point> &polygon) {
+    int n = polygon.size();
+    if (n <= 1) return 0;
+    if (n == 2) return squared_distance(polygon[0], polygon[1]);
+    i128 answer = 0;
+    int opposite = 1;
+    for (int i = 0; i < n; ++i) {
+        int next = (i + 1) % n;
+        while (true) {
+            int candidate = (opposite + 1) % n;
+            i128 current_area = cross(polygon[next] - polygon[i],
+                                      polygon[opposite] - polygon[i]);
+            i128 next_area = cross(polygon[next] - polygon[i],
+                                   polygon[candidate] - polygon[i]);
+            if (next_area <= current_area) break;
+            opposite = candidate;
+        }
+        answer = max(answer, squared_distance(polygon[i], polygon[opposite]));
+        answer = max(answer, squared_distance(polygon[next], polygon[opposite]));
+    }
+    return answer;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=cpp]
+vector<Point> points={{0,0},{2,0},{2,2},{0,2},{1,1}};
+vector<Point> hull=convex_hull(points);
+i128 diameter_squared=convex_diameter_squared(hull);
+cout<<(ll)diameter_squared<<'\n'; // 8: distancia entre esquinas opuestas
+// La distancia real es sqrt(8); se conserva al cuadrado para evitar decimales.
+\end{lstlisting}

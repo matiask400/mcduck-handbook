@@ -1,0 +1,99 @@
+\section{M\'ascaras de bits}
+\whenuse{Representar subconjuntos peque\~nos, enumerar subm\'ascaras o guardar
+flags compactos; suele combinarse con DP exponencial.}
+\complexity{operaciones de bits $O(1)$; enumerar todos los subconjuntos $O(2^n)$
+y todas las subm\'ascaras de todas las m\'ascaras $O(3^n)$; memoria $O(1)$.}
+
+Para evitar desplazamientos indefinidos, usar tipos sin signo y verificar que
+$0\le k<64$.
+
+\begin{lstlisting}[style=cpp]
+using ull = unsigned long long;
+
+// Se debe asegurar que k este en el rango [0,63]
+bool has_bit(ull mask, int k) { return (mask >> k) & 1ULL; }
+void add_bit(ull &mask, int k) { mask |= 1ULL << k; }
+void remove_bit(ull &mask, int k) { mask &= ~(1ULL << k); }
+void toggle_bit(ull &mask, int k) { mask ^= 1ULL << k; }
+// Las funciones anteriores funcionan con un unico bit
+// Sin embargo tambien se puede trabajar con varios bits al mismo tiempo usando lo siguiente
+bool has_bits(ull mask, ull bits) { return (ull)(bits & mask) == bits; }
+void add_bits(ull &mask, ull bits) { mask |= bits; }
+void remove_bits(ull &mask, ull bits) { mask &= ~bits; }
+void toggle_bits(ull &mask, ull bits) { mask ^= bits; }
+
+vector<ull> nonempty_submasks(ull mask) {
+    vector<ull> answer;
+    for (ull sub = mask; sub; sub = (sub - 1) & mask)
+        answer.push_back(sub);
+    return answer;
+}
+\end{lstlisting}
+
+Intersecci\'on: \verb+a & b+; uni\'on: \verb+a | b+; diferencia:
+\verb+a & ~b+; diferencia sim\'etrica: \verb+a ^ b+.
+
+\section{Conversi\'on a base arbitraria}
+\whenuse{Extraer d\'igitos, trabajar con representaciones posicionales o convertir
+un entero no negativo a una base entre 2 y 36.}
+\complexity{$O(\log_b n)$ tiempo y memoria para producir los d\'igitos.}
+
+Los d\'igitos se devuelven como enteros, por lo que admite bases mayores que
+36. El signo se maneja por separado.
+
+\begin{lstlisting}[style=cpp]
+pair<bool, vector<int>> to_base(ll value, int base) {
+    if (base < 2) throw invalid_argument("base < 2");
+    bool negative = value < 0;
+    unsigned long long x = negative
+        ? (unsigned long long)(-(value + 1)) + 1
+        : (unsigned long long)value;
+
+    vector<int> digits;
+    do {
+        digits.push_back((int)(x % base));
+        x /= base;
+    } while (x);
+    reverse(digits.begin(), digits.end());
+    return {negative, digits};
+}
+\end{lstlisting}
+\begin{lstlisting}[style=cpp]
+char digit_to_char(int digit) {
+    if (digit < 10) return char('0' + digit);
+    return char('A' + digit - 10);
+}
+
+string to_base_string(ll value, int base) {
+    if (base < 2 || base > 36)
+        throw invalid_argument("base fuera de [2,36]");
+
+    auto [negative, digits] = to_base(value, base);
+
+    string result;
+    if (negative) result += '-';
+    for (int digit : digits)
+        result += digit_to_char(digit);
+
+    return result;
+}
+\end{lstlisting}
+\begin{lstlisting}[style=cpp]
+int char_to_digit(char c) {
+    if ('0' <= c && c <= '9') return c - '0';
+    if ('A' <= c && c <= 'Z') return c - 'A' + 10;
+    if ('a' <= c && c <= 'z') return c - 'a' + 10;
+    return -1;
+}
+
+ll from_base(const string& text, int base) {
+    ll value = 0;
+    for (char c : text) {
+        int digit = char_to_digit(c);
+        if (digit < 0 || digit >= base)
+            throw invalid_argument("digito invalido");
+        value = value * base + digit;
+    }
+    return value;
+}
+\end{lstlisting}

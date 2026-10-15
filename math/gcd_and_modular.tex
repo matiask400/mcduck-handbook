@@ -1,0 +1,113 @@
+\section{GCD, LCM y Euclides extendido}
+\whenuse{Divisibilidad, simplificar fracciones, resolver $ax+by=gcd(a,b)$ o
+construir inversos cuando los n\'umeros son coprimos.}
+\complexity{$O(\log\min(|a|,|b|))$ tiempo; memoria logar\'itmica por el stack en
+la versi\'on recursiva.}
+
+\begin{lstlisting}[style=cpp]
+optional<ll> checked_lcm(ll a, ll b) {
+    if (a == 0 || b == 0) return 0;
+    if (a == numeric_limits<ll>::min() || b == numeric_limits<ll>::min())
+        return nullopt;
+    ll divisor = gcd(a, b);
+    i128 value = (i128)(a / divisor) * b;
+    if (value < 0) value = -value;
+    if (value > numeric_limits<ll>::max()) return nullopt;
+    return (ll)value;
+}
+
+ll extended_gcd(ll a, ll b, ll &x, ll &y) {
+    if (b == 0) { x = 1; y = 0; return a; }
+    ll x1, y1;
+    ll g = extended_gcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - (a / b) * y1;
+    return g;
+}
+\end{lstlisting}
+
+\section{Aritm\'etica modular}
+\whenuse{Potencias, divisiones e inversos bajo m\'odulo; el inverso por Fermat
+requiere m\'odulo primo y denominador no divisible por \'el.}
+
+\begin{lstlisting}[style=cpp]
+ll mod_normalize(ll value, ll mod) {
+    assert(mod > 0);
+    value %= mod;
+    if (value < 0) value += mod;
+    return value;
+}
+
+ll mod_add(ll a, ll b, ll mod) {
+    return ((i128)mod_normalize(a, mod) + mod_normalize(b, mod)) % mod;
+}
+
+ll mod_subtract(ll a, ll b, ll mod) {
+    i128 result = (i128)mod_normalize(a, mod) - mod_normalize(b, mod);
+    if (result < 0) result += mod;
+    return (ll)result;
+}
+
+ll mod_multiply(ll a, ll b, ll mod) {
+    return (i128)mod_normalize(a, mod) * mod_normalize(b, mod) % mod;
+}
+
+ll mod_power(ll base, unsigned long long exponent, ll mod) {
+    ll result = 1 % mod;
+    base = mod_normalize(base, mod);
+    while (exponent) {
+        if (exponent & 1ULL) result = mod_multiply(result, base, mod);
+        base = mod_multiply(base, base, mod);
+        exponent >>= 1;
+    }
+    return result;
+}
+
+optional<ll> mod_inverse(ll a, ll mod) {
+    assert(mod > 0);
+    ll x, y;
+    ll g = extended_gcd(mod_normalize(a, mod), mod, x, y);
+    if (g != 1) return nullopt;
+    return mod_normalize(x, mod);
+}
+
+optional<ll> mod_divide(ll a, ll b, ll mod) {
+    auto inverse = mod_inverse(b, mod);
+    if (!inverse) return nullopt;
+    return mod_multiply(a, *inverse, mod);
+}
+\end{lstlisting}
+
+\complexity{$O(\log e)$ para potencia; $O(\log m)$ para inverso; memoria
+$O(1)$ salvo el stack de Euclides.}
+
+\section{Teorema chino del resto para dos congruencias}
+\whenuse{Combinar condiciones $x\equiv a\pmod m$; esta versi\'on tambi\'en detecta
+si dos congruencias con m\'odulos no coprimos son incompatibles.}
+\complexity{$O(\log\min(m_1,m_2))$ tiempo por combinaci\'on; memoria logar\'itmica
+por Euclides extendido.}
+
+Admite m\'odulos no coprimos. Devuelve la soluci\'on normalizada y el m\'odulo
+m\'inimo, o \texttt{nullopt} si no hay soluci\'on o el m\'odulo no entra en
+\texttt{long long}.
+
+\begin{lstlisting}[style=cpp]
+optional<pair<ll,ll>> crt_pair(ll a1, ll m1, ll a2, ll m2) {
+    assert(m1 > 0 && m2 > 0);
+    a1 = mod_normalize(a1, m1);
+    a2 = mod_normalize(a2, m2);
+    ll x, y;
+    ll g = extended_gcd(m1, m2, x, y);
+    ll difference = a2 - a1;
+    if (difference % g != 0) return nullopt;
+
+    i128 modulus = (i128)(m1 / g) * m2;
+    if (modulus > numeric_limits<ll>::max()) return nullopt;
+    ll reduced = m2 / g;
+    i128 t = (i128)(difference / g) * x % reduced;
+    if (t < 0) t += reduced;
+    i128 answer = ((i128)a1 + (i128)m1 * t) % modulus;
+    if (answer < 0) answer += modulus;
+    return pair<ll,ll>{(ll)answer, (ll)modulus};
+}
+\end{lstlisting}

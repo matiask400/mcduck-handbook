@@ -1,0 +1,87 @@
+\section{Eliminaci\'on gaussiana y determinante}
+\whenuse{Resolver sistemas lineales, calcular rango o determinante; elegir la
+versi\'on real con pivoteo o modular seg\'un el dominio del problema.}
+
+Usar para resolver sistemas lineales, calcular rango o determinante. Esta
+versi\'on trabaja con reales y pivoteo parcial; para m\'odulo primo reemplazar la
+divisi\'on por inverso modular.
+
+\complexity{tiempo $O(nm\min(n,m))$ para $n$ ecuaciones y $m$ variables;
+memoria $O(nm)$. Determinante cuadrado: $O(n^3)$.}
+
+\begin{lstlisting}[style=cpp]
+int gaussian_elimination(vector<vector<long double>> matrix,
+                         vector<long double> &solution) {
+    const long double epsilon = 1e-12L;
+    int rows = (int)matrix.size();
+    int columns = (int)matrix[0].size() - 1;
+    vector<int> pivot_row(columns, -1);
+    int row = 0;
+    for (int column = 0; column < columns && row < rows; ++column) {
+        int selected = row;
+        for (int candidate = row; candidate < rows; ++candidate)
+            if (fabsl(matrix[candidate][column]) > fabsl(matrix[selected][column]))
+                selected = candidate;
+        if (fabsl(matrix[selected][column]) < epsilon) continue;
+        swap(matrix[selected], matrix[row]);
+        pivot_row[column] = row;
+        for (int candidate = 0; candidate < rows; ++candidate) if (candidate != row) {
+            long double factor = matrix[candidate][column] / matrix[row][column];
+            for (int index = column; index <= columns; ++index)
+                matrix[candidate][index] -= factor * matrix[row][index];
+        }
+        ++row;
+    }
+    for (int candidate = 0; candidate < rows; ++candidate) {
+        bool all_zero = true;
+        for (int column = 0; column < columns; ++column)
+            all_zero &= fabsl(matrix[candidate][column]) < epsilon;
+        if (all_zero && fabsl(matrix[candidate][columns]) >= epsilon) return 0;
+    }
+    solution.assign(columns, 0);
+    for (int column = 0; column < columns; ++column)
+        if (pivot_row[column] != -1)
+            solution[column] = matrix[pivot_row[column]][columns]
+                             / matrix[pivot_row[column]][column];
+    return row == columns ? 1 : 2; // unica / infinitas
+}
+// matriz cuadrada es invertible:
+long double determinant(vector<vector<long double>> matrix) {
+    const long double epsilon = 1e-12L;
+    int size = (int)matrix.size();
+    long double answer = 1;
+    for (int column = 0; column < size; ++column) {
+        int pivot = column;
+        for (int row = column; row < size; ++row)
+            if (fabsl(matrix[row][column]) > fabsl(matrix[pivot][column])) pivot = row;
+        if (fabsl(matrix[pivot][column]) < epsilon) return 0;
+        if (pivot != column) swap(matrix[pivot], matrix[column]), answer = -answer;
+        answer *= matrix[column][column];
+        for (int row = column + 1; row < size; ++row) {
+            long double factor = matrix[row][column] / matrix[column][column];
+            for (int index = column + 1; index < size; ++index)
+                matrix[row][index] -= factor * matrix[column][index];
+        }
+    }
+    return answer;
+}
+\end{lstlisting}
+\begin{lstlisting}[style=cpp]
+vector<vector<long double>> matrix={
+    {1,1,3},
+    {2,-1,0}
+};
+vector<long double> solution;
+int type=gaussian_elimination(matrix,solution);
+
+if(type==0) cout<<"Sin solucion\n";
+else if(type==1)
+    cout<<solution[0]<<" "<<solution[1]<<'\n'; // 1 2
+else
+    cout<<"Infinitas soluciones\n";
+vector<vector<long double>> matrix={
+    {1,1},
+    {2,-1}
+};
+cout<<(double)determinant(matrix)<<'\n'; // -3
+\end{lstlisting}

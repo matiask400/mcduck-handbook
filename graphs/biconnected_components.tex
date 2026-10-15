@@ -1,0 +1,127 @@
+\section{Componentes biconexas por vértices}
+\whenuse{Separar un grafo no dirigido en bloques que no se desconectan al borrar
+un solo vértice; construir el block-cut tree o localizar articulaciones.}
+
+Una componente biconexa por vértices es un bloque maximal que no puede separarse
+eliminando uno de sus vértices. Los puntos de articulación pueden pertenecer a
+varios bloques; una arista puente forma por sí sola un bloque de dos vértices.
+
+Por ejemplo:
+
+\begin{verbatim}
+0---1
+ \ /
+  2---3
+      / \
+     4---5
+\end{verbatim}
+
+produce los bloques
+$\{0,1,2\}$, $\{2,3\}$ y $\{3,4,5\}$. Los vértices $2$ y $3$ son
+articulaciones porque aparecen en más de un bloque.
+
+Durante el DFS se apilan las aristas recorridas. Si para un hijo \texttt{to} se
+cumple
+\[
+    \texttt{low[to] >= discovery[vertex]},
+\]
+su subárbol no puede alcanzar un antecesor de \texttt{vertex} sin pasar por él;
+las aristas de la pila hasta \texttt{vertex--to} forman un bloque completo.
+
+\complexity{Tiempo $O(n+m)$; memoria $O(n+m)$.}
+
+\begin{lstlisting}[style=cpp]
+struct VertexBiconnectedComponents {
+    struct StackedEdge { int from, to, id; };
+
+    int timer = 0;
+    vector<int> discovery, low;
+    vector<StackedEdge> edge_stack;
+    vector<vector<int>> components;
+    const vector<vector<pair<int,int>>> &graph; // (to, edge_id)
+
+    explicit VertexBiconnectedComponents(
+            const vector<vector<pair<int,int>>> &input_graph)
+        : discovery(input_graph.size(), -1),
+          low(input_graph.size()), graph(input_graph) {
+        for (int vertex = 0; vertex < (int)graph.size(); ++vertex) {
+            if (discovery[vertex] != -1) continue;
+            if (graph[vertex].empty()) {
+                discovery[vertex] = low[vertex] = timer++;
+                components.push_back({vertex});
+            } else {
+                dfs(vertex, -1);
+            }
+        }
+    }
+
+    void extract_component(int stop_edge) {
+        vector<int> vertices;
+        while (true) {
+            auto edge = edge_stack.back();
+            edge_stack.pop_back();
+            vertices.push_back(edge.from);
+            vertices.push_back(edge.to);
+            if (edge.id == stop_edge) break;
+        }
+        sort(vertices.begin(), vertices.end());
+        vertices.erase(unique(vertices.begin(), vertices.end()),
+                       vertices.end());
+        components.push_back(move(vertices));
+    }
+
+    void dfs(int vertex, int parent_edge) {
+        discovery[vertex] = low[vertex] = timer++;
+
+        for (auto [to, edge_id] : graph[vertex]) {
+            if (edge_id == parent_edge) continue;
+
+            if (discovery[to] == -1) {
+                edge_stack.push_back({vertex, to, edge_id});
+                dfs(to, edge_id);
+                low[vertex] = min(low[vertex], low[to]);
+
+                if (low[to] >= discovery[vertex])
+                    extract_component(edge_id);
+            } else if (discovery[to] < discovery[vertex]) {
+                edge_stack.push_back({vertex, to, edge_id});
+                low[vertex] = min(low[vertex], discovery[to]);
+            }
+        }
+    }
+};
+\end{lstlisting}
+
+Ejemplo de uso:
+
+\begin{lstlisting}[style=cpp]
+vector<vector<pair<int,int>>> graph(n);
+for (int id = 0; id < m; ++id) {
+    int u, v;
+    cin >> u >> v;
+    graph[u].push_back({v, id});
+    graph[v].push_back({u, id});
+}
+VertexBiconnectedComponents bcc(graph);
+for (const auto &component : bcc.components) {
+    for (int vertex : component) cout << vertex << ' ';
+    cout << '\n';
+}
+\end{lstlisting}
+
+Un vértice es de articulación si aparece en más de un bloque:
+
+\begin{lstlisting}[style=cpp]
+vector<int> appearances(n);
+for (const auto &component : bcc.components)
+    for (int vertex : component)
+        ++appearances[vertex];
+
+for (int vertex = 0; vertex < n; ++vertex)
+    if (appearances[vertex] > 1)
+        cout << vertex << " es articulacion\n";
+\end{lstlisting}
+
+\warning{Cada arista no dirigida debe usar el mismo \texttt{edge\_id} en ambas
+direcciones. Los vértices de articulación aparecen en varias componentes; esto
+es intencional.}

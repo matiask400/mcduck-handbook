@@ -1,0 +1,85 @@
+\section{Contenedores comunes}
+
+\subsection{Vector y string}
+
+\begin{lstlisting}[style=cpp]
+void vector_and_string_examples() {
+    vector<int> values(5, 0);       // cinco ceros
+    values.push_back(7);
+    values.pop_back();
+    values.resize(10, -1);          // crea elementos
+    values.reserve(100);            // solo reserva capacidad
+    values.insert(values.begin() + 2, 9); // O(n)
+    values.erase(values.begin() + 2);     // O(n)
+
+    string text = "competitive";
+    text += " programming";
+    string part = text.substr(0, 11);
+    size_t position = text.find("program");
+    if (position != string::npos) text.replace(position, 7, "contest");
+    (void)part;
+}
+\end{lstlisting}
+
+\subsection{Set, multiset, map y unordered}
+
+\begin{lstlisting}[style=cpp]
+void associative_container_examples() {
+    set<int> ordered{5, 1, 5}; // {1,5}
+    ordered.insert(3);
+    bool exists = ordered.count(5) != 0;
+    auto first_at_least = ordered.lower_bound(4);
+    if (first_at_least != ordered.end()) ordered.erase(first_at_least);
+
+    multiset<int> repeated{2, 2, 3};
+    auto occurrence = repeated.find(2);
+    if (occurrence != repeated.end()) repeated.erase(occurrence); // una copia
+    repeated.erase(2); // todas las copias restantes de 2
+
+    map<string,int> frequency;
+    ++frequency["duck"];
+    auto found = frequency.find("duck");
+    if (found != frequency.end()) cout << found->second << '\n';
+
+    unordered_map<int,int> fast_frequency;
+    fast_frequency.reserve(1000);
+    fast_frequency.max_load_factor(0.7);
+    ++fast_frequency[10];
+    (void)exists;
+}
+\end{lstlisting}
+
+\subsection{Stack, queue, deque y priority queue}
+
+\begin{lstlisting}[style=cpp]
+void queue_examples() {
+    stack<int> stack_values;
+    stack_values.push(1); stack_values.push(2);
+    int top = stack_values.top(); stack_values.pop();
+
+    queue<int> pending;
+    pending.push(1); pending.push(2);
+    int front = pending.front(); pending.pop();
+
+    deque<int> double_ended;
+    double_ended.push_front(1); double_ended.push_back(2);
+    double_ended.pop_front(); double_ended.pop_back();
+
+    priority_queue<int> maximum_heap;
+    priority_queue<int, vector<int>, greater<int>> minimum_heap;
+    maximum_heap.push(5); minimum_heap.push(5);
+    (void)top; (void)front;
+}
+\end{lstlisting}
+
+\begin{center}
+\begin{tabular}{lll}
+Contenedor & Acceso/b\'usqueda & Inserci\'on/borrado \\
+\hline
+\texttt{vector} final & $O(1)$ & amortizado $O(1)$ \\
+\texttt{deque} extremos & $O(1)$ & $O(1)$ \\
+\texttt{set/map} & $O(\log n)$ & $O(\log n)$ \\
+\texttt{unordered\_*} & promedio $O(1)$ & promedio $O(1)$ \\
+\texttt{priority\_queue} top & $O(1)$ & $O(\log n)$ \\
+\end{tabular}
+\end{center}

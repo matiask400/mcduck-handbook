@@ -1,0 +1,207 @@
+\section{Teoremas e identidades para reconocer soluciones}
+\whenuse{Antes de programar, cuando el problema pide contar, demostrar una cota,
+trabajar m\'odulo primo o transformar una suma aparentemente cuadr\'atica.}
+\complexity{Las f\'ormulas son $O(1)$ una vez conocidos sus datos;
+inclusi\'on--exclusi\'on cuesta normalmente $O(2^k)$ y Burnside recorre las
+simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
+
+\subsection{Conteo y cotas}
+\begin{itemize}
+  \item \textbf{Palomar:} al repartir $m$ objetos entre $n$ cajas, alguna recibe
+  al menos $\lceil m/n\rceil$. Se usa para demostrar que una repetici\'on o
+  colisi\'on es inevitable sin identificar cu\'al. Por ejemplo, entre $13$
+  personas al menos dos cumplen a\~nos en el mismo mes.
+  \item \textbf{Handshake:}
+  \[
+      \sum_v deg(v)=2|E|.
+  \]
+  Cada arista aporta uno al grado de cada extremo, por eso se cuenta dos veces.
+  Como la suma es par, la cantidad de v\'ertices de grado impar tambi\'en es par.
+  Es \'util para validar secuencias de grados y recorridos eulerianos.
+  \item \textbf{Suma triangular:}
+  \[
+      1+2+\cdots+k=\frac{k(k+1)}2.
+  \]
+  Aparece cuando la iteraci\'on $i$ cuesta $i$, se eligen pares o cada paso
+  consume una unidad m\'as. Si la suma no supera $n$, entonces
+  $k\approx\sqrt{2n}$ y por tanto $k=O(\sqrt n)$.
+  \item \textbf{Serie arm\'onica entera:}
+  \[
+      \sum_{i=1}^n\left\lfloor\frac ni\right\rfloor=O(n\log n).
+  \]
+  Cuenta, por ejemplo, todos los m\'ultiplos procesados por bucles de la forma
+  \texttt{for(j=i;j<=n;j+=i)}. Adem\'as, $\lfloor n/i\rfloor$ toma s\'olo
+  $O(\sqrt n)$ valores distintos; para un cociente $q$, el \'ultimo \'indice con
+  el mismo valor es $\lfloor n/q\rfloor$, permitiendo agrupar rangos.
+  \item \textbf{Inclusi\'on--exclusi\'on:} suma los casos que cumplen cada
+  propiedad y corrige los contados varias veces:
+  \[
+      |A\cup B|=|A|+|B|-|A\cap B|,
+  \]
+  \[
+      |A\cup B\cup C|=\sum|A_i|-\sum|A_i\cap A_j|+|A\cap B\cap C|.
+  \]
+  Para $k$ propiedades se recorren normalmente las $2^k$ intersecciones. Se usa
+  para contar objetos que cumplen al menos una restricci\'on o, tomando el
+  complemento, los que no cumplen ninguna.
+\end{itemize}
+
+\subsection{Combinatoria}
+\begin{itemize}
+  \item \textbf{Reglas de suma y producto:} si los casos son excluyentes, sus
+  cantidades se suman. Si una elecci\'on de $a$ formas va seguida de otra
+  independiente de $b$ formas, se multiplican: $ab$. Por ejemplo, $3$ camisas y
+  $2$ pantalones producen $3\cdot2=6$ conjuntos.
+  \item \textbf{Permutaciones:} ordenar $n$ objetos distintos produce $n!$
+  \'ordenes. Elegir y ordenar $k$ de ellos produce
+  \[
+      P(n,k)=n(n-1)\cdots(n-k+1)=\frac{n!}{(n-k)!}.
+  \]
+  Se usa cuando el orden importa; elegir presidente y vicepresidente entre $n$
+  personas da $P(n,2)$, no $\binom n2$.
+  \item \textbf{Combinaciones:} elegir $k$ objetos entre $n$ sin importar el
+  orden:
+  \[
+      \binom nk=\frac{n!}{k!(n-k)!}=\binom n{n-k}.
+  \]
+  Si un multiconjunto tiene cantidades $c_1,\ldots,c_r$ con $\sum c_i=n$, sus
+  \'ordenes distintos son
+  \[
+      \frac{n!}{c_1!c_2!\cdots c_r!}.
+  \]
+  Por ejemplo, \texttt{AAB} tiene $3!/2!=3$ permutaciones distintas.
+  \item \textbf{Subconjuntos:} cada uno de los $n$ elementos puede estar o no,
+  por lo que existen $2^n$ subconjuntos. Los de tama\~no $k$ son $\binom nk$ y
+  \[
+      \sum_{k=0}^n\binom nk=2^n.
+  \]
+  \item \textbf{Identidad de Pascal:}
+  \[
+      \binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}.
+  \]
+  Al fijar un elemento, una selecci\'on o lo contiene o no lo contiene. Permite
+  calcular combinaciones mediante DP, incluso cuando no existe divisi\'on
+  modular.
+  \item \textbf{Hockey-stick:}
+  \[
+      \sum_{i=r}^n\binom ir=\binom{n+1}{r+1}.
+  \]
+  Convierte una suma de combinaciones consecutivas en una sola. Combinatoriamente,
+  clasifica cada selecci\'on de $r+1$ elementos seg\'un cu\'al es su elemento
+  mayor.
+  \item \textbf{Binomio de Newton:}
+  \[
+      (x+y)^n=\sum_{k=0}^n\binom nkx^ky^{n-k}.
+  \]
+  El coeficiente $\binom nk$ cuenta en cu\'ales $k$ de los $n$ factores se elige
+  $x$. Sustituir valores produce identidades; con $x=y=1$ se obtiene
+  $\sum_k\binom nk=2^n$.
+  \item \textbf{Stars and bars:} la cantidad de soluciones enteras no negativas
+  de
+  \[
+      x_1+\cdots+x_k=n
+  \]
+  es $\binom{n+k-1}{k-1}$: se ordenan $n$ estrellas y $k-1$ separadores. Si
+  todas las variables deben ser positivas, entregar una unidad a cada una deja
+  $n-k$ por repartir y resulta $\binom{n-1}{k-1}$. Sirve para distribuir objetos
+  id\'enticos entre cajas distinguibles.
+  \item \textbf{Vandermonde:}
+  \[
+      \sum_i\binom ri\binom s{n-i}=\binom{r+s}n.
+  \]
+  Elegir $n$ elementos de dos grupos de tama\~nos $r$ y $s$ puede hacerse
+  directamente o fijando cu\'antos $i$ se toman del primero.
+  \item \textbf{Catalan:}
+  \[
+      C_n=\frac1{n+1}\binom{2n}n
+         =\binom{2n}n-\binom{2n}{n+1}.
+  \]
+  Cuenta estructuras que nunca cruzan una frontera: par\'entesis balanceados con
+  $n$ pares, caminos que no bajan de cero, triangulaciones de un pol\'igono de
+  $n+2$ lados y varios \'arboles ordenados. Los primeros valores son
+  $1,1,2,5,14,42$.
+  \item \textbf{Desarreglos:} permutaciones donde ning\'un elemento queda en su
+  posici\'on original:
+  \[
+      D_n=(n-1)(D_{n-1}+D_{n-2}),\qquad D_0=1,\ D_1=0.
+  \]
+  Al decidir d\'onde va el primer elemento, el caso restante se reduce a un
+  desarreglo de $n-1$ o de $n-2$. Aparece en asignaciones donde nadie puede
+  recibir su objeto original.
+  \item \textbf{Burnside:} para contar configuraciones iguales bajo un grupo de
+  rotaciones o reflexiones,
+  \[
+      \#\text{clases}=\frac1{|G|}\sum_{g\in G}|\operatorname{Fix}(g)|.
+  \]
+  Para cada simetr\'ia se cuentan las configuraciones que no cambian y luego se
+  promedia. Es \'util para collares, pulseras, coloraciones y tableros considerados
+  iguales bajo simetr\'ias.
+\end{itemize}
+
+\subsection{Teor\'ia de n\'umeros}
+Si $n=\prod p_i^{a_i}$, cada divisor elige para $p_i$ un exponente entre $0$ y
+$a_i$. De esta observaci\'on se obtienen:
+\[
+    \tau(n)=\prod_i(a_i+1),\qquad
+    \sigma(n)=\prod_i\frac{p_i^{a_i+1}-1}{p_i-1},\qquad
+    \varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right).
+\]
+$\tau(n)$ cuenta divisores, $\sigma(n)$ suma sus valores y $\varphi(n)$ cuenta
+enteros de $1$ a $n$ coprimos con $n$. Por ejemplo,
+$12=2^2\cdot3$ da $\tau(12)=6$, $\sigma(12)=28$ y $\varphi(12)=4$.
+\begin{itemize}
+  \item \textbf{B\'ezout:} existen enteros $x,y$ tales que
+  \[
+      ax+by=\gcd(a,b).
+  \]
+  Por tanto, $ax+by=c$ tiene soluciones enteras si y s\'olo si
+  $\gcd(a,b)\mid c$. Euclides extendido encuentra $x,y$ y permite construir
+  inversos modulares cuando el gcd es $1$.
+  \item \textbf{Peque\~no teorema de Fermat:} si $p$ es primo y $p\nmid a$,
+  \[
+      a^{p-1}\equiv1\pmod p.
+  \]
+  Entonces $a^{-1}\equiv a^{p-2}\pmod p$ y los exponentes pueden reducirse
+  m\'odulo $p-1$ cuando la base no es divisible por $p$.
+  \item \textbf{Teorema de Euler:} si $\gcd(a,m)=1$, entonces
+  \[
+      a^{\varphi(m)}\equiv1\pmod m.
+  \]
+  Generaliza Fermat a m\'odulos no primos y permite reducir exponentes m\'odulo
+  $\varphi(m)$ bajo la condici\'on de coprimalidad.
+  \item \textbf{Wilson:} $p>1$ es primo si y s\'olo si
+  \[
+      (p-1)!\equiv-1\pmod p.
+  \]
+  Es \'util en demostraciones y algunos c\'alculos cercanos a $p$, pero calcular
+  el factorial cuesta $O(p)$ y no es una prueba de primalidad eficiente para
+  valores grandes.
+\end{itemize}
+
+\subsection{Grafos y geometr\'ia}
+\begin{itemize}
+  \item \textbf{Caracterizaci\'on de \'arboles:} un \'arbol conectado con $n$
+  v\'ertices tiene exactamente $n-1$ aristas. En un \'arbol existe un \'unico
+  camino entre cada par; agregar una arista crea exactamente un ciclo y quitar
+  cualquiera lo desconecta. Un grafo conectado con $n-1$ aristas es un \'arbol.
+  \item \textbf{Caminos eulerianos:} ignorando v\'ertices aislados, las aristas
+  deben pertenecer a una sola componente conexa. Existe circuito euleriano si
+  todos los grados son pares; existe camino abierto que usa cada arista una vez
+  si exactamente dos grados son impares, que ser\'an sus extremos. Con cero
+  impares tambi\'en existe camino, pero comienza y termina en el mismo v\'ertice.
+  \item \textbf{F\'ormula de Euler planar:} para un grafo planar conexo,
+  \[
+      V-E+F=2,
+  \]
+  donde $F$ incluye la cara exterior. Para un grafo planar simple con $V\ge3$
+  implica $E\le3V-6$, una cota \'util para demostrar que un grafo no es planar o
+  que un algoritmo sobre todas sus aristas es lineal en $V$.
+  \item \textbf{Teorema de Pick:} para un pol\'igono simple cuyos v\'ertices son
+  puntos enteros,
+  \[
+      A=I+\frac B2-1,
+  \]
+  donde $I$ es la cantidad de puntos enteros interiores y $B$ los de la frontera.
+  Los puntos de frontera de un lado $(x_1,y_1)$--$(x_2,y_2)$ se cuentan mediante
+  $\gcd(|x_2-x_1|,|y_2-y_1|)$ al sumar todos los lados.
+\end{itemize}

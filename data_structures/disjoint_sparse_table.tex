@@ -1,0 +1,48 @@
+\section{Disjoint Sparse Table}
+\whenuse{Arreglo est\'atico, operaci\'on asociativa y muchas consultas de rango
+en $O(1)$, incluso cuando la operaci\'on no es idempotente (suma, producto).}
+
+Consultas est\'aticas $O(1)$ para cualquier operaci\'on asociativa, incluso no
+idempotente y no conmutativa. Los rangos son inclusivos.
+
+\complexity{build $O(n\log n)$; query $O(1)$; memoria $O(n\log n)$.}
+
+\begin{lstlisting}[style=cpp]
+template<class T, class Op = plus<T>>
+struct DisjointSparseTable {
+    int n = 0, levels = 0;
+    Op op;
+    vector<T> values;
+    vector<vector<T>> table;
+
+    explicit DisjointSparseTable(const vector<T> &a, Op operation = Op())
+        : n(a.size()), op(operation), values(a) {
+        while ((1 << levels) < max(1, n)) ++levels;
+        table.assign(levels, vector<T>(n));
+        for (int k = 0; k < levels; ++k) {
+            int block = 1 << (k + 1);
+            for (int begin = 0; begin < n; begin += block) {
+                int mid = min(begin + (block >> 1), n);
+                int end = min(begin + block, n);
+                if (begin < mid) {
+                    table[k][mid - 1] = values[mid - 1];
+                    for (int i = mid - 2; i >= begin; --i)
+                        table[k][i] = op(values[i], table[k][i + 1]);
+                }
+                if (mid < end) {
+                    table[k][mid] = values[mid];
+                    for (int i = mid + 1; i < end; ++i)
+                        table[k][i] = op(table[k][i - 1], values[i]);
+                }
+            }
+        }
+    }
+
+    T query(int l, int r) const { // [l, r], requiere indices validos
+        if (l == r) return values[l];
+        if (l > r) swap(l, r);
+        int k = 31 - __builtin_clz((unsigned)(l ^ r));
+        return op(table[k][l], table[k][r]);
+    }
+};
+\end{lstlisting}

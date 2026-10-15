@@ -1,0 +1,90 @@
+\section{Convex Hull Trick y Li Chao Tree}
+\whenuse{Una DP o consulta debe calcular repetidamente
+$\min_j(m_jx+b_j)$. Usar CHT con deque si pendientes y consultas son
+mon\'otonas; Li Chao si llegan en cualquier orden.}
+
+Cada estado anterior $j$ aporta una recta $y=m_jx+b_j$ y cada nuevo estado
+consulta el menor valor en $x_i$. Esto reemplaza probar todos los $j$, que suele
+ser $O(n^2)$. La plantilla incluida es Li Chao para m\'inimos: acepta rectas y
+consultas desordenadas sobre un dominio entero conocido $[L,R]$.
+
+\complexity{CHT mon\'otono: inserci\'on amortizada $O(1)$ y consulta $O(1)$;
+Li Chao: $O(\log X)$ por operaci\'on y $O(q\log X)$ memoria en versi\'on din\'amica.}
+
+\begin{lstlisting}[style=cpp]
+struct LiChaoTree {
+    struct Line {
+        ll slope = 0, intercept = (1LL << 62);
+        ll evaluate(ll x) const { return slope * x + intercept; }
+    };
+    struct Node { Line line; int left_child = -1, right_child = -1; };
+    ll domain_left, domain_right;
+    vector<Node> nodes = vector<Node>(1);
+
+    LiChaoTree(ll left_bound, ll right_bound)
+        : domain_left(left_bound), domain_right(right_bound) {
+        assert(domain_left <= domain_right);
+    }
+
+    int make_node() {
+        nodes.push_back(Node{});
+        return (int)nodes.size() - 1;
+    }
+    void add_line(Line added) {
+        add_line(0, domain_left, domain_right, added);
+    }
+    void add_line(int node, ll left, ll right, Line added) {
+        ll middle = left + (ll)(((i128)right - left) / 2);
+        bool better_left =
+            added.evaluate(left) < nodes[node].line.evaluate(left);
+        bool better_middle =
+            added.evaluate(middle) < nodes[node].line.evaluate(middle);
+        if (better_middle) swap(added, nodes[node].line);
+        if (left == right) return;
+        if (better_left != better_middle) {
+            if (nodes[node].left_child == -1)
+                nodes[node].left_child = make_node();
+            add_line(nodes[node].left_child, left, middle, added);
+        } else {
+            if (nodes[node].right_child == -1)
+                nodes[node].right_child = make_node();
+            add_line(nodes[node].right_child, middle + 1, right, added);
+        }
+    }
+    ll query(ll x) const {
+        assert(domain_left <= x && x <= domain_right);
+        return query(0, domain_left, domain_right, x);
+    }
+    ll query(int node, ll left, ll right, ll x) const {
+        ll answer = nodes[node].line.evaluate(x);
+        if (left == right) return answer;
+        ll middle = left + (ll)(((i128)right - left) / 2);
+        int next = x <= middle ? nodes[node].left_child
+                               : nodes[node].right_child;
+        if (next == -1) return answer;
+        if (x <= middle) return min(answer, query(next, left, middle, x));
+        return min(answer, query(next, middle + 1, right, x));
+    }
+};
+\end{lstlisting}
+
+\subsection{Ejemplo de uso}
+
+Se agregan $y=2x+3$, $y=-x+10$ e $y=5$ y se consulta el m\'inimo.
+
+\begin{lstlisting}[style=cpp]
+void li_chao_example() {
+    LiChaoTree lines(0, 10);
+    lines.add_line({2, 3});   // 2x+3
+    lines.add_line({-1, 10}); // -x+10
+    lines.add_line({0, 5});   // 5
+
+    cout << lines.query(2) << '\n'; // min(7,8,5)  = 5
+    cout << lines.query(5) << '\n'; // min(13,5,5) = 5
+    cout << lines.query(8) << '\n'; // min(19,2,5) = 2
+}
+\end{lstlisting}
+
+\warning{Puede desbordar $mx+b$; usar \texttt{\_\_int128} si los l\'imites lo
+requieren y elegir un infinito mayor que toda respuesta v\'alida. Para m\'aximos,
+negar rectas/respuestas o invertir las comparaciones.}

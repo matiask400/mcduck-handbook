@@ -1,0 +1,39 @@
+\section{DP $O(n\sqrt n)$ por cota triangular}
+\whenuse{Un par\'ametro del estado crece o decrece estrictamente en cada salto,
+por lo que la suma m\'inima de los saltos limita su cantidad a $O(\sqrt n)$.}
+
+Usar cuando un estado guarda una longitud/salto que cambia estrictamente en
+cada transici\'on. No pueden existir demasiados cambios: $1+2+\cdots+t\le n$
+implica $t=O(\sqrt n)$. Guardar s\'olo estados hasta ese l\'imite suele bajar una
+DP aparentemente cuadr\'atica a $O(n\sqrt n)$.
+
+\complexity{tiempo $O(n\sqrt n)$; memoria $O(n\sqrt n)$ o $O(\sqrt n)$ con
+rolling arrays.}
+
+\begin{lstlisting}[style=cpp]
+int triangular_state_limit(int n) {
+    int length = 0;
+    while (1LL * (length + 1) * (length + 2) / 2 <= n) ++length;
+    return length;
+}
+
+// Esqueleto: adaptar la transicion al problema.
+vector<vector<ll>> triangular_bound_dp(int n) {
+    int limit = triangular_state_limit(n);
+    const ll infinity = (1LL << 60);
+    vector<vector<ll>> dp(n + 1, vector<ll>(limit + 1, infinity));
+    dp[0][0] = 0;
+    for (int position = 0; position < n; ++position)
+        for (int length = 0; length <= limit; ++length) if (dp[position][length] < infinity) {
+            dp[position + 1][length] = min(dp[position + 1][length], dp[position][length]);
+            int jump = length + 1;
+            if (position + jump <= n && jump <= limit)
+                dp[position + jump][jump] = min(dp[position + jump][jump],
+                                                dp[position][length] + 1);
+        }
+    return dp;
+}
+\end{lstlisting}
+
+\warning{La cota debe demostrarse con la suma m\'inima de los saltos; no basta
+con observar que aparece $\sqrt n$ en los l\'imites.}

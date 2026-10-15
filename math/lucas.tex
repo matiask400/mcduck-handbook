@@ -1,0 +1,53 @@
+\section{Teorema de Lucas}
+\whenuse{Calcular $\binom nk\bmod p$ con $p$ primo peque\~no y $n,k$ demasiado
+grandes para precomputar factoriales hasta $n$.}
+
+Usar para calcular $\binom nk\bmod p$ cuando $p$ es primo peque\~no pero $n$ y
+$k$ pueden ser enormes. Se descomponen ambos n\'umeros en base $p$.
+
+\complexity{preproceso $O(p)$; consulta $O(\log_p n)$; memoria $O(p)$.}
+
+\begin{lstlisting}[style=cpp]
+struct LucasTheorem {
+    ll prime;
+    vector<ll> factorial, inverse_factorial;
+
+    explicit LucasTheorem(ll modulus)
+        : prime(modulus), factorial(prime), inverse_factorial(prime) {
+        factorial[0] = 1;
+        for (ll value = 1; value < prime; ++value)
+            factorial[value] = factorial[value - 1] * value % prime;
+        inverse_factorial[prime - 1] = mod_pow(factorial[prime - 1], prime - 2);
+        for (ll value = prime - 1; value > 0; --value)
+            inverse_factorial[value - 1] = inverse_factorial[value] * value % prime;
+    }
+
+    ll mod_pow(ll base, ll exponent) const {
+        ll result = 1;
+        while (exponent) {
+            if (exponent & 1) result = result * base % prime;
+            base = base * base % prime;
+            exponent >>= 1;
+        }
+        return result;
+    }
+
+    ll small_combination(ll n, ll k) const {
+        if (k < 0 || k > n) return 0;
+        return factorial[n] * inverse_factorial[k] % prime
+             * inverse_factorial[n - k] % prime;
+    }
+
+    ll combination(ll n, ll k) const {
+        ll answer = 1;
+        while (n || k) {
+            answer = answer * small_combination(n % prime, k % prime) % prime;
+            n /= prime; k /= prime;
+        }
+        return answer;
+    }
+};
+\end{lstlisting}
+
+\warning{Requiere $p$ primo y guardar $O(p)$ valores; no usar si el m\'odulo
+es grande.}
