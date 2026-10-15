@@ -1,0 +1,63 @@
+\section{Virtual Tree}
+\whenuse{Cada consulta marca pocos vértices de un árbol grande y sólo importa
+la unión de los caminos que los conectan.}
+
+El árbol virtual comprime el árbol original conservando únicamente los
+vértices marcados y los LCA necesarios para conectarlos. Una arista virtual
+$(u,v)$ representa el camino completo desde el ancestro $u$ hasta $v$ en el
+árbol original.
+
+Por ejemplo, si los marcados son $a,b,c$, puede ser necesario agregar
+$LCA(a,b)$ para conectarlos. No se agregan los vértices intermedios que no
+cambian la estructura de los caminos.
+
+Requiere precomputar \texttt{tin}, \texttt{tout} y LCA. La función devuelve
+los vértices virtuales y sus aristas \texttt{(padre,hijo)}.
+
+\complexity{Por consulta $O(k\log k)$ tiempo y $O(k)$ memoria; para $k$
+marcados se crean como máximo $2k-1$ vértices.}
+
+\begin{lstlisting}[style=cpp]
+template<class LCAFunction>
+pair<vector<int>,vector<pair<int,int>>> build_virtual_tree(
+        vector<int> marked,const vector<int>& tin,const vector<int>& tout,
+        LCAFunction get_lca) {
+    auto ancestor=[&](int a,int b) {
+        return tin[a]<=tin[b]&&tout[b]<=tout[a];
+    };
+    auto by_tin=[&](int a,int b) { return tin[a]<tin[b]; };
+    sort(marked.begin(),marked.end(),by_tin);
+    marked.erase(unique(marked.begin(),marked.end()),marked.end());
+    int original_size=marked.size();
+    for(int i=1;i<original_size;++i)
+        marked.push_back(get_lca(marked[i-1],marked[i]));
+    sort(marked.begin(),marked.end(),by_tin);
+    marked.erase(unique(marked.begin(),marked.end()),marked.end());
+    vector<pair<int,int>> edges;
+    vector<int> st;
+    for(int vertex:marked) {
+        while(!st.empty()&&!ancestor(st.back(),vertex)) st.pop_back();
+        if(!st.empty()) edges.push_back({st.back(),vertex});
+        st.push_back(vertex);
+    }
+    return {marked,edges};
+}
+
+// Uso
+auto [vertices,edges]=build_virtual_tree(
+    marked,tin,tout,[&](int a,int b){ return lca.query(a,b); });
+for(auto [parent,child]:edges)
+    cout<<parent<<" "<<child<<" "
+        <<depth[child]-depth[parent]<<'\n';
+\end{lstlisting}
+
+Si el árbol original tiene pesos, reemplazar la diferencia de profundidades por:
+
+\[
+    distRoot[child]-distRoot[parent].
+\]
+
+\warning{Los LCA agregados no necesariamente estaban marcados originalmente.
+Guardar aparte los marcados si la DP necesita distinguirlos. Incluir la raíz
+original explícitamente sólo si la consulta necesita que forme parte del árbol
+virtual.}

@@ -1,0 +1,34 @@
+\section{Sparse Table}
+\whenuse{Arreglo est\'atico y consultas idempotentes como m\'inimo, m\'aximo o
+GCD. Elegir Disjoint Sparse Table si la operaci\'on no es idempotente.}
+
+Para operaciones idempotentes como min, max o gcd. No requiere inversa y no
+admite actualizaciones.
+
+\complexity{build $O(n\log n)$; query $O(1)$; memoria $O(n\log n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct SparseTableMin {
+    vector<int> lg;
+    vector<vector<ll>> table;
+
+    explicit SparseTableMin(const vector<ll> &a) {
+        int n = a.size();
+        lg.assign(n + 1, 0);
+        for (int i = 2; i <= n; ++i) lg[i] = lg[i / 2] + 1;
+        int levels = n ? lg[n] + 1 : 0;
+        table.assign(levels, vector<ll>(n));
+        if (!n) return;
+        table[0] = a;
+        for (int k = 1; k < levels; ++k)
+            for (int i = 0; i + (1 << k) <= n; ++i)
+                table[k][i] = min(table[k - 1][i],
+                                  table[k - 1][i + (1 << (k - 1))]);
+    }
+
+    ll query(int l, int r) const { // [l, r], requiere l <= r
+        int k = lg[r - l + 1];
+        return min(table[k][l], table[k][r - (1 << k) + 1]);
+    }
+};
+\end{lstlisting}

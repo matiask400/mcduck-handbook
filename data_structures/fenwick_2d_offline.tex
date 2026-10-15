@@ -1,0 +1,107 @@
+\section{Fenwick 2D offline}
+\whenuse{Altas/bajas de puntos y conteos o sumas dentro de rect\'angulos cuando
+todas las coordenadas actualizables se conocen antes de procesar.}
+
+Cada punto $(x,y)$ tiene un peso: el n\'umero que aporta a las sumas. Para
+contar puntos, agregarlo usa peso $+1$ y eliminarlo peso $-1$; tambi\'en puede
+representar dinero, poblaci\'on u otra cantidad asociada a la coordenada.
+
+Se llama \emph{offline} porque primero se leen todas las operaciones para
+conocer qu\'e coordenadas podr\'an actualizarse. Luego se reservan esos puntos,
+se construye la estructura y se procesan las operaciones en su orden original.
+No usa archivos. Cada nodo del Fenwick exterior sobre $x$ guarda otro Fenwick
+con solamente las coordenadas $y$ que puede recibir.
+
+\complexity{reserva y construcci\'on $O(n\log^2 n)$ en el peor caso; update y
+consulta $O(\log^2 n)$; memoria $O(n\log n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct OfflineFenwick2D {
+    int size_x;
+    vector<vector<int>> coordinates_y;
+    vector<vector<ll>> bit;
+
+    explicit OfflineFenwick2D(int x_count)
+        : size_x(x_count), coordinates_y(x_count + 1), bit(x_count + 1) {}
+
+    void reserve_point(int x, int y) {
+        for (int index = x + 1; index <= size_x; index += index & -index)
+            coordinates_y[index].push_back(y);
+    }
+
+    void build() {
+        for (int index = 1; index <= size_x; ++index) {
+            auto &values = coordinates_y[index];
+            sort(values.begin(), values.end());
+            values.erase(unique(values.begin(), values.end()), values.end());
+            bit[index].assign(values.size() + 1, 0);
+        }
+    }
+
+    void add(int x, int y, ll delta) {
+        for (int index = x + 1; index <= size_x; index += index & -index) {
+            const auto &values = coordinates_y[index];
+            auto iterator = lower_bound(values.begin(), values.end(), y);
+            assert(iterator != values.end() && *iterator == y);
+            int position = iterator - values.begin() + 1;
+            for (int inner = position; inner < (int)bit[index].size();
+                 inner += inner & -inner)
+                bit[index][inner] += delta;
+        }
+    }
+
+    ll prefix_sum(int x_exclusive, int y_exclusive) const {
+        ll answer = 0;
+        for (int index = x_exclusive; index > 0; index -= index & -index) {
+            int position = lower_bound(coordinates_y[index].begin(),
+                                       coordinates_y[index].end(), y_exclusive)
+                         - coordinates_y[index].begin();
+            for (int inner = position; inner > 0; inner -= inner & -inner)
+                answer += bit[index][inner];
+        }
+        return answer;
+    }
+
+    ll rectangle_sum(int x1, int y1, int x2, int y2) const {
+        return prefix_sum(x2, y2) - prefix_sum(x1, y2)
+             - prefix_sum(x2, y1) + prefix_sum(x1, y1);
+    }
+};
+\end{lstlisting}
+
+\subsection{Ejemplo de uso}
+
+En un mapa aparecen y desaparecen objetos. Se pide contar cu\'antos hay dentro
+de un rect\'angulo. Todas las coordenadas de futuras altas y bajas aparecen en
+la entrada, por lo que pueden reservarse antes de procesarla.
+
+\begin{lstlisting}[style=cpp]
+OfflineFenwick2D points(5); // x validas: [0,5)
+
+// Primera pasada: reservar todo punto que pueda actualizarse.
+points.reserve_point(2, 5);
+points.reserve_point(4, 3);
+points.reserve_point(3, 6);
+points.build();
+
+// Segunda pasada: procesar las operaciones en orden.
+points.add(2, 5, 1); // aparece un objeto
+points.add(4, 3, 1);
+points.add(3, 6, 1);
+
+// Rectangulo [2,5) x [3,7): contiene los tres objetos.
+cout << points.rectangle_sum(2, 3, 5, 7) << '\n'; // 3
+
+points.add(4, 3, -1); // desaparece un objeto
+cout << points.rectangle_sum(2, 3, 5, 7) << '\n'; // 2
+\end{lstlisting}
+
+\texttt{prefix\_sum(x,y)} suma los pesos de los puntos con coordenadas
+$X<x$ e $Y<y$. Por inclusi\'on--exclusi\'on,
+\texttt{rectangle\_sum(x1,y1,x2,y2)} consulta el rect\'angulo semiabierto
+$[x_1,x_2)\times[y_1,y_2)$.
+
+\warning{Las coordenadas $x$ deben estar comprimidas en $[0,size\_x)$. Llamar
+\texttt{reserve\_point} para todo punto actualizable y despu\'es
+\texttt{build} exactamente una vez. No intentar actualizar una coordenada que
+no fue reservada.}

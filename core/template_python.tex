@@ -1,0 +1,39 @@
+\section{Template Python 3}
+
+Usar Python cuando la complejidad tiene margen, predominan enteros grandes,
+strings, diccionarios o implementaci\'on corta. En problemas ajustados de
+$O(n\log n)$ pesado, grafos enormes o DP con millones de estados, preferir C++.
+
+\begin{lstlisting}[style=py]
+import sys
+from collections import Counter, defaultdict, deque
+from functools import lru_cache
+from heapq import heappop, heappush
+from bisect import bisect_left, bisect_right
+from math import gcd, isqrt, lcm, inf
+
+input = sys.stdin.buffer.readline
+
+def ints():
+    return map(int, input().split())
+
+def solve():
+    n = int(input())
+    values = list(ints())
+    assert len(values) == n
+    print(sum(values))
+
+if __name__ == "__main__":
+    solve()
+\end{lstlisting}
+
+Atajos importantes:
+\begin{itemize}
+  \item \texttt{math.isqrt(n)} da $\lfloor\sqrt n\rfloor$ exactamente.
+  \item \texttt{pow(a,b,mod)} hace potencia modular y
+  \texttt{pow(a,-1,mod)} calcula el inverso si existe.
+  \item \texttt{sys.setrecursionlimit(...)} s\'olo ampl\'ia el l\'imite l\'ogico;
+  para DFS muy profundo suele ser m\'as seguro usar una pila iterativa.
+  \item Evitar \texttt{pop(0)} en listas; usar \texttt{deque.popleft()}.
+  \item Usar input().decode() si se toma como b antes del input
+\end{itemize}

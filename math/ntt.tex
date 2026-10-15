@@ -1,0 +1,102 @@
+\section{NTT y convoluci\'on}
+\whenuse{Multiplicar polinomios o contar combinaciones mediante convoluci\'on
+exacta bajo un primo compatible, evitando errores de punto flotante.}
+
+Convoluci\'on exacta m\'odulo $998244353=119\cdot2^{23}+1$, cuya ra\'iz
+primitiva es 3. La longitud transformada no puede superar $2^{23}$.
+
+\complexity{$O(n\log n)$ tiempo y $O(n)$ memoria.}
+
+\begin{lstlisting}[style=cpp]
+const int NTT_MOD = 998244353;
+const int NTT_ROOT = 3;
+
+void number_theoretic_transform(vector<int> &values, bool inverse) {
+    int n = values.size();
+    assert(n > 0 && (n & (n - 1)) == 0 && n <= (1 << 23));
+    for (int i = 1, j = 0; i < n; ++i) {
+        int bit = n >> 1;
+        for (; j & bit; bit >>= 1) j ^= bit;
+        j ^= bit;
+        if (i < j) swap(values[i], values[j]);
+    }
+
+    for (int length = 2; length <= n; length <<= 1) {
+        int root = mod_power(NTT_ROOT, (NTT_MOD - 1) / length, NTT_MOD);
+        if (inverse) root = mod_power(root, NTT_MOD - 2, NTT_MOD);
+        for (int start = 0; start < n; start += length) {
+            ll multiplier = 1;
+            for (int offset = 0; offset < length / 2; ++offset) {
+                int even = values[start + offset];
+                int odd = multiplier * values[start + offset + length / 2]
+                        % NTT_MOD;
+                values[start + offset] = even + odd;
+                if (values[start + offset] >= NTT_MOD)
+                    values[start + offset] -= NTT_MOD;
+                values[start + offset + length / 2] = even - odd;
+                if (values[start + offset + length / 2] < 0)
+                    values[start + offset + length / 2] += NTT_MOD;
+                multiplier = multiplier * root % NTT_MOD;
+            }
+        }
+    }
+
+    if (inverse) {
+        int inverse_n = mod_power(n, NTT_MOD - 2, NTT_MOD);
+        for (int &value : values) value = (ll)value * inverse_n % NTT_MOD;
+    }
+}
+
+vector<int> convolution(vector<int> a, vector<int> b) {
+    if (a.empty() || b.empty()) return {};
+    int result_size = a.size() + b.size() - 1;
+    int size = 1;
+    while (size < result_size) size <<= 1;
+    a.resize(size); b.resize(size);
+    number_theoretic_transform(a, false);
+    number_theoretic_transform(b, false);
+    for (int i = 0; i < size; ++i) a[i] = (ll)a[i] * b[i] % NTT_MOD;
+    number_theoretic_transform(a, true);
+    a.resize(result_size);
+    return a;
+}
+\end{lstlisting}
+
+Normalizar coeficientes al intervalo $[0,NTT\_MOD)$ antes de llamar a
+\texttt{convolution}. Para enteros grandes sin m\'odulo, usar varias NTT y CRT.
+
+\begin{lstlisting}[style=cpp]
+vector<int> a={1,2}; // 1+2x
+vector<int> b={3,4}; // 3+4x
+vector<int> c=convolution(a,b);
+for(int value:c) cout<<value<<' '; // 3 10 8
+\end{lstlisting}
+
+\subsection{Ejemplo de aplicación: sumas de pares}
+
+Se tienen dos listas $A$ y $B$. Para cada valor $s$, contar cuántos pares
+$(a,b)$ cumplen $a+b=s$.
+
+Construir arreglos de frecuencias:
+\[
+freqA[x]=\#\{a\in A:a=x\},\qquad
+freqB[y]=\#\{b\in B:b=y\}.
+\]
+Entonces
+\[
+ways[s]=\sum_{x+y=s}freqA[x]freqB[y],
+\]
+que es exactamente una convolución.
+
+\begin{lstlisting}[style=cpp]
+vector<int> A={1,2,2},B={0,2};
+int maximum=2;
+vector<int> frequency_a(maximum+1),frequency_b(maximum+1);
+for(int value:A) ++frequency_a[value];
+for(int value:B) ++frequency_b[value];
+
+vector<int> ways=convolution(frequency_a,frequency_b);
+for(int sum=0;sum<(int)ways.size();++sum)
+    cout<<sum<<": "<<ways[sum]<<'\n';
+// 0:0, 1:1, 2:2, 3:1, 4:2
+\end{lstlisting}

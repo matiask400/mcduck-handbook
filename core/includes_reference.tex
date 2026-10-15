@@ -1,0 +1,43 @@
+\section{Includes est\'andar sin bits/stdc++.h}
+
+\texttt{bits/stdc++.h} es la opci\'on r\'apida con GNU C++; no es parte del
+est\'andar. Si el juez usa Clang/MSVC o exige portabilidad, incluir uno por uno:
+
+\begin{center}
+\begin{tabular}{ll}
+Necesidad & Header \\
+\hline
+entrada/salida & \texttt{<iostream>, <iomanip>, <sstream>} \\
+vector/arreglos/tuplas & \texttt{<vector>, <array>, <tuple>, <utility>} \\
+strings & \texttt{<string>, <cstring>} \\
+sort/b\'usquedas/num\'ericos & \texttt{<algorithm>, <numeric>} \\
+stack/colas & \texttt{<stack>, <queue>, <deque>} \\
+set/map/hash & \texttt{<set>, <map>, <unordered\_set>, <unordered\_map>} \\
+matem\'atica & \texttt{<cmath>, <complex>, <limits>, <bitset>} \\
+random/tiempo & \texttt{<random>, <chrono>} \\
+funciones/opcionales & \texttt{<functional>, <optional>} \\
+assert/tipos enteros & \texttt{<cassert>, <cstdint>} \\
+\end{tabular}
+\end{center}
+
+Template portable m\'inimo:
+
+\begin{lstlisting}[style=cpp]
+#include <algorithm>
+#include <cassert>
+#include <cmath>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <string>
+#include <tuple>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+\end{lstlisting}
+
+Agregar headers s\'olo cuando se usen. Para ICPC con GCC,
+\texttt{bits/stdc++.h} sigue siendo la alternativa m\'as pr\'actica.

@@ -1,0 +1,39 @@
+\section{Disjoint Set Union (DSU)}
+\whenuse{Mantener componentes conexas mientras s\'olo se agregan conexiones;
+Kruskal, consultas de conectividad y agrupamiento por equivalencia.}
+
+Mantiene componentes bajo uniones. Usa compresi\'on de caminos y uni\'on por
+tama\~no.
+
+\complexity{$O(\alpha(n))$ amortizado por operaci\'on; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct DSU {
+    vector<int> parent; // raiz: -tamano
+
+    explicit DSU(int n) : parent(n, -1) {}
+
+    int find(int x) {
+        return parent[x] < 0 ? x : parent[x] = find(parent[x]);
+    }
+
+    bool unite(int a, int b) {
+        a = find(a); b = find(b);
+        if (a == b) return false;
+        if (parent[a] > parent[b]) swap(a, b);
+        parent[a] += parent[b];
+        parent[b] = a;
+        return true;
+    }
+
+    bool same(int a, int b) { return find(a) == find(b); }
+    int size(int x) { return -parent[find(x)]; }
+};
+
+DSU dsu(5);
+dsu.unite(0, 1); // {0,1} {2} {3} {4}
+dsu.unite(1, 2); // {0,1,2} {3} {4}
+cout << dsu.same(0, 2) << '\n'; // 1: estan conectados
+cout << dsu.same(0, 4) << '\n'; // 0: no estan conectados
+cout << dsu.size(1) << '\n';    // 3
+\end{lstlisting}

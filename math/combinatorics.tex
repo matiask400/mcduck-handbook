@@ -1,0 +1,33 @@
+\section{Combinatoria m\'odulo primo}
+\whenuse{Muchas consultas de combinaciones/permutaciones m\'odulo primo con
+$n<mod$, precomputando factoriales e inversos. Para $n$ enorme y primo peque\~no, Lucas.}
+
+Precalcula factoriales para responder $\binom nk$ cuando el m\'odulo es primo
+y $n<mod$.
+
+\begin{lstlisting}[style=cpp]
+struct Combinations {
+    ll mod;
+    vector<ll> factorial, inverse_factorial;
+
+    Combinations(int maximum_n, ll prime_mod) : mod(prime_mod),
+        factorial(max(0, maximum_n) + 1, 1),
+        inverse_factorial(max(0, maximum_n) + 1, 1) {
+        assert(maximum_n >= 0 && maximum_n < prime_mod);
+        for (int i = 1; i <= maximum_n; ++i)
+            factorial[i] = factorial[i - 1] * i % mod;
+        inverse_factorial[maximum_n] = mod_power(
+            factorial[maximum_n], mod - 2, mod);
+        for (int i = maximum_n; i > 0; --i)
+            inverse_factorial[i - 1] = inverse_factorial[i] * i % mod;
+    }
+
+    ll choose(int n, int k) const {
+        if (k < 0 || k > n) return 0;
+        return factorial[n] * inverse_factorial[k] % mod
+             * inverse_factorial[n - k] % mod;
+    }
+};
+\end{lstlisting}
+
+\complexity{preproceso $O(N+\log mod)$; consulta $O(1)$; memoria $O(N)$.}

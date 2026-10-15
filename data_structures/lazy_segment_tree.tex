@@ -1,0 +1,68 @@
+\section{Lazy Segment Tree}
+\whenuse{Actualizaciones y consultas sobre intervalos, por ejemplo sumar en un
+rango y consultar suma/m\'inimo/m\'aximo sin tocar cada elemento.}
+
+Suma en rango y suma sobre rango. Los intervalos son semiabiertos $[l,r)$.
+
+\complexity{build $O(n)$; update/query $O(\log n)$; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct LazySegmentTree {
+    int n;
+    vector<ll> tree, lazy;
+
+    explicit LazySegmentTree(const vector<ll> &a)
+        : n(a.size()), tree(4 * max(1, n)), lazy(4 * max(1, n)) {
+        if (n) build(1, 0, n, a);
+    }
+
+    void build(int p, int l, int r, const vector<ll> &a) {
+        if (r - l == 1) { tree[p] = a[l]; return; }
+        int m = (l + r) / 2;
+        build(p << 1, l, m, a);
+        build(p << 1 | 1, m, r, a);
+        tree[p] = tree[p << 1] + tree[p << 1 | 1];
+    }
+
+    void apply(int p, int l, int r, ll value) {
+        tree[p] += value * (r - l);
+        lazy[p] += value;
+    }
+
+    void push(int p, int l, int r) {
+        if (lazy[p] == 0 || r - l == 1) return;
+        int m = (l + r) / 2;
+        apply(p << 1, l, m, lazy[p]);
+        apply(p << 1 | 1, m, r, lazy[p]);
+        lazy[p] = 0;
+    }
+
+    void add(int ql, int qr, ll value) {
+        if (n) add(1, 0, n, ql, qr, value);
+    }
+    void add(int p, int l, int r, int ql, int qr, ll value) {
+        if (qr <= l || r <= ql) return;
+        if (ql <= l && r <= qr) { apply(p, l, r, value); return; }
+        push(p, l, r);
+        int m = (l + r) / 2;
+        add(p << 1, l, m, ql, qr, value);
+        add(p << 1 | 1, m, r, ql, qr, value);
+        tree[p] = tree[p << 1] + tree[p << 1 | 1];
+    }
+
+    ll query(int ql, int qr) {
+        return n ? query(1, 0, n, ql, qr) : 0;
+    }
+    ll query(int p, int l, int r, int ql, int qr) {
+        if (qr <= l || r <= ql) return 0;
+        if (ql <= l && r <= qr) return tree[p];
+        push(p, l, r);
+        int m = (l + r) / 2;
+        return query(p << 1, l, m, ql, qr)
+             + query(p << 1 | 1, m, r, ql, qr);
+    }
+};
+\end{lstlisting}
+
+Para asignaci\'on de rango se necesita un lazy adicional que distinga ``sin
+asignaci\'on'' de asignar cero.

@@ -1,0 +1,211 @@
+\section{Flujo m\'aximo (Ford--Fulkerson)}
+\whenuse{Red peque\~na con capacidades enteras y flujo total bajo, o como
+implementaci\'on conceptual r\'apida. Para casos grandes preferir Dinic.}
+
+Busca caminos aumentantes con DFS y actualiza el grafo residual. Esta versi\'on
+usa capacidades enteras no negativas.
+
+Cada arista representa cu\'anto flujo puede enviarse desde \texttt{source} hasta
+\texttt{sink}. Al enviar $x$, se resta $x$ de la capacidad directa y se suma a
+la inversa; esta arista residual permite deshacer o redirigir flujo anterior.
+Ford--Fulkerson repite: buscar un camino con capacidad, enviar el m\'inimo de sus
+capacidades y terminar cuando ya no existe otro camino.
+
+\begin{lstlisting}[style=cpp]
+struct FordFulkerson {
+    struct Edge { int to, reverse; ll capacity; };
+    int n;
+    vector<vector<Edge>> graph;
+    vector<char> seen;
+
+    explicit FordFulkerson(int size)
+        : n(size), graph(size), seen(size) {}
+
+    void add_edge(int from, int to, ll capacity) {
+        assert(capacity >= 0);
+        Edge forward{to, (int)graph[to].size(), capacity};
+        Edge backward{from, (int)graph[from].size(), 0};
+        graph[from].push_back(forward);
+        graph[to].push_back(backward);
+    }
+
+    ll dfs(int vertex, int sink, ll pushed) {
+        if (vertex == sink) return pushed;
+        seen[vertex] = true;
+        for (Edge &edge : graph[vertex]) {
+            if (seen[edge.to] || edge.capacity == 0) continue;
+            ll flow = dfs(edge.to, sink, min(pushed, edge.capacity));
+            if (flow == 0) continue;
+            edge.capacity -= flow;
+            graph[edge.to][edge.reverse].capacity += flow;
+            return flow;
+        }
+        return 0;
+    }
+
+    ll max_flow(int source, int sink) {
+        assert(source != sink);
+        ll answer = 0;
+        while (true) {
+            fill(seen.begin(), seen.end(), false);
+            ll pushed = dfs(source, sink, LINF);
+            if (pushed == 0) break;
+            answer += pushed;
+        }
+        return answer;
+    }
+};
+\end{lstlisting}
+
+\complexity{$O(EF)$ para capacidades enteras, donde $F$ es el flujo m\'aximo;
+es pseudopolinomial; memoria $O(V+E)$. Con capacidades grandes suele convenir Dinic.}
+
+\section{Flujo m\'aximo (Dinic)}
+\whenuse{Capacidades, cortes m\'inimos, asignaciones con cupos y selecci\'on con
+restricciones que se modelan como una red fuente--sumidero.}
+
+Calcula el mismo flujo m\'aximo que Ford--Fulkerson, pero agrupa los aumentos.
+Un BFS construye niveles usando aristas residuales y los DFS env\'ian todo el
+flujo posible avanzando s\'olo al nivel siguiente. \texttt{next\_edge} evita
+revisar aristas que ya se demostraron in\'utiles en la fase actual. Es la opci\'on
+usual de flujo m\'aximo en competencia.
+
+\begin{lstlisting}[style=cpp]
+struct Dinic {
+    struct Edge { int to, reverse; ll capacity; };
+    int n;
+    vector<vector<Edge>> graph;
+    vector<int> level, next_edge;
+
+    explicit Dinic(int size)
+        : n(size), graph(size), level(size), next_edge(size) {}
+
+    void add_edge(int from, int to, ll capacity) {
+        Edge forward{to, (int)graph[to].size(), capacity};
+        Edge backward{from, (int)graph[from].size(), 0};
+        graph[from].push_back(forward);
+        graph[to].push_back(backward);
+    }
+
+    bool bfs(int source, int sink) {
+        fill(level.begin(), level.end(), -1);
+        queue<int> q;
+        level[source] = 0; q.push(source);
+        while (!q.empty()) {
+            int v = q.front(); q.pop();
+            for (const Edge &edge : graph[v])
+                if (edge.capacity > 0 && level[edge.to] == -1)
+                    level[edge.to] = level[v] + 1, q.push(edge.to);
+        }
+        return level[sink] != -1;
+    }
+
+    ll dfs(int v, int sink, ll pushed) {
+        if (v == sink || pushed == 0) return pushed;
+        for (int &i = next_edge[v]; i < (int)graph[v].size(); ++i) {
+            Edge &edge = graph[v][i];
+            if (edge.capacity == 0 || level[edge.to] != level[v] + 1) continue;
+            ll flow = dfs(edge.to, sink, min(pushed, edge.capacity));
+            if (flow == 0) continue;
+            edge.capacity -= flow;
+            graph[edge.to][edge.reverse].capacity += flow;
+            return flow;
+        }
+        return 0;
+    }
+
+    ll max_flow(int source, int sink) {
+        assert(source != sink);
+        ll answer = 0;
+        while (bfs(source, sink)) {
+            fill(next_edge.begin(), next_edge.end(), 0);
+            while (ll pushed = dfs(source, sink, LINF)) answer += pushed;
+        }
+        return answer;
+    }
+};
+\end{lstlisting}
+
+\complexity{general $O(V^2E)$ tiempo; memoria $O(V+E)$; suele ser mucho m\'as
+r\'apido en pr\'actica.}
+
+\section{Flujo de costo m\'inimo}
+\whenuse{Enviar cierta cantidad de flujo optimizando un costo: transporte,
+matching ponderado con capacidades o asignaci\'on de recursos.}
+
+SPFA por aumento; admite costos negativos si no hay ciclos negativos de costo
+alcanzables con capacidad residual positiva.
+
+Cada arista tiene capacidad y costo por unidad. En cada iteraci\'on se busca el
+camino residual de menor costo, se env\'ia todo lo permitido y se acumula
+\texttt{flujo $\times$ costo}. \texttt{run(s,t,k)} intenta enviar hasta $k$
+unidades y devuelve \texttt{\{flujo\_enviado,costo\_total\}}; si no existe
+capacidad suficiente, el flujo devuelto es menor que $k$.
+
+\begin{lstlisting}[style=cpp]
+struct MinCostMaxFlow {
+    struct Edge { int to, reverse; ll capacity, cost; };
+    int n;
+    vector<vector<Edge>> graph;
+
+    explicit MinCostMaxFlow(int size) : n(size), graph(size) {}
+
+    void add_edge(int from, int to, ll capacity, ll cost) {
+        Edge forward{to, (int)graph[to].size(), capacity, cost};
+        Edge backward{from, (int)graph[from].size(), 0, -cost};
+        graph[from].push_back(forward);
+        graph[to].push_back(backward);
+    }
+
+    pair<ll,ll> run(int source, int sink, ll flow_limit = LINF) {
+        ll total_flow = 0, total_cost = 0;
+        vector<ll> distance(n);
+        vector<int> parent_vertex(n), parent_edge(n);
+        while (total_flow < flow_limit) {
+            fill(distance.begin(), distance.end(), LINF);
+            vector<char> in_queue(n, false);
+            queue<int> q;
+            distance[source] = 0; q.push(source); in_queue[source] = true;
+            while (!q.empty()) {
+                int v = q.front(); q.pop(); in_queue[v] = false;
+                for (int i = 0; i < (int)graph[v].size(); ++i) {
+                    Edge const &edge = graph[v][i];
+                    if (edge.capacity == 0 ||
+                        distance[edge.to] <= distance[v] + edge.cost) continue;
+                    distance[edge.to] = distance[v] + edge.cost;
+                    parent_vertex[edge.to] = v; parent_edge[edge.to] = i;
+                    if (!in_queue[edge.to]) q.push(edge.to), in_queue[edge.to] = true;
+                }
+            }
+            if (distance[sink] == LINF) break;
+            ll pushed = flow_limit - total_flow;
+            for (int v = sink; v != source; v = parent_vertex[v])
+                pushed = min(pushed,
+                    graph[parent_vertex[v]][parent_edge[v]].capacity);
+            for (int v = sink; v != source; v = parent_vertex[v]) {
+                Edge &edge = graph[parent_vertex[v]][parent_edge[v]];
+                edge.capacity -= pushed;
+                graph[v][edge.reverse].capacity += pushed;
+            }
+            total_flow += pushed;
+            total_cost += pushed * distance[sink];
+        }
+        return {total_flow, total_cost};
+    }
+};
+\end{lstlisting}
+
+\complexity{$O(FVE)$ en el peor caso para flujo entero $F$; memoria $O(V+E)$.}
+
+\subsection{Elecci\'on r\'apida}
+
+\begin{itemize}
+    \item S\'olo maximizar cantidad: preferir \textbf{Dinic}.
+    \item Maximizar cantidad y minimizar costo: \textbf{Min-Cost Max-Flow}.
+    \item Ford--Fulkerson: implementaci\'on conceptual o flujo total peque\~no.
+\end{itemize}
+
+En matching bipartito se modela
+\texttt{source $\to$ izquierda $\to$ derecha $\to$ sink}, normalmente con
+capacidades $1$. En la versi\'on ponderada, el costo de la arista central es el
+costo de realizar esa asignaci\'on.

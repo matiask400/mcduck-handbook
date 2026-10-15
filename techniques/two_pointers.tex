@@ -1,0 +1,61 @@
+\section{Two pointers y sliding window}
+\whenuse{Subarreglos/pares ordenados con una propiedad mon\'otona al mover los
+extremos, pudiendo agregar y quitar elementos en $O(1)$.}
+
+Si al avanzar el extremo derecho la validez cambia mon\'otonamente, cada
+puntero avanza a lo sumo $n$ veces.
+
+\complexity{$O(n)$ si agregar/quitar cuesta $O(1)$; memoria $O(1)$ o la del
+estado mantenido.}
+
+\begin{lstlisting}[style=cpp]
+// Longitud maxima con suma <= limit; requiere a[i] >= 0.
+int longest_window(const vector<ll> &a, ll limit) {
+    ll sum = 0;
+    int ans = 0;
+    for (int l = 0, r = 0; r < (int)a.size(); ++r) {
+        sum += a[r];
+        while (l <= r && sum > limit) sum -= a[l++];
+        ans = max(ans, r - l + 1);
+    }
+    return ans;
+}
+
+// Pares con suma target en un arreglo ordenado.
+bool has_pair_sum(const vector<ll> &a, ll target) {
+    int l = 0, r = (int)a.size() - 1;
+    while (l < r) {
+        i128 sum = (i128)a[l] + a[r];
+        if (sum == target) return true;
+        if (sum < target) ++l;
+        else --r;
+    }
+    return false;
+}
+
+// Longitud maxima con suma <= limit; admite valores negativos.
+int longest_window(const vector<ll>& a, ll limit) {
+    vector<ll> maximum_prefix{0};
+    vector<int> first_position{0};
+    ll prefix = 0;
+    int answer = 0;
+    for (int r = 0; r < (int)a.size(); ++r) {
+        prefix += a[r];
+        // Buscamos el menor i con prefix[i] >= prefix[r+1] - limit.
+        ll required = prefix - limit;
+        auto it = lower_bound(
+            maximum_prefix.begin(), maximum_prefix.end(), required
+        );
+        if (it != maximum_prefix.end()) {
+            int k = it - maximum_prefix.begin();
+            answer = max(answer, r + 1 - first_position[k]);
+        }
+        // Guardamos solamente nuevos maximos prefijos.
+        if (prefix > maximum_prefix.back()) {
+        maximum_prefix.push_back(prefix);
+            first_position.push_back(r + 1);
+        }
+    }
+    return answer;
+}
+\end{lstlisting}

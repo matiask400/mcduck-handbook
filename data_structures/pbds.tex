@@ -1,0 +1,53 @@
+\section{Ordered Set de PBDS}
+
+\whenuse{Conjunto ordenado din\'amico con consultas por orden: obtener el
+$k$-\'esimo elemento o contar elementos estrictamente menores que una clave.}
+
+\complexity{insertar, borrar, \texttt{find\_by\_order} y
+\texttt{order\_of\_key}: $O(\log n)$; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+
+template<class Key>
+using OrderedSet = tree<
+    Key,
+    null_type,
+    less<Key>,
+    rb_tree_tag,
+    tree_order_statistics_node_update
+>;
+
+void ordered_set_example() {
+    OrderedSet<int> values;
+
+    values.insert(20);
+    values.insert(5);
+    values.insert(10);
+
+    cout << *values.find_by_order(0) << '\n'; // 5
+    cout << *values.find_by_order(1) << '\n'; // 10
+    cout << values.order_of_key(15) << '\n';  // 2
+    cout << values.order_of_key(10) << '\n';  // 1
+
+    values.erase(10);
+}
+
+// Para repetidos, distinguir cada copia con un ID.
+using OrderedMultiset = OrderedSet<pair<int,int>>;
+\end{lstlisting}
+
+\begin{itemize}
+  \item \texttt{find\_by\_order(k)} devuelve un iterador al elemento de
+  \'indice $k$, comenzando en cero.
+  \item \texttt{order\_of\_key(x)} cuenta los elementos estrictamente menores
+  que $x$.
+  \item Si $k\ge size()$, \texttt{find\_by\_order(k)} devuelve
+  \texttt{end()}; no debe desreferenciarse.
+\end{itemize}
+
+\warning{PBDS no pertenece al est\'andar de C++; usar solamente si el juez
+compila con GNU G++ y verificar su disponibilidad durante el contest de
+pr\'actica.}

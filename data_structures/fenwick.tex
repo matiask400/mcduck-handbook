@@ -1,0 +1,88 @@
+\section{Fenwick Tree (BIT)}
+\whenuse{Sumas prefijas o de rango con actualizaciones puntuales; preferirlo a
+Segment Tree cuando la operaci\'on tiene inversa y alcanza esta interfaz.}
+
+\textbf{Convenci\'on:} la estructura es 1-indexada. Actualizaci\'on puntual y
+suma de prefijo/rango.
+
+\warning{\texttt{lower\_bound} requiere que los valores actuales sean no
+negativos, para que las sumas prefijas sean mon\'otonas.}
+
+\complexity{$O(\log n)$ por operaci\'on; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct Fenwick {
+    int n;
+    vector<ll> bit;
+
+    explicit Fenwick(int size) : n(size), bit(size + 1, 0) {}
+
+    void add(int i, ll delta) {
+        assert(1 <= i && i <= n);
+        for (; i <= n; i += i & -i) bit[i] += delta;
+    }
+
+    ll prefix_sum(int i) const { // [1, i]
+        ll ans = 0;
+        i = min(i, n);
+        for (; i > 0; i -= i & -i) ans += bit[i];
+        return ans;
+    }
+
+    ll query(int l, int r) const { // [l, r]
+        if (l > r) return 0;
+        return prefix_sum(r) - prefix_sum(l - 1);
+    }
+
+    // Menor i en [1,n] con prefix_sum(i) >= target.
+    // Requiere frecuencias no negativas. Devuelve n+1 si no existe.
+    int lower_bound(ll target) const {
+        if (target <= 0) return 1;
+        int pos = 0;
+        ll accumulated = 0;
+        int step = 1;
+        while ((step << 1) <= n) step <<= 1;
+        for (; step; step >>= 1) {
+            int next = pos + step;
+            if (next <= n && accumulated + bit[next] < target) {
+                pos = next;
+                accumulated += bit[next];
+            }
+        }
+        return pos + 1;
+    }
+};
+\end{lstlisting}
+
+Para range-add/point-query, aplicar diferencias: sumar $x$ en $l$ y $-x$ en
+$r+1$ (solamente si $r+1\le n$).
+
+
+Para XOR
+
+\begin{lstlisting}[style=cpp]
+struct FenwickXor {
+    int n;
+    vector<ll> bit;
+
+    explicit FenwickXor(int size) : n(size), bit(size + 1, 0) {}
+
+    void add(int i, ll value) {
+        assert(1 <= i && i <= n);
+        for (; i <= n; i += i & -i)
+            bit[i] ^= value;
+    }
+
+    ll prefix_xor(int i) const {
+        ll answer = 0;
+        i = min(i, n);
+        for (; i > 0; i -= i & -i)
+            answer ^= bit[i];
+        return answer;
+    }
+
+    ll query(int l, int r) const {
+        if (l > r) return 0;
+        return prefix_xor(r) ^ prefix_xor(l - 1);
+    }
+};\end{lstlisting}

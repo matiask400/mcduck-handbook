@@ -1,0 +1,102 @@
+\section{Geometr\'ia 2D entera}
+\whenuse{Orientaci\'on, colinealidad, intersecci\'on de segmentos y distancias al
+cuadrado con coordenadas enteras y decisiones exactas.}
+\complexity{cada operaci\'on $O(1)$ tiempo y memoria.}
+
+Para coordenadas enteras, usar producto cruzado en \texttt{\_\_int128}.
+
+\begin{lstlisting}[style=cpp]
+struct Point {
+    ll x, y;
+    Point operator+(Point other) const { return {x + other.x, y + other.y}; }
+    Point operator-(Point other) const { return {x - other.x, y - other.y}; }
+    bool operator<(Point other) const { return tie(x, y) < tie(other.x, other.y); }
+    bool operator==(Point other) const { return x == other.x && y == other.y; }
+};
+
+i128 cross(Point a, Point b) { return (i128)a.x * b.y - (i128)a.y * b.x; }
+i128 cross(Point a, Point b, Point c) { return cross(b - a, c - a); }
+i128 dot(Point a, Point b) { return (i128)a.x * b.x + (i128)a.y * b.y; }
+i128 squared_distance(Point a, Point b) { return dot(b - a, b - a); }
+
+int orientation(Point a, Point b, Point c) {
+    i128 value = cross(a, b, c);
+    return (value > 0) - (value < 0); // 1 CCW, -1 CW, 0 collinear
+}
+
+bool on_segment(Point a, Point b, Point p) {
+    return cross(a, b, p) == 0 && min(a.x, b.x) <= p.x && p.x <= max(a.x, b.x)
+        && min(a.y, b.y) <= p.y && p.y <= max(a.y, b.y);
+}
+
+bool segments_intersect(Point a, Point b, Point c, Point d) {
+    int ab_c = orientation(a, b, c), ab_d = orientation(a, b, d);
+    int cd_a = orientation(c, d, a), cd_b = orientation(c, d, b);
+    if (ab_c == 0 && on_segment(a, b, c)) return true;
+    if (ab_d == 0 && on_segment(a, b, d)) return true;
+    if (cd_a == 0 && on_segment(c, d, a)) return true;
+    if (cd_b == 0 && on_segment(c, d, b)) return true;
+    return ab_c != ab_d && cd_a != cd_b;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=cpp]
+Point a{0,0},b{4,0},c{2,2},d{2,-2},p{2,0};
+cout<<orientation(a,b,c)<<'\n';       // 1: c esta a la izquierda de a->b
+cout<<on_segment(a,b,p)<<'\n';        // 1: p pertenece al segmento [a,b]
+cout<<segments_intersect(a,b,c,d)<<'\n'; // 1: ambos segmentos se cruzan
+cout<<(ll)squared_distance(a,c)<<'\n';   // 8: (2-0)^2+(2-0)^2
+// cross(u,v): signo del giro/area; dot(u,v)=0 si son perpendiculares.
+\end{lstlisting}
+
+\section{\'Area y convex hull}
+\whenuse{Calcular \`area firmada o obtener el menor pol\'igono convexo que contiene
+un conjunto de puntos antes de aplicar calipers u otras consultas convexas.}
+
+\begin{lstlisting}[style=cpp]
+i128 polygon_double_area(const vector<Point> &polygon) {
+    if (polygon.empty()) return 0;
+    i128 area = 0;
+    int n = polygon.size();
+    for (int i = 0; i < n; ++i)
+        area += cross(polygon[i], polygon[(i + 1) % n]);
+    return area >= 0 ? area : -area;
+}
+
+vector<Point> convex_hull(vector<Point> points) {
+    sort(points.begin(), points.end());
+    points.erase(unique(points.begin(), points.end()), points.end());
+    if (points.size() <= 1) return points;
+    vector<Point> hull;
+    for (Point p : points) {
+        while (hull.size() >= 2 &&
+               cross(hull[hull.size() - 2], hull.back(), p) <= 0)
+            hull.pop_back();
+        hull.push_back(p);
+    }
+    size_t lower_size = hull.size();
+    for (int i = (int)points.size() - 2; i >= 0; --i) {
+        Point p = points[i];
+        while (hull.size() > lower_size &&
+               cross(hull[hull.size() - 2], hull.back(), p) <= 0)
+            hull.pop_back();
+        hull.push_back(p);
+    }
+    hull.pop_back();
+    return hull; // sin puntos collineales intermedios
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=cpp]
+vector<Point> points={{0,0},{2,0},{2,2},{0,2},{1,1}};
+vector<Point> hull=convex_hull(points);
+// hull contiene las 4 esquinas en orden antihorario; descarta el punto interior.
+i128 double_area=polygon_double_area(hull);
+cout<<hull.size()<<' '<<(ll)double_area<<'\n'; // 4 8; area real = 8/2 = 4
+\end{lstlisting}
+
+\complexity{convex hull $O(n\log n)$ tiempo y $O(n)$ memoria; \'area $O(n)$
+tiempo y $O(1)$ memoria adicional.}
+
+Las conversiones, normalizaci\'on de \'angulos, \texttt{atan2} y funciones
+trigonom\'etricas est\'an en ``Matem\'atica cotidiana en C++''.

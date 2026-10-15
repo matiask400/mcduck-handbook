@@ -1,0 +1,29 @@
+\section{Descomposici\'on por ra\'iz: frecuentes y poco frecuentes}
+\whenuse{Objetos con frecuencias muy distintas donde procesar uno cuesta $O(f)$
+o $O(n/f)$; separar pesados y livianos balancea ambas cotas.}
+
+Usar cuando objetos con frecuencia $f$ cuestan $O(f)$ o $O(n/f)$ por consulta.
+Elegir un umbral $B\approx\sqrt n$: procesar directamente los objetos con
+$f<B$ y precomputar respuestas para los que tienen $f\ge B$. Hay como m\'aximo
+$n/B$ objetos frecuentes.
+
+\complexity{t\'ipicamente preproceso $O(n\sqrt n)$, consulta $O(\sqrt n)$ y
+memoria entre $O(n)$ y $O(n\sqrt n)$, seg\'un lo precomputado.}
+
+\begin{lstlisting}[style=cpp]
+int sqrt_threshold(int total_items) {
+    return max(1, (int)sqrt((long double)total_items) + 1);
+}
+
+vector<int> frequent_values(const vector<int> &frequency) {
+    int total = accumulate(frequency.begin(), frequency.end(), 0);
+    int block = sqrt_threshold(total);
+    vector<int> result;
+    for (int value = 0; value < (int)frequency.size(); ++value)
+        if (frequency[value] >= block) result.push_back(value);
+    return result;
+}
+\end{lstlisting}
+
+\warning{No existe una plantilla universal: escribir primero las dos cotas y
+verificar que ambas quedan balanceadas en el umbral elegido.}

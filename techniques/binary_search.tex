@@ -1,0 +1,45 @@
+\section{B\'usqueda binaria}
+\whenuse{Existe una condici\'on mon\'otona falso--verdadero o verdadero--falso y
+se busca el primer/\'ultimo valor que la satisface, incluso sobre la respuesta.}
+
+Busca la primera posici\'on donde una condici\'on mon\'otona pasa de falsa a
+verdadera. 
+
+
+\complexity{$O(n*\log(n))$ evaluaciones; memoria $O(1)$ aparte del chequeo.}
+
+\begin{lstlisting}[style=cpp]
+int l = start;
+int r = end;
+while (l <= r) {
+    int m = l + (r - l) / 2; 
+    if (can(m)) { 
+        // La condicion se cumple en m, ajustar el limite superior 
+        r = m - 1; 
+    } else { 
+        // La condicion no se cumple en m, ajustar el limite inferior 
+       l = m + 1; 
+    } 
+}
+// Esto es en caso de que la condicion inicialmente sea falsa y luego verdadera. Si la condicion es verdadero--falso, se debe invertir los contenidos del if-else
+\end{lstlisting}
+
+El algoritmo anterior permite usar la busqueda binaria unicamente en un dominio discreto.
+En este caso $r$ nos da el ultimo valor que no cumple la condicion y $l$ el menor valor que si la cumple.
+Para reales es preferible fijar iteraciones; evita ciclos por redondeo.
+
+\begin{lstlisting}[style=cpp]
+double l = start;
+double r = end;
+double eps = 1e-6; // precision deseada
+while (r - l > eps) {
+    double m = l + (r - l) / 2.0; 
+    if (can(m)) { 
+        // La condicion se cumple para m, ajustamos el limite superior 
+        r = m; 
+    } else { 
+       // La condicion no se cumple para m, ajustamos el limite inferior 
+       l = m; 
+    } 
+}
+\end{lstlisting}

@@ -1,0 +1,94 @@
+\section{Heavy-Light Decomposition}
+\whenuse{Updates o consultas sobre caminos y subárboles, combinando el árbol
+con Fenwick o Segment Tree.}
+
+Para cada vértice se elige como hijo pesado al hijo con mayor subárbol. Las
+aristas pesadas forman cadenas cuyos vértices ocupan posiciones consecutivas.
+Así, un camino se divide en $O(\log n)$ intervalos del arreglo base.
+
+\complexity{Build $O(n)$; camino con Segment Tree $O(\log^2 n)$; subárbol
+$O(\log n)$; memoria $O(n)$.}
+
+\begin{lstlisting}[style=cpp]
+struct HLD {
+    int n,timer=0;
+    vector<vector<int>> tree;
+    vector<int> parent,depth,size,heavy,head,pos;
+    HLD(vector<vector<int>> tree,int root=0):n(tree.size()),
+    tree(move(tree)),parent(n,-1),depth(n),size(n),heavy(n,-1),
+        head(n),pos(n) {
+        assert(n>0);
+        dfs_size(root);
+        dfs_decompose(root,root);
+    }
+    int dfs_size(int v) {
+        size[v]=1;
+        int largest=0;
+        for(int to:tree[v]) if(to!=parent[v]) {
+            parent[to]=v;
+            depth[to]=depth[v]+1;
+            int child_size=dfs_size(to);
+            size[v]+=child_size;
+            if(child_size>largest) largest=child_size,heavy[v]=to;
+        }
+        return size[v];
+    }
+    void dfs_decompose(int v,int chain_head) {
+        head[v]=chain_head;
+        pos[v]=timer++;
+        if(heavy[v]!=-1) dfs_decompose(heavy[v],chain_head);
+        for(int to:tree[v])
+            if(to!=parent[v]&&to!=heavy[v]) dfs_decompose(to,to);
+    }
+    // Intervalos [l,r) que cubren el camino a--b.
+    template<class Callback>
+    void for_each_path(int a,int b,Callback callback) const {
+        while(head[a]!=head[b]) {
+            if(depth[head[a]]<depth[head[b]]) swap(a,b);
+            callback(pos[head[a]],pos[a]+1);
+            a=parent[head[a]];
+        }
+        if(depth[a]>depth[b]) swap(a,b);
+        callback(pos[a],pos[b]+1);
+    }
+    // Los vertices del subarbol de v son consecutivos.
+    pair<int,int> subtree_interval(int v) const {
+        return {pos[v],pos[v]+size[v]};
+    }
+};
+\end{lstlisting}
+
+Ejemplo con un Segment Tree de suma:
+
+\begin{lstlisting}[style=cpp]
+HLD hld(tree,0);
+vector<ll> base(n);
+for(int v=0;v<n;++v) base[hld.pos[v]]=value[v];
+SegmentTree segment(base);
+
+// Cambiar el valor del vertice v.
+segment.set_value(hld.pos[v],new_value);
+
+// Suma de los vertices del camino a--b.
+ll path_sum=0;
+hld.for_each_path(a,b,[&](int l,int r) {
+    path_sum+=segment.query(l,r);
+});
+
+// Suma del subarbol de v.
+auto [l,r]=hld.subtree_interval(v);
+ll subtree_sum=segment.query(l,r);
+\end{lstlisting}
+
+Para guardar valores en aristas, almacenar cada arista en la posición de su
+vértice hijo. Para excluir el LCA de la consulta:
+
+\begin{lstlisting}[style=cpp]
+hld.for_each_path(a,b,[&](int l,int r) {
+    // Adaptar para excluir la posicion del LCA.
+});
+\end{lstlisting}
+
+\warning{El callback no entrega necesariamente los segmentos en el orden del
+camino. Esto no importa para suma, mínimo, máximo o XOR; para operaciones no
+conmutativas se deben separar y orientar los segmentos de ambos lados.}

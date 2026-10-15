@@ -1,0 +1,45 @@
+\section{Knapsack 0/1}
+\whenuse{Elegir cada objeto como m\'aximo una vez, con capacidad moderada, para
+maximizar valor o decidir qu\'e sumas son alcanzables.}
+
+Cada objeto puede elegirse a lo sumo una vez; por eso la capacidad se recorre
+en orden descendente.
+
+\begin{lstlisting}[style=cpp]
+ll knapsack_01(const vector<int> &weight, const vector<ll> &value,
+               int capacity) {
+    assert(weight.size() == value.size() && capacity >= 0);
+    assert(all_of(weight.begin(), weight.end(), [](int w) { return w >= 0; }));
+    vector<ll> dp(capacity + 1, 0);
+    for (int item = 0; item < (int)weight.size(); ++item)
+        for (int current = capacity; current >= weight[item]; --current)
+            dp[current] = max(dp[current],
+                              dp[current - weight[item]] + value[item]);
+    return *max_element(dp.begin(), dp.end());
+}
+\end{lstlisting}
+
+\complexity{$O(nW)$ tiempo y $O(W)$ memoria.}
+
+\section{Bitmask DP: camino hamiltoniano m\'inimo}
+\whenuse{El estado depende del subconjunto exacto de elementos ya usados y
+$n$ es peque\~no, normalmente $n\le 20$.}
+
+\begin{lstlisting}[style=cpp]
+ll hamiltonian_path(const vector<vector<ll>> &cost) {
+    int n = cost.size();
+    assert(1 <= n && n < 31);
+    int states = 1 << n;
+    vector<vector<ll>> dp(states, vector<ll>(n, LINF));
+    for (int v = 0; v < n; ++v) dp[1 << v][v] = 0;
+    for (int mask = 1; mask < states; ++mask)
+        for (int last = 0; last < n; ++last) if (dp[mask][last] != LINF)
+            for (int next = 0; next < n; ++next) if (!(mask >> next & 1))
+                dp[mask | (1 << next)][next] = min(
+                    dp[mask | (1 << next)][next],
+                    dp[mask][last] + cost[last][next]);
+    return *min_element(dp.back().begin(), dp.back().end());
+}
+\end{lstlisting}
+
+\complexity{$O(2^n n^2)$ tiempo y $O(2^n n)$ memoria; usar para $n$ peque\~no.}

@@ -1,0 +1,40 @@
+\section{Divide and Conquer DP Optimization}
+\whenuse{DP por particiones $dp[k][i]=\min_{j<i}(dp[k-1][j]+cost(j,i))$ cuando
+el punto \`optimo es mon\'otono en $i$.}
+
+Para transiciones
+\[
+dp_{new}[m]=\min_{0\le k\le m}\{dp_{old}[k]+cost(k,m)\},
+\]
+cuando el \'indice \'optimo es mon\'otono: $opt[m]\le opt[m+1]$.
+
+\begin{lstlisting}[style=cpp]
+template<class Cost>
+void compute_divide_conquer(int left, int right,
+                            int option_left, int option_right,
+                            const vector<ll> &previous,
+                            vector<ll> &current, Cost cost) {
+    if (left > right) return;
+    int middle = (left + right) / 2;
+    pair<ll,int> best{LINF, -1};
+    int last_option = min(middle, option_right);
+    for (int option = option_left; option <= last_option; ++option) {
+        if (previous[option] == LINF) continue;
+        i128 raw = (i128)previous[option] + cost(option, middle);
+        ll candidate = raw > LINF ? LINF : raw < -LINF ? -LINF : (ll)raw;
+        best = min(best, pair<ll,int>{candidate, option});
+    }
+    assert(best.second != -1);
+    current[middle] = best.first;
+    compute_divide_conquer(left, middle - 1, option_left, best.second,
+                           previous, current, cost);
+    compute_divide_conquer(middle + 1, right, best.second, option_right,
+                           previous, current, cost);
+}
+\end{lstlisting}
+
+La monoton\'ia debe demostrarse (por ejemplo con desigualdad cuadrangular o
+matriz Monge); no alcanza con que el costo ``parezca convexo''.
+
+\complexity{$O(kn\log n)$ para $k$ capas si evaluar \texttt{cost} cuesta
+$O(1)$; algunos esquemas alcanzan $O(kn)$; memoria $O(n)$ con dos capas.}

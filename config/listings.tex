@@ -1,0 +1,50 @@
+% Estilo intencionalmente liviano: analizar y colorear 100+ bloques con
+% language=C++ hace que Overleaf Free alcance su timeout. El c\'odigo y los
+% saltos de l\'inea se conservan, pero no se carga ning\'un lexer de lenguaje.
+
+\definecolor{backcolour}{RGB}{245,245,245}      % Fondo claro
+\definecolor{codecomment}{RGB}{90,105,120}
+\definecolor{codekeyword}{RGB}{0,87,170}
+\definecolor{codestring}{RGB}{145,40,130}
+
+\lstdefinestyle{cpp}{
+  language=C++,
+  backgroundcolor=\color{backcolour},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{codekeyword}\bfseries,
+  commentstyle=\color{codecomment}\itshape,
+  stringstyle=\color{codestring},
+  numbers=left,
+  numberstyle=\tiny\color{codecomment},
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  morekeywords={cout,cin,endl,string,vector,map,set,bool,true,false,class,public,private,protected,template,typename,using,namespace,int,float,double,char,long,short,return,if,else,for,while,do,switch,case,break,continue,new,delete,try,catch,throw,constexpr,auto}
+}
+
+% --- ESTILO PARA PYTHON (Mantiene tu paleta de colores) ---
+\lstdefinestyle{py}{
+  language=Python,
+  backgroundcolor=\color{backcolour},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{codekeyword}\bfseries,
+  commentstyle=\color{codecomment}\itshape,
+  stringstyle=\color{codestring},
+  numbers=left,
+  numberstyle=\tiny\color{codecomment},
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,                  % En Python se suelen usar 4 espacios por tabulación
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  % Palabras clave adicionales, funciones nativas y tipos de datos en Python
+  morekeywords={as,assert,async,await,breakpoint,class,def,del,elif,else,except,finally,for,from,global,if,import,in,is,lambda,nonlocal,not,or,and,pass,raise,return,try,while,with,yield,True,False,None},
+  keywordstyle=[2]{\color{codekeyword}}, % Resalta funciones integradas (opcional)
+  morekeywords=[2]{print,input,len,range,str,int,float,bool,list,dict,set,tuple,open,type,enumerate,zip}
+}

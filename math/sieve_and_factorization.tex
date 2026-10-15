@@ -1,0 +1,54 @@
+\section{Criba lineal y menor factor primo}
+\whenuse{Muchas consultas de primalidad/factorizaci\'on para valores acotados por
+$N$; precomputar una vez y factorizar luego por el menor primo.}
+
+\begin{lstlisting}[style=cpp]
+struct LinearSieve {
+    vector<int> primes, smallest_prime;
+
+    explicit LinearSieve(int n) : smallest_prime(max(0, n) + 1, 0) {
+        for (int value = 2; value <= n; ++value) {
+            if (smallest_prime[value] == 0) {
+                smallest_prime[value] = value;
+                primes.push_back(value);
+            }
+            for (int prime : primes) {
+                if (prime > smallest_prime[value] || 1LL * value * prime > n)
+                    break;
+                smallest_prime[value * prime] = prime;
+            }
+        }
+    }
+
+    vector<int> factorize(int value) const {
+        assert(1 <= value && value < (int)smallest_prime.size());
+        vector<int> factors;
+        while (value > 1) {
+            factors.push_back(smallest_prime[value]);
+            value /= smallest_prime[value];
+        }
+        return factors;
+    }
+};
+\end{lstlisting}
+
+\complexity{preproceso $O(N)$; factorizaci\'on $O(\log n)$; memoria $O(N)$.}
+
+\section{Listar divisores}
+\whenuse{Listar todos los divisores de un n\'umero aislado moderado sin necesitar
+preprocesamiento.}
+
+\begin{lstlisting}[style=cpp]
+vector<ll> divisors(ll n) {
+    assert(n > 0);
+    vector<ll> answer;
+    for (ll d = 1; d <= n / d; ++d) if (n % d == 0) {
+        answer.push_back(d);
+        if (d != n / d) answer.push_back(n / d);
+    }
+    sort(answer.begin(), answer.end());
+    return answer;
+}
+\end{lstlisting}
+
+\complexity{$O(\sqrt n)$ tiempo y $O(\tau(n))$ memoria de salida.}

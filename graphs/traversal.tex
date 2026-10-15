@@ -1,0 +1,57 @@
+\section{BFS, DFS y bipartici\'on}
+\whenuse{Explorar componentes, construir padres/profundidades, detectar ciclos
+o colorear un grafo; BFS da distancias m\'inimas cuando todas las aristas pesan uno.}
+
+\begin{lstlisting}[style=cpp]
+vector<int> bfs_distances(const vector<vector<int>> &graph, int source) {
+    int n = graph.size();
+    vector<int> distance(n, -1);
+    queue<int> pending;
+    distance[source] = 0;
+    pending.push(source);
+    while (!pending.empty()) {
+        int v = pending.front(); pending.pop();
+        for (int to : graph[v]) if (distance[to] == -1) {
+            distance[to] = distance[v] + 1;
+            pending.push(to);
+        }
+    }
+    return distance;
+}
+
+vector<int> undirected_components(const vector<vector<int>> &graph) {
+    int n = graph.size(), component_count = 0;
+    vector<int> component(n, -1), stack;
+    for (int start = 0; start < n; ++start) if (component[start] == -1) {
+        component[start] = component_count++;
+        stack.push_back(start);
+        while (!stack.empty()) {
+            int v = stack.back(); stack.pop_back();
+            for (int to : graph[v]) if (component[to] == -1) {
+                component[to] = component[v];
+                stack.push_back(to);
+            }
+        }
+    }
+    return component;
+}
+
+bool is_bipartite(const vector<vector<int>> &graph) {
+    int n = graph.size();
+    vector<int> color(n, -1);
+    for (int start = 0; start < n; ++start) if (color[start] == -1) {
+        queue<int> q;
+        color[start] = 0; q.push(start);
+        while (!q.empty()) {
+            int v = q.front(); q.pop();
+            for (int to : graph[v]) {
+                if (color[to] == -1) color[to] = color[v] ^ 1, q.push(to);
+                else if (color[to] == color[v]) return false;
+            }
+        }
+    }
+    return true;
+}
+\end{lstlisting}
+
+\complexity{$O(V+E)$ tiempo y $O(V)$ memoria.}

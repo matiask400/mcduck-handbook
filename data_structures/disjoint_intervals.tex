@@ -1,0 +1,40 @@
+\section{Intervalos disjuntos (ODT)}
+\whenuse{El arreglo est\'a formado por pocos intervalos constantes y predominan
+asignaciones de rango; apropiado con fragmentaci\'on controlada o datos aleatorios.}
+
+Usar para mantener una partici\'on ordenada en intervalos constantes y aplicar
+asignaciones sobre rangos. Funciona muy bien con datos aleatorios o cuando cada
+operaci\'on crea pocos cortes; no garantiza buen peor caso.
+
+\complexity{\texttt{split} $O(\log I)$; una operaci\'on cuesta
+$O((I_{borrados}+1)\log I)$; memoria $O(I)$. Peor caso total cuadr\'atico.}
+
+\begin{lstlisting}[style=cpp]
+struct DisjointIntervals {
+    struct Interval { int right; mutable ll value; };
+    map<int, Interval> intervals; // left -> {right,value}, rangos [left,right)
+
+    auto split(int position) {
+        auto iterator = prev(intervals.upper_bound(position));
+        if (iterator->first == position) return iterator;
+        int right = iterator->second.right;
+        ll value = iterator->second.value;
+        if (position >= right) return intervals.end();
+        iterator->second.right = position;
+        return intervals.emplace(position, Interval{right, value}).first;
+    }
+
+    void assign(int left, int right, ll value) {
+        auto after = split(right);
+        auto first = split(left);
+        intervals.erase(first, after);
+        intervals[left] = {right, value};
+    }
+};
+odt.assign(100, 500, 1);
+odt.assign(300, 800, 2);
+odt.assign(700, 900, 3);
+\end{lstlisting}
+
+\warning{Inicializar la partici\'on cubriendo todo el dominio. No usar ODT si un
+adversario puede fragmentar los intervalos en cada operaci\'on.}

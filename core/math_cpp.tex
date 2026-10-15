@@ -1,0 +1,649 @@
+\section{Matem\'atica cotidiana en C++}
+
+\subsection{Ra\'ices, potencias y logaritmos}
+
+\begin{center}
+\begin{tabular}{ll}
+Operaci\'on & C++ \\
+\hline
+$\sqrt x$ real & \texttt{sqrt(x)}, \texttt{sqrtl(x)} \\
+$x^y$ real & \texttt{pow(x,y)}, \texttt{powl(x,y)} \\
+$e^x,\ln x$ & \texttt{exp(x)}, \texttt{log(x)} \\
+$\log_2x,\log_{10}x$ & \texttt{log2(x)}, \texttt{log10(x)} \\
+redondeos & \texttt{floor}, \texttt{ceil}, \texttt{round}, \texttt{trunc} \\
+hipotenusa estable & \texttt{hypot(x,y)} \\
+valor absoluto & \texttt{abs(x)}, \texttt{fabs(x)} \\
+\end{tabular}
+\end{center}
+\warning{
+No usar \texttt{pow(a,b)} para calcular potencias enteras exactas, ya que
+trabaja con punto flotante y puede introducir errores de redondeo. En su lugar,
+usar exponenciación binaria.
+
+Tampoco confiar en convertir directamente \texttt{sqrt(n)} a entero cuando
+\texttt{n} está cerca de cuadrados perfectos grandes, debido a posibles errores
+de precisión.
+
+Para calcular raíces cuadradas enteras, se recomienda utilizar la función
+\texttt{integer\_sqrt}.
+
+Para realizar una división entera redondeando el resultado hacia arriba,
+utilizar \texttt{ceil\_division}.
+
+Para cualquier base entera y exponente no negativo usar \texttt{binary\_power}. Usar la de long double en caso de querer usar negativos como exponente
+}
+
+\begin{lstlisting}[style=cpp]
+ll integer_sqrt(ll value) {
+    assert(value >= 0);
+    ll root = sqrtl((long double)value);
+    while ((i128)(root + 1) * (root + 1) <= value) ++root;
+    while ((i128)root * root > value) --root;
+    return root; // floor(sqrt(value))
+}
+
+ll ceil_division(ll numerator, ll denominator) {
+    assert(denominator != 0);
+    ll quotient = numerator / denominator;
+    ll remainder = numerator % denominator;
+    if (remainder != 0 && ((remainder > 0) == (denominator > 0))) ++quotient;
+    return quotient;
+}
+
+ll floor_division(ll numerator, ll denominator) {
+    assert(denominator != 0);
+    ll quotient = numerator / denominator;
+    ll remainder = numerator % denominator;
+    if (remainder != 0 && ((remainder > 0) != (denominator > 0))) --quotient;
+    return quotient;
+}
+
+ll binary_power(ll base, long long exponent) {
+    assert(exponent >= 0);
+    ll result = 1;
+    while (exponent > 0) {
+        if (exponent & 1LL) {
+            result *= base;
+        }
+        base *= base;
+        exponent >>= 1;
+    }
+    return result;
+}
+
+long double binary_power(long double base, long long exponent) {
+    assert(base != 0.0L || exponent >= 0);
+    bool negative_exponent = exponent < 0;
+    // Convierte |exponent| sin desbordar cuando exponent == LLONG_MIN.
+    unsigned long long e;
+    if (negative_exponent) {
+        e = -(unsigned long long)exponent;
+    } else {
+        e = (unsigned long long)exponent;
+    }
+    long double result = 1.0L;
+    while (e > 0) {
+        if (e & 1ULL) {
+            result *= base;
+        }
+        base *= base;
+        e >>= 1;
+    }
+    return negative_exponent ? 1.0L / result : result;
+}. 
+
+ll modular_power(ll base, long long exponent, ll modulus) {
+    assert(exponent >= 0);
+    assert(modulus > 0);
+    base %= modulus;
+    if (base < 0) base += modulus;
+    ll result = 1 % modulus;
+    while (exponent > 0) {
+        if (exponent & 1LL) {
+            result = (i128)result * base % modulus;
+        }
+        base = (i128)base * base % modulus;
+        exponent >>= 1;
+    }
+    return result;
+}
+\end{lstlisting}
+
+\subsubsection{Potencia de 2}
+
+Para las potencias de dos, es mucho mas rapido y recomendado utilizar operaciones de bits "<<".
+\warning{Tener en cuenta que al estar moviendo bits, nos podríamos llegar a pasar en la cantidad de bits del tipo de dato, causando un overflow.
+Para cada tipo de dato la potencia maxima es:
+\begin{itemize}
+    \item Integer: 32 bits
+    \item Long Long: 64 bits
+    \item Integer 128: 128 bits
+\end{itemize}
+}
+
+\begin{lstlisting} [style=cpp]
+    // Potencia 2 elevado a la k
+    ll x = 1 << k;
+
+    // Maxima potencia para cada tipo de dato
+    int x = 1 << 30;
+    unsigned int x = 1U << 31;
+    ll x = 1LL << 62;
+    ull x = 1ULL << 63;
+    i128 x = (i128)1 << 126;
+    u128 x = (u128)1 << 127;
+\end{lstlisting}
+
+\subsection{Punto flotante}
+
+Comparar con error absoluto y relativo:
+Ej: 0.1 + 02 == 03?
+\begin{lstlisting}[style=cpp]
+bool almost_equal(long double a, long double b,
+                  long double epsilon = 1e-12L) {
+    return fabsl(a - b) <= epsilon * max({1.0L, fabsl(a), fabsl(b)});
+}
+\end{lstlisting}
+
+\begin{itemize}
+  \item \texttt{double}: unas 15 cifras decimales; \texttt{long double}: m\'as en
+  GNU/Linux x86, pero no necesariamente en todas las plataformas.
+  \item Para $a\cdot b$ antes de m\'odulo, convertir primero a
+  \texttt{\_\_int128} si puede exceder \texttt{long long}.
+  \item Para $\lceil a/b\rceil$ con positivos sirve
+  \texttt{(a+b-1)/b}; con negativos usar la funci\'on anterior.
+\end{itemize}
+
+\subsection{Trabajo con \'angulos y trigonometr\'ia}
+
+Usar cuando aparecen tri\'angulos, rotaciones, pendientes, direcciones o
+coordenadas polares. C++ recibe y devuelve \'angulos en \textbf{radianes}.
+
+Para un tri\'angulo rect\'angulo:
+\[
+\sin(\theta)=\frac{CO}{H},\qquad
+\cos(\theta)=\frac{CA}{H},\qquad
+\tan(\theta)=\frac{CO}{CA}=\frac{\sin(\theta)}{\cos(\theta)}.
+\]
+
+El signo depende del cuadrante:
+\begin{center}
+\begin{tabular}{ccccc}
+Cuadrante & rango & $x$ & $y$ & signos positivos \\
+\hline
+I & $0<\theta<\pi/2$ & $+$ & $+$ & $\sin,\cos,\tan$ \\
+II & $\pi/2<\theta<\pi$ & $-$ & $+$ & $\sin$ \\
+III & $\pi<\theta<3\pi/2$ & $-$ & $-$ & $\tan$ \\
+IV & $3\pi/2<\theta<2\pi$ & $+$ & $-$ & $\cos$ \\
+\end{tabular}
+\end{center}
+
+\subsubsection{\'Angulos notables}
+
+\begin{center}
+\begin{tabular}{ccccc}
+Grados & Radianes & $\sin$ & $\cos$ & $\tan$ \\
+\hline
+$0^\circ$ & $0$ & $0$ & $1$ & $0$ \\
+$30^\circ$ & $\pi/6$ & $1/2$ & $\sqrt3/2$ & $1/\sqrt3$ \\
+$45^\circ$ & $\pi/4$ & $\sqrt2/2$ & $\sqrt2/2$ & $1$ \\
+$60^\circ$ & $\pi/3$ & $\sqrt3/2$ & $1/2$ & $\sqrt3$ \\
+$90^\circ$ & $\pi/2$ & $1$ & $0$ & no definida \\
+$180^\circ$ & $\pi$ & $0$ & $-1$ & $0$ \\
+$270^\circ$ & $3\pi/2$ & $-1$ & $0$ & no definida \\
+$360^\circ$ & $2\pi$ & $0$ & $1$ & $0$ \\
+\end{tabular}
+\end{center}
+
+\subsubsection{Identidades frecuentes}
+
+\begin{align*}
+\sin^2\theta+\cos^2\theta &= 1,\\
+\sin(-\theta)&=-\sin\theta, & \cos(-\theta)&=\cos\theta,\\
+\sin(a+b)&=\sin a\cos b+\cos a\sin b,\\
+\cos(a+b)&=\cos a\cos b-\sin a\sin b,\\
+\sin(2a)&=2\sin a\cos a,\\
+\cos(2a)&=\cos^2a-\sin^2a=1-2\sin^2a.
+\end{align*}
+
+La periodicidad es $2\pi$ para seno y coseno, y $\pi$ para tangente.
+
+\begin{center}
+\begin{tabular}{lll}
+Operaci\'on & \texttt{double} & \texttt{long double} \\
+\hline
+seno, coseno, tangente & \texttt{sin/cos/tan} & \texttt{sinl/cosl/tanl} \\
+inversas & \texttt{asin/acos/atan} & \texttt{asinl/acosl/atanl} \\
+\'angulo de $(x,y)$ & \texttt{atan2(y,x)} & \texttt{atan2l(y,x)} \\
+hipotenusa & \texttt{hypot(x,y)} & \texttt{hypotl(x,y)} \\
+\end{tabular}
+\end{center}
+
+\begin{lstlisting}[style=cpp]
+const long double PI = acosl(-1.0L);
+
+long double degrees_to_radians(long double degrees) {
+    return degrees * PI / 180.0L;
+}
+
+long double radians_to_degrees(long double radians) {
+    return radians * 180.0L / PI;
+}
+
+long double normalize_angle(long double angle) { // [0, 2*pi)
+    angle = fmodl(angle, 2.0L * PI);
+    if (angle < 0) angle += 2.0L * PI;
+    return angle;
+}
+
+long double signed_angle(long double angle) { // [-pi, pi)
+    angle = normalize_angle(angle);
+    if (angle >= PI) angle -= 2.0L * PI;
+    return angle;
+}
+
+long double safe_acos(long double value) {
+    return acosl(clamp(value, -1.0L, 1.0L));
+}
+
+long double safe_asin(long double value) {
+    return asinl(clamp(value, -1.0L, 1.0L));
+}
+
+void trigonometry_example(long double degrees) {
+    long double angle = degrees_to_radians(degrees);
+    long double sine = sinl(angle);
+    long double cosine = cosl(angle);
+    long double tangent = tanl(angle);
+    long double direction = atan2l(sine, cosine); // primero y, luego x
+    (void)tangent; (void)direction;
+}
+\end{lstlisting}
+
+\subsubsection{Conversi\'on entre grados y radianes}
+
+Una vuelta completa cumple
+\[
+360^\circ=2\pi\text{ rad},\qquad
+180^\circ=\pi\text{ rad}.
+\]
+Por lo tanto:
+\[
+rad=grados\frac{\pi}{180},\qquad
+grados=rad\frac{180}{\pi}.
+\]
+
+En C++17 no existe \texttt{std::numbers::pi}; la forma portable es
+\texttt{acosl(-1.0L)}. \texttt{M\_PI} no es est\'andar y puede no estar definido.
+
+\subsubsection{Normalizaci\'on y distancia angular}
+
+El mismo rayo puede representarse con infinitos valores:
+$\theta$, $\theta+2\pi$, $\theta-4\pi$, etc. Normalizar evita errores al comparar
+direcciones. Para saber cu\'anto girar, no restar \'angulos sin considerar el
+salto entre $0$ y $2\pi$.
+
+\begin{lstlisting}[style=cpp]
+// Giro antihorario desde 'from' hasta 'to', en [0, 2*pi).
+long double counterclockwise_angle(long double from, long double to) {
+    return normalize_angle(to - from);
+}
+
+// Menor distancia entre dos direcciones, en [0, pi].
+long double angle_distance(long double first, long double second) {
+    return fabsl(signed_angle(second - first));
+}
+
+// Giro firmado mas corto desde 'from' hasta 'to', en [-pi, pi).
+long double signed_angle_difference(long double from, long double to) {
+    return signed_angle(to - from);
+}
+
+// target pertenece al arco antihorario cerrado start -> finish.
+bool angle_between_ccw(long double start, long double target,
+                       long double finish, long double epsilon = 1e-12L) {
+    return counterclockwise_angle(start, target)
+        <= counterclockwise_angle(start, finish) + epsilon;
+}
+\end{lstlisting}
+
+Ejemplo: entre $350^\circ$ y $10^\circ$ hay solamente $20^\circ$, no
+$340^\circ$.
+
+\subsubsection{\texttt{atan2}: direcci\'on y cuadrantes}
+
+Para un vector $(x,y)$:
+\[
+r=\sqrt{x^2+y^2},\qquad \theta=\operatorname{atan2}(y,x).
+\]
+
+Siempre escribir \texttt{atan2(y,x)}: el argumento vertical va primero.
+\texttt{atan(y/x)} pierde el cuadrante, divide por cero cuando $x=0$ y no puede
+distinguir $(1,1)$ de $(-1,-1)$.
+
+\begin{center}
+\begin{tabular}{ccc}
+Vector & \texttt{atan2(y,x)} & grados \\
+\hline
+$(1,0)$ & $0$ & $0^\circ$ \\
+$(0,1)$ & $\pi/2$ & $90^\circ$ \\
+$(-1,0)$ & $\pi$ & $180^\circ$ \\
+$(0,-1)$ & $-\pi/2$ & $-90^\circ$ \\
+\end{tabular}
+\end{center}
+
+\warning{La direcci\'on del vector $(0,0)$ no est\'a definida. Algunas
+implementaciones devuelven cero para \texttt{atan2(0,0)}, pero no debe usarse
+como un \'angulo geom\'etrico v\'alido.}
+
+\subsubsection{Coordenadas polares y rotaciones}
+
+Conversi\'on polar a cartesiana:
+\[
+x=r\cos\theta,\qquad y=r\sin\theta.
+\]
+Rotar $(x,y)$ un \'angulo $\theta$ en sentido antihorario:
+\[
+x'=x\cos\theta-y\sin\theta,\qquad
+y'=x\sin\theta+y\cos\theta.
+\]
+
+\begin{lstlisting}[style=cpp]
+pair<long double,long double> polar_to_cartesian(
+        long double radius, long double angle) {
+    return {radius * cosl(angle), radius * sinl(angle)};
+}
+
+pair<long double,long double> rotate_coordinates(
+        long double x, long double y, long double angle) {
+    long double cosine = cosl(angle), sine = sinl(angle);
+    return {x * cosine - y * sine,
+            x * sine + y * cosine};
+}
+
+pair<long double,long double> cartesian_to_polar(
+        long double x, long double y) {
+    return {hypotl(x, y), atan2l(y, x)}; // {radio, angulo}
+}
+\end{lstlisting}
+
+Para rotar alrededor de un centro $C$, trasladar $P-C$, rotar y volver a sumar
+$C$. Varias rotaciones suman sus \'angulos; una rotaci\'on no cambia distancias.
+
+\subsubsection{\'Angulo entre vectores}
+
+Para vectores $u$ y $v$ no nulos:
+\[
+\cos\theta=\frac{u\cdot v}{|u||v|},\qquad
+\theta=\operatorname{atan2}(|u\times v|,u\cdot v).
+\]
+
+La versi\'on con \texttt{atan2} suele ser m\'as estable y conserva mejor
+\'angulos cercanos a $0$ o $\pi$.
+
+\begin{lstlisting}[style=cpp]
+long double angle_between_vectors(long double ux, long double uy,
+                                  long double vx, long double vy) {
+    long double dot = ux * vx + uy * vy;
+    long double cross_value = ux * vy - uy * vx;
+    assert(hypotl(ux, uy) > 0 && hypotl(vx, vy) > 0);
+    return atan2l(fabsl(cross_value), dot); // [0, pi]
+}
+
+// Angulo orientado u -> v: positivo antihorario, en [-pi, pi].
+long double oriented_angle(long double ux, long double uy,
+                           long double vx, long double vy) {
+    return atan2l(ux * vy - uy * vx, ux * vx + uy * vy);
+}
+\end{lstlisting}
+
+Si s\'olo importa comparar \'angulos o saber si son agudos/obtusos, evitar la
+trigonometr\'ia: $u\cdot v>0$ indica \'angulo agudo, $=0$ recto y $<0$ obtuso.
+
+\subsubsection{Tri\'angulos cualesquiera}
+
+Si los lados $a,b,c$ est\'an opuestos a los \'angulos $A,B,C$:
+
+\textbf{Ley de cosenos:}
+\[
+c^2=a^2+b^2-2ab\cos C,\qquad
+\cos C=\frac{a^2+b^2-c^2}{2ab}.
+\]
+
+\textbf{Ley de senos:}
+\[
+\frac{a}{\sin A}=\frac{b}{\sin B}=\frac{c}{\sin C}=2R,
+\]
+donde $R$ es el radio de la circunferencia circunscrita.
+
+\textbf{\'Area:}
+\[
+s=\frac{a+b+c}{2},\qquad
+K=\sqrt{s(s-a)(s-b)(s-c)}.
+\]
+
+\begin{lstlisting}[style=cpp]
+long double angle_opposite_side(long double a, long double b,
+                                long double opposite) {
+    assert(a > 0 && b > 0);
+    long double cosine = (a * a + b * b - opposite * opposite)
+                       / (2.0L * a * b);
+    return safe_acos(cosine);
+}
+
+long double opposite_side(long double a, long double b,
+                          long double included_angle) {
+    long double squared = a * a + b * b
+                        - 2.0L * a * b * cosl(included_angle);
+    return sqrtl(max(0.0L, squared));
+}
+
+bool valid_triangle(long double a, long double b, long double c,
+                    long double epsilon = 1e-12L) {
+    return a > 0 && b > 0 && c > 0
+        && a + b > c + epsilon
+        && a + c > b + epsilon
+        && b + c > a + epsilon;
+}
+
+long double triangle_area_heron(long double a, long double b,
+                                long double c) {
+    assert(valid_triangle(a, b, c));
+    long double semiperimeter = (a + b + c) / 2.0L;
+    long double product = semiperimeter * (semiperimeter - a)
+                        * (semiperimeter - b) * (semiperimeter - c);
+    return sqrtl(max(0.0L, product));
+}
+\end{lstlisting}
+
+\warning{La ley de senos puede tener dos soluciones cuando se conocen dos lados
+y un \'angulo no comprendido. La ley de cosenos determina directamente el lado
+opuesto al \'angulo comprendido. Her\'on puede perder precisi\'on en tri\'angulos
+casi degenerados; con coordenadas, preferir producto cruzado.}
+
+\subsubsection{Circunferencias, arcos y sectores}
+
+Con radio $r$ y \'angulo central $\theta$ en radianes:
+\[
+\text{arco}=r\theta,\qquad
+\text{sector}=\frac12r^2\theta,\qquad
+\text{cuerda}=2r\sin(\theta/2).
+\]
+
+\begin{lstlisting}[style=cpp]
+long double arc_length(long double radius, long double angle) {
+    return radius * fabsl(angle);
+}
+
+long double sector_area(long double radius, long double angle) {
+    return radius * radius * fabsl(angle) / 2.0L;
+}
+
+long double chord_length(long double radius, long double angle) {
+    return 2.0L * radius * sinl(fabsl(angle) / 2.0L);
+}
+\end{lstlisting}
+
+\subsubsection{Pol\'igonos regulares}
+
+Para un pol\'igono regular de $n\ge3$ lados:
+\[
+\sum\text{ interiores}=(n-2)\pi,\quad
+\text{interior}=\frac{(n-2)\pi}{n},\quad
+\text{exterior}=\frac{2\pi}{n}.
+\]
+Si $R$ es el circunradio y $s$ el lado:
+\[
+s=2R\sin(\pi/n),\qquad
+\text{\'area}=\frac{nR^2\sin(2\pi/n)}2.
+\]
+
+\subsubsection{Convenciones: matem\'atica, br\'ujula y pantalla}
+
+Antes de usar un \'angulo, identificar la convenci\'on del problema:
+\begin{itemize}
+  \item matem\'atica: $0$ apunta a $+x$ y crece antihorario;
+  \item rumbo de br\'ujula: $0$ apunta al norte y crece horario;
+  \item matrices/pantallas: la fila o coordenada $y$ suele crecer hacia abajo,
+  invirtiendo visualmente la orientaci\'on.
+\end{itemize}
+
+\begin{lstlisting}[style=cpp]
+long double bearing_to_math_angle(long double bearing) {
+    return normalize_angle(PI / 2.0L - bearing);
+}
+
+long double math_angle_to_bearing(long double angle) {
+    return normalize_angle(PI / 2.0L - angle);
+}
+
+// Direccion en una grilla donde row crece hacia abajo.
+long double screen_direction(long double delta_column,
+                             long double delta_row) {
+    return atan2l(-delta_row, delta_column);
+}
+
+// Una recta no orientada es igual tras girar pi: resultado [0, pi).
+long double normalize_line_angle(long double angle) {
+    angle = fmodl(angle, PI);
+    if (angle < 0) angle += PI;
+    return angle;
+}
+\end{lstlisting}
+
+\subsubsection{Orden polar exacto sin funciones trigonom\'etricas}
+
+Para ordenar muchos vectores por \'angulo, calcular \texttt{atan2} para cada uno
+es m\'as lento y agrega error flotante. Se puede separar el plano en dos mitades
+y comparar con producto cruzado. El siguiente orden comienza en $+x$ y avanza
+antihorario; los colineales se ordenan por longitud.
+
+\begin{lstlisting}[style=cpp]
+int polar_half(ll x, ll y) {
+    return (y < 0 || (y == 0 && x < 0)) ? 1 : 0;
+}
+
+bool polar_less(pair<ll,ll> first, pair<ll,ll> second) {
+    auto [ax, ay] = first;
+    auto [bx, by] = second;
+    int half_a = polar_half(ax, ay), half_b = polar_half(bx, by);
+    if (half_a != half_b) return half_a < half_b;
+    i128 cross_value = (i128)ax * by - (i128)ay * bx;
+    if (cross_value != 0) return cross_value > 0;
+    i128 length_a = (i128)ax * ax + (i128)ay * ay;
+    i128 length_b = (i128)bx * bx + (i128)by * by;
+    return length_a < length_b;
+}
+\end{lstlisting}
+
+\warning{Excluir el vector $(0,0)$ o decidir expl\'icitamente d\'onde ubicarlo:
+no posee direcci\'on. El comparador debe ser estricto; no introducir epsilon en
+un comparador de \texttt{sort}, \texttt{set} o \texttt{map}.}
+
+\subsubsection{Proyecci\'on, reflexi\'on y bisectriz}
+
+La proyecci\'on del vector $v$ sobre una direcci\'on no nula $d$ es
+\[
+\operatorname{proj}_d(v)=d\frac{v\cdot d}{d\cdot d}.
+\]
+Si $n$ es una normal de una recta/espejo, la reflexi\'on es
+\[
+\operatorname{reflect}(v)=v-2\operatorname{proj}_n(v).
+\]
+La bisectriz interna de dos vectores no opuestos apunta en la suma de sus
+versiones unitarias.
+
+\begin{lstlisting}[style=cpp]
+pair<long double,long double> project_vector(
+        long double vx, long double vy,
+        long double dx, long double dy) {
+    long double norm_squared = dx * dx + dy * dy;
+    assert(norm_squared > 0);
+    long double scale = (vx * dx + vy * dy) / norm_squared;
+    return {dx * scale, dy * scale};
+}
+
+pair<long double,long double> reflect_vector(
+        long double vx, long double vy,
+        long double normal_x, long double normal_y) {
+    auto projection = project_vector(vx, vy, normal_x, normal_y);
+    return {vx - 2.0L * projection.first,
+            vy - 2.0L * projection.second};
+}
+
+optional<pair<long double,long double>> internal_angle_bisector(
+        long double ax, long double ay,
+        long double bx, long double by) {
+    long double norm_a = hypotl(ax, ay), norm_b = hypotl(bx, by);
+    if (norm_a == 0 || norm_b == 0) return nullopt;
+    long double x = ax / norm_a + bx / norm_b;
+    long double y = ay / norm_a + by / norm_b;
+    long double norm = hypotl(x, y);
+    if (norm < 1e-18L) return nullopt; // direcciones opuestas
+    return pair<long double,long double>{x / norm, y / norm};
+}
+\end{lstlisting}
+
+Para reflejar un punto respecto de una recta, proyectar el vector desde un punto
+de la recta hasta el punto original y usar la misma identidad. Para la bisectriz
+externa, restar los vectores unitarios en lugar de sumarlos.
+
+\subsubsection{Funciones relacionadas de \texttt{<cmath>}}
+
+\begin{itemize}
+  \item \texttt{sinh/cosh/tanh}: funciones hiperb\'olicas; no describen \'angulos
+  circulares y aparecen ocasionalmente en f\'ormulas anal\'iticas.
+  \item \texttt{fmod(a,b)} conserva el signo de $a$; para normalizar \'angulos
+  negativos hay que sumar el per\'iodo, como hace \texttt{normalize\_angle}.
+  \item \texttt{remainder(a,b)} devuelve el residuo respecto del m\'ultiplo m\'as
+  cercano y puede ser \'util para obtener un \'angulo firmado, aunque su tratamiento
+  de empates suele ser menos intuitivo en competencia.
+  \item \texttt{copysign(magnitude,sign)} copia el signo sin bifurcar;
+  \texttt{isfinite/isnan/isinf} permiten detectar resultados inv\'alidos.
+\end{itemize}
+
+\textbf{Rangos de retorno:}
+\begin{itemize}
+  \item \texttt{asin}: $[-\pi/2,\pi/2]$; \texttt{acos}: $[0,\pi]$.
+  \item \texttt{atan}: $(-\pi/2,\pi/2)$; \texttt{atan2(y,x)}: $[-\pi,\pi]$.
+  \item \texttt{atan2} distingue los cuatro cuadrantes y funciona cuando
+  $x=0$; para direcciones casi siempre es mejor que \texttt{atan(y/x)}.
+\end{itemize}
+
+\warning{Por errores de redondeo, un coseno calculado puede quedar apenas fuera
+de $[-1,1]$ y hacer que \texttt{acos} devuelva NaN; aplicar \texttt{clamp}.
+La tangente no est\'a definida cuando $\cos(\theta)=0$.}
+
+\textbf{Checklist de competencia:}
+\begin{itemize}
+  \item confirmar si la entrada est\'a en grados o radianes;
+  \item usar \texttt{atan2(y,x)}, no \texttt{atan(y/x)};
+  \item normalizar antes de comparar direcciones que cruzan $0/2\pi$;
+  \item aplicar \texttt{clamp} antes de \texttt{asin/acos};
+  \item evitar trigonometr\'ia si dot/cross permiten decidir exactamente;
+  \item usar \texttt{long double} y un epsilon acorde a las coordenadas;
+  \item no comparar resultados flotantes con \texttt{==}.
+\end{itemize}
+
+Cada funci\'on trigonom\'etrica y cada helper de esta secci\'on cuesta $O(1)$
+tiempo y $O(1)$ memoria.

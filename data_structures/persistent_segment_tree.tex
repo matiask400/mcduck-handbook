@@ -1,0 +1,63 @@
+\section{Segment Tree persistente}
+\whenuse{Conservar versiones hist\'oricas tras updates puntuales, responder
+consultas por versi\'on o calcular el $k$-\'esimo en subarreglos por diferencia de ra\'ices.}
+
+Cada actualizaci\'on crea una versi\'on nueva copiando solamente los nodos del
+camino modificado. Esta versi\'on hace asignaci\'on puntual y suma en $[l,r)$.
+
+\complexity{build $O(n)$; update/query $O(\log n)$; cada versi\'on usa
+$O(\log n)$ nodos nuevos; memoria total $O(n+q\log n)$ para $q$ updates.}
+
+\begin{lstlisting}[style=cpp]
+struct PersistentSegmentTree {
+    struct Node { int left = -1, right = -1; ll sum = 0; };
+    int n;
+    vector<Node> nodes;
+
+    explicit PersistentSegmentTree(const vector<ll> &a) : n(a.size()) {
+        assert(n > 0);
+        nodes.reserve(2 * n + 20);
+    }
+
+    int make_node(Node node) {
+        nodes.push_back(node);
+        return (int)nodes.size() - 1;
+    }
+
+    int build(const vector<ll> &a) { return build(0, n, a); }
+    int build(int l, int r, const vector<ll> &a) {
+        if (r - l == 1) return make_node({-1, -1, a[l]});
+        int m = (l + r) / 2;
+        int left = build(l, m, a), right = build(m, r, a);
+        return make_node({left, right, nodes[left].sum + nodes[right].sum});
+    }
+
+    int set_value(int root, int position, ll value) {
+        return set_value(root, 0, n, position, value);
+    }
+
+    int set_value(int root, int l, int r, int position, ll value) {
+        if (r - l == 1) return make_node({-1, -1, value});
+        int m = (l + r) / 2;
+        int left = nodes[root].left, right = nodes[root].right;
+        if (position < m) left = set_value(left, l, m, position, value);
+        else right = set_value(right, m, r, position, value);
+        return make_node({left, right, nodes[left].sum + nodes[right].sum});
+    }
+
+    ll query(int root, int ql, int qr) const {
+        return query(root, 0, n, ql, qr);
+    }
+
+    ll query(int root, int l, int r, int ql, int qr) const {
+        if (qr <= l || r <= ql) return 0;
+        if (ql <= l && r <= qr) return nodes[root].sum;
+        int m = (l + r) / 2;
+        return query(nodes[root].left, l, m, ql, qr)
+             + query(nodes[root].right, m, r, ql, qr);
+    }
+};
+\end{lstlisting}
+
+Guardar cada ra\'iz en un vector: \texttt{roots[v]} representa la versi\'on
+\texttt{v}. No modificar nodos existentes.

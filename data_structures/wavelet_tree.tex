@@ -1,0 +1,83 @@
+\section{Wavelet Tree}
+\whenuse{Arreglo sin updates y muchas consultas sobre subarreglos: $k$-\'esimo
+menor, frecuencia de un valor o cantidad de elementos $\le x$.}
+
+Cada nodo divide el rango de valores por la mitad. \texttt{go\_left[i]} guarda
+cu\'antos de los primeros $i$ elementos fueron al hijo izquierdo; as\'i un
+subarreglo $[l,r)$ se traduce a intervalos de los hijos sin perder su orden.
+Es una alternativa al Segment Tree persistente cuando no se necesitan
+versiones ni actualizaciones.
+
+\complexity{build $O(n\log\sigma)$; consulta $O(\log\sigma)$; memoria
+$O(n\log\sigma)$, donde $\sigma=max-min+1$.}
+
+\begin{lstlisting}[style=cpp]
+struct WaveletTree {
+    int low, high;
+    vector<int> go_left;
+    unique_ptr<WaveletTree> left_child, right_child;
+
+    template<class Iterator>
+    WaveletTree(Iterator from, Iterator to,
+                int minimum_value, int maximum_value)
+        : low(minimum_value), high(maximum_value) {
+        if (from == to || low == high) return;
+        int middle = low + (int)(((ll)high - low) / 2);
+        auto goes_left = [middle](int value) { return value <= middle; };
+        go_left.reserve(to - from + 1);
+        go_left.push_back(0);
+        for (Iterator iterator = from; iterator != to; ++iterator)
+            go_left.push_back(go_left.back() + goes_left(*iterator));
+        Iterator pivot = stable_partition(from, to, goes_left);
+        left_child = make_unique<WaveletTree>(from, pivot, low, middle);
+        right_child = make_unique<WaveletTree>(pivot, to, middle + 1, high);
+    }
+
+    // k empieza en 1; intervalo [left,right).
+    int kth(int left, int right, int k) const {
+        assert(1 <= k && k <= right - left);
+        if (low == high) return low;
+        int before_left = go_left[left];
+        int inside_left = go_left[right] - before_left;
+        if (k <= inside_left)
+            return left_child->kth(before_left, go_left[right], k);
+        return right_child->kth(left - before_left,
+                                right - go_left[right],
+                                k - inside_left);
+    }
+
+    int count_leq(int left, int right, int value) const {
+        if (left >= right || value < low) return 0;
+        if (high <= value) return right - left;
+        int before_left = go_left[left];
+        int before_right = go_left[right];
+        return left_child->count_leq(before_left, before_right, value)
+             + right_child->count_leq(left - before_left,
+                                      right - before_right, value);
+    }
+};
+\end{lstlisting}
+
+\subsection{Ejemplo de uso}
+
+Para $a=[7,1,4,2,6,4]$, el subarreglo $[1,6)$ es $[1,4,2,6,4]$.
+
+\begin{lstlisting}[style=cpp]
+void wavelet_example() {
+    vector<int> data = {7, 1, 4, 2, 6, 4};
+    int minimum = *min_element(data.begin(), data.end());
+    int maximum = *max_element(data.begin(), data.end());
+    WaveletTree wavelet(data.begin(), data.end(), minimum, maximum);
+
+    cout << wavelet.kth(1, 6, 3) << '\n';       // 4 el k-esimo menor de [left,right). k comienza en 1.
+    cout << wavelet.count_leq(1, 6, 3) << '\n'; // 2: {1,2} elementos de [left,right) son menores o iguales a value
+
+    int frequency_4 = wavelet.count_leq(1, 6, 4)
+                    - wavelet.count_leq(1, 6, 3);
+    cout << frequency_4 << '\n';                // 2
+}
+\end{lstlisting}
+
+\warning{El constructor reordena el vector recibido; pasar una copia si hace
+falta conservar el orden original. Si el rango de valores es enorme, comprimir
+coordenadas reduce $\sigma$.}

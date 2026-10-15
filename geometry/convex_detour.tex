@@ -1,0 +1,23 @@
+\section{Camino m\'inimo rodeando un pol\'igono convexo}
+\whenuse{El segmento directo est\'a bloqueado por un \`unico obst\'aculo convexo y
+se permite recorrer su borde entre puntos tangentes.}
+
+Usar cuando el segmento directo entre $A$ y $B$ atraviesa el interior de un
+obst\'aculo convexo. Si no lo atraviesa, la respuesta es $|AB|$. Si lo atraviesa,
+un camino \`optimo toca dos v\'ertices tangentes y recorre una de las dos cadenas
+del borde entre ellos.
+
+Procedimiento:
+\begin{enumerate}
+  \item hallar desde $A$ y $B$ los dos v\'ertices tangentes al pol\'igono;
+  \item precomputar longitudes prefijas del per\'imetro;
+  \item probar las combinaciones compatibles de tangencias y ambas cadenas;
+  \item minimizar $|A-u|+\operatorname{borde}(u,v)+|v-B|$.
+\end{enumerate}
+
+\complexity{tangencias $O(\log n)$ con b\'usqueda binaria, o $O(n)$ en una
+implementaci\'on simple; memoria $O(n)$ para prefijos.}
+
+\warning{Si se permite tocar el borde, distinguir intersecci\'on con el interior
+de un simple contacto tangencial. Para varios obst\'aculos construir un grafo de
+visibilidad; esta receta aislada ya no alcanza.}
