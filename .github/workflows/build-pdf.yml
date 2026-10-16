@@ -1,0 +1,46 @@
+name: Compilar handbook
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.tex"
+      - "**/*.jpg"
+      - "**/*.png"
+      - "**/*.pdf"
+      - ".github/workflows/build-pdf.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: handbook-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Compilar PDF con TeX Live
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/work" \
+            -w /work \
+            ghcr.io/xu-cheng/texlive-historic-alpine:2024 \
+            latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+
+      - name: Guardar PDF
+        uses: actions/upload-artifact@v7
+        with:
+          name: McDuck-Handbook
+          path: main.pdf
+          if-no-files-found: error
+          retention-days: 30
