@@ -34,6 +34,87 @@ struct LinearSieve {
 
 \complexity{preproceso $O(N)$; factorizaci\'on $O(\log n)$; memoria $O(N)$.}
 
+\section{Criba segmentada: primos en un intervalo}
+\whenuse{Listar los primos de $[L,R]$ cuando el intervalo es corto y $R$ es
+grande. Debe ser viable cribar hasta $\lfloor\sqrt R\rfloor$ y almacenar
+$R-L+1$ marcas; por ejemplo, $R\le10^{12}$ y ancho hasta $10^6$.}
+\complexity{Con $B=\lfloor\sqrt R\rfloor$ y $W=R-L+1$, tiempo
+$O(B\log\log B+\pi(B)+W\log\log R)$ y memoria $O(B+W)$ bits para las marcas,
+m\'as $O(k)$ palabras para devolver los $k$ primos. Las cotas se entienden
+asint\'oticamente; intervalos con $R<2$ se resuelven directamente.}
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=cpp]
+// Requiere 0 <= L <= R y memoria/tiempo suficientes para sqrt(R) y el ancho.
+vector<ll> segmented_primes(ll L, ll R) {
+    assert(0 <= L && L <= R);
+    if (R < 2) return {};
+
+    ll root = (ll)sqrtl((long double)R);
+    while (root > R / root) --root;
+    while (root + 1 <= R / (root + 1)) ++root;
+
+    vector<bool> base((size_t)root + 1, true);
+    base[0] = base[1] = false;
+    vector<bool> segment((size_t)(R - L) + 1, true);
+
+    for (ll p = 2; p <= root; ++p) {
+        if (!base[p]) continue;
+        if (p <= root / p)
+            for (ll x = p * p; x <= root; x += p)
+                base[x] = false;
+
+        // Primer multiplo >= L, sin usar (L+p-1) ni una suma fuera de R.
+        ll delta = (p - L % p) % p;
+        if (delta > R - L) continue;
+        ll start = max(p * p, L + delta);
+        if (start > R) continue;
+        for (ll x = start; ; ) {
+            segment[x - L] = false;
+            if (R - x < p) break;
+            x += p;
+        }
+    }
+
+    if (L == 0) segment[0] = false;
+    if (L <= 1) segment[1 - L] = false;
+    vector<ll> answer;
+    for (size_t i = 0; i < segment.size(); ++i)
+        if (segment[i]) answer.push_back(L + (ll)i);
+    return answer;
+}
+\end{lstlisting}
+\end{minipage}
+
+Ejemplo: \texttt{segmented\_primes(100,120)} devuelve
+$101,103,107,109,113$. Se marca desde
+$\max(p^2,\lceil L/p\rceil p)$ para no borrar al propio primo $p$.
+No construye la criba completa hasta $R$. Tampoco evita el costo de cribar
+hasta $\sqrt R$: para un solo entero grande, usar Miller--Rabin.
+Si hay muchas consultas con el mismo l\'imite, conviene reutilizar los primos
+base; esta versi\'on los recalcula para mantener una interfaz autocontenida.
+
+\section{Factorizaci\'on por divisi\'on por tentativa}
+\whenuse{Una o pocas consultas con $n$ moderado, por ejemplo hasta $10^9$.
+No necesita criba ni generador aleatorio. Para muchas consultas, usar SPF;
+para factores grandes de 64 bits, Miller--Rabin y Brent.}
+\complexity{$O(\sqrt n)$ tiempo en el peor caso; $O(\log n)$ memoria de salida.}
+
+\begin{lstlisting}[style=cpp]
+vector<ll> trial_factorize(ll n) {
+    assert(n >= 1);
+    vector<ll> out;
+    while (n % 2 == 0) { out.push_back(2); n /= 2; }
+    for (ll d = 3; d <= n / d; d += 2)
+        while (n % d == 0) { out.push_back(d); n /= d; }
+    if (n > 1) out.push_back(n);
+    return out;
+}
+\end{lstlisting}
+
+Devuelve factores ordenados con repeticiones; para $1$, un vector vac\'io.
+La condici\'on \texttt{d <= n/d} evita overflow de \texttt{d*d}.
+
 \section{Listar divisores}
 \whenuse{Listar todos los divisores de un n\'umero aislado moderado sin necesitar
 preprocesamiento.}
