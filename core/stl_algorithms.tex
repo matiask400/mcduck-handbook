@@ -54,8 +54,10 @@ void sequence_algorithms() {
         // procesar permutation
     } while (next_permutation(permutation.begin(), permutation.end()));
 
-    vector<int> values(5);
-    iota(values.begin(), values.end(), 10); // 10,11,12,13,14
+    // partial_sum acumula con el tipo de entrada, no con el de prefix.
+    // Usar ll; cada suma parcial debe entrar en ese tipo.
+    vector<ll> values(5);
+    iota(values.begin(), values.end(), 10LL); // 10,11,12,13,14
     vector<ll> prefix(values.size());
     partial_sum(values.begin(), values.end(), prefix.begin());
 }
