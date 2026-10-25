@@ -5,12 +5,18 @@ extremos, pudiendo agregar y quitar elementos en $O(1)$.}
 Si al avanzar el extremo derecho la validez cambia mon\'otonamente, cada
 puntero avanza a lo sumo $n$ veces.
 
-\complexity{$O(n)$ si agregar/quitar cuesta $O(1)$; memoria $O(1)$ o la del
-estado mantenido.}
+Con valores no negativos se usa sliding window. Si hay negativos, la segunda
+variante usa m\'aximos prefijos y b\'usqueda binaria: una ventana deslizante
+com\'un no garantiza encontrar la respuesta.
+
+\complexity{Ventana con valores no negativos y pares sobre un arreglo ordenado:
+$O(n)$ tiempo y $O(1)$ memoria adicional. Variante con negativos:
+$O(n\log n)$ tiempo y $O(n)$ memoria adicional.}
 
 \begin{lstlisting}[style=cpp]
 // Longitud maxima con suma <= limit; requiere a[i] >= 0.
-int longest_window(const vector<ll> &a, ll limit) {
+// Tiempo O(n), memoria adicional O(1).
+int longest_window_nonnegative(const vector<ll> &a, ll limit) {
     ll sum = 0;
     int ans = 0;
     for (int l = 0, r = 0; r < (int)a.size(); ++r) {
@@ -34,7 +40,8 @@ bool has_pair_sum(const vector<ll> &a, ll target) {
 }
 
 // Longitud maxima con suma <= limit; admite valores negativos.
-int longest_window(const vector<ll>& a, ll limit) {
+// Prefijos y busqueda binaria: tiempo O(n log n), memoria O(n).
+int longest_window_signed(const vector<ll> &a, ll limit) {
     vector<ll> maximum_prefix{0};
     vector<int> first_position{0};
     ll prefix = 0;
@@ -52,7 +59,7 @@ int longest_window(const vector<ll>& a, ll limit) {
         }
         // Guardamos solamente nuevos maximos prefijos.
         if (prefix > maximum_prefix.back()) {
-        maximum_prefix.push_back(prefix);
+            maximum_prefix.push_back(prefix);
             first_position.push_back(r + 1);
         }
     }
