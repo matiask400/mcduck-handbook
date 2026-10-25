@@ -3,11 +3,18 @@
 0/1 usar 0--1 BFS; con negativos, Bellman--Ford.}
 
 Distancias desde una fuente con pesos no negativos.
+Para reconstruir caminos, descomentar las l\'ineas marcadas con
+\texttt{Reconstruccion} y el ejemplo opcional. Guardar padres no cambia
+el orden del tiempo de ejecuci\'on y agrega $O(V)$ de memoria;
+reconstruir un camino cuesta $O(V)$ tiempo y memoria en el peor caso.
 
 \begin{lstlisting}[style=cpp]
-vector<ll> dijkstra(const vector<vector<pair<int,ll>>> &graph, int source) {
+vector<ll> dijkstra(const vector<vector<pair<int,ll>>> &graph, int source
+    // , vector<int>& parent // Reconstruccion: parametro de salida.
+) {
     int n = graph.size();
     vector<ll> distance(n, LINF);
+    // parent.assign(n, -1); // Reconstruccion: sin padre inicialmente.
     priority_queue<pair<ll,int>, vector<pair<ll,int>>,
                    greater<pair<ll,int>>> pending;
     distance[source] = 0;
@@ -20,21 +27,33 @@ vector<ll> dijkstra(const vector<vector<pair<int,ll>>> &graph, int source) {
             if (weight < 0) throw invalid_argument("negative edge");
             if (distance[to] > dist_v + weight) {
                 distance[to] = dist_v + weight;
+                // parent[to] = v; // Reconstruccion: guardar predecesor.
                 pending.push({distance[to], to});
             }
         }
     }
     return distance;
 }
-vector<WeightedEdge> edges = {
-    {0, 1, 4},
-    {0, 2, 5},
-    {1, 2, -2},
-    {2, 3, 3}
-};
-auto [distance, negative_cycle] = bellman_ford(4, edges, 0);
-if (negative_cycle) cout << "Hay ciclo negativo\n";
-else cout << distance[3] << '\n'; // 5: 0 -> 1 -> 2 -> 3
+// Ejemplo de uso: grafo dirigido con pesos no negativos.
+vector<vector<pair<int,ll>>> graph(4);
+graph[0] = {{1, 4}, {2, 1}};
+graph[2] = {{1, 2}};
+graph[1] = {{3, 1}};
+auto distance = dijkstra(graph, 0);
+cout << distance[3] << '\n'; // 4
+
+// Ejemplo opcional de reconstruccion (reemplaza la llamada anterior):
+// vector<int> parent;
+// auto distance = dijkstra(graph, 0, parent);
+// int source = 0, target = 3;
+// vector<int> path;
+// if (distance[target] != LINF) { // Si es inalcanzable, queda vacio.
+//     for (int v = target; v != -1; v = parent[v])
+//         path.push_back(v);
+//     reverse(path.begin(), path.end());
+// }
+// for (int v : path) cout << v << ' '; // 0 2 1 3
+// Si target == source, path contiene solo source.
 \end{lstlisting}
 
 \complexity{$O((V+E)\log V)$; memoria $O(V+E)$.}
