@@ -1,33 +1,45 @@
-name: Compilar handbook
+name: Compilar y publicar handbook
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
     paths:
       - "**/*.tex"
       - "**/*.jpg"
       - "**/*.png"
       - "**/*.pdf"
       - ".github/workflows/build-pdf.yml"
+      - ".github/scripts/build_pages.py"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: handbook-${{ github.ref }}
-  cancel-in-progress: true
+  # Ambas ramas actualizan el mismo sitio: no deben pisarse entre sí.
+  group: handbook-publication
+  queue: max
+  cancel-in-progress: false
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v7
         with:
-          persist-credentials: false
+          # Se necesitan para conservar ambas versiones en la rama gh-pages.
+          persist-credentials: true
 
       - name: Compilar PDF con TeX Live
         run: |
@@ -44,3 +56,61 @@ jobs:
           path: main.pdf
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publicar PDF en Releases (solo main)
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: handbook-${{ github.run_number }}
+        run: |
+          cp main.pdf McDuck-Handbook.pdf
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" McDuck-Handbook.pdf --clobber
+          else
+            gh release create "$RELEASE_TAG" McDuck-Handbook.pdf \
+              --target "$GITHUB_SHA" \
+              --title "McDuck Handbook #$GITHUB_RUN_NUMBER" \
+              --notes "PDF compilado automáticamente desde main, commit $GITHUB_SHA." \
+              --latest
+          fi
+
+      - name: Preparar ambas versiones de GitHub Pages
+        env:
+          PAGES_WORKTREE: ${{ runner.temp }}/handbook-pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git ls-remote --heads origin refs/heads/gh-pages > "$RUNNER_TEMP/pages-ref"
+          if [ -s "$RUNNER_TEMP/pages-ref" ]; then
+            git fetch --depth=1 origin refs/heads/gh-pages
+            git worktree add --detach "$PAGES_WORKTREE" FETCH_HEAD
+          else
+            git worktree add --detach "$PAGES_WORKTREE" HEAD
+            git -C "$PAGES_WORKTREE" switch --orphan gh-pages
+          fi
+
+          python3 .github/scripts/build_pages.py \
+            --site "$PAGES_WORKTREE" --pdf main.pdf \
+            --branch "$GITHUB_REF_NAME" --sha "$GITHUB_SHA" \
+            --repository "$GITHUB_REPOSITORY"
+
+          git -C "$PAGES_WORKTREE" add --all
+          if ! git -C "$PAGES_WORKTREE" diff --cached --quiet; then
+            git -C "$PAGES_WORKTREE" commit -m "Publicar $GITHUB_REF_NAME ($GITHUB_SHA)"
+          fi
+          git -C "$PAGES_WORKTREE" push origin HEAD:refs/heads/gh-pages
+          mkdir -p "$RUNNER_TEMP/handbook-site"
+          git -C "$PAGES_WORKTREE" archive HEAD | tar -x -C "$RUNNER_TEMP/handbook-site"
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Guardar sitio de GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/handbook-site
+
+      - name: Desplegar GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
