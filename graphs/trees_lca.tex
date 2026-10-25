@@ -1,22 +1,15 @@
-\section{Ancestro Comun mas Bajo (LCA)}
+\section{Ancestro com\'un m\'as bajo (LCA)}
+\whenuse{Consultar ancestros comunes y distancias en un \'arbol enraizado;
+versi\'on con arreglos de tama\~no fijo.}
+\complexity{Preproceso $O(NK)$ y consulta $O(K)$, con $K=O(\log N)$;
+memoria $O(K2^K)$ por los arreglos y $O(N)$ por la recursi\'on.}
 
-Es un algoritmo que te permite encontrar el ancestro comun mas bajo de dos nodos en un arbol. Por conveniencia, suele tomar como raiz, el primer nodo (i=0). Se suele utilizar para conocer la distancia entre dos nodos en un arbol usando la formula de $D(x)+D(y)-D(lca(x,y))$ asumiendo $D$ como la profundidad del nodo (distancia desde la raiz).
-
-Su algoritmo es uno de los mas complejos y dificiles de entender. Aca se dira una forma sumamente simplificada de como (se cree que) funciona.
-\begin{itemize}
-    \item Se inicializa una matriz $F[k][2^k]$ donde $F[x][n]$ es el padre $2^x$ del nodo $n$.
-    \item Se inicializa un Array $D[2^k]$ con la profundidad de cada nodo.
-    \item Se inicializa la profundidad del nodo 0 en 0 (cero) y su nodo padre $F[0][0]=-1$ marcando que es el raiz.
-    \item Se recorre el arbol, empezando desde el nodo 0, guardando para cada nodo, su padre y su profundidad.
-    \item Por cada potencia de dos y por cada nodo, verifico si el padre en la potencia $k-1$ no existe, entonces el padre en la potencia $k$ tampoco existe. Si, en cambio, el padre la potencia $k-1$ existe, el padre en la potencia $k$ es el padre en la potencia $k-1$ del padre en la potencia $k-1$ de $x$.
-\end{itemize}
-Toda esta informacion, se precalcula y se almacena, los siguiente pasos son para encontrar el LCA de dos nodos.
-\begin{itemize}
-    \item Por cada potencia de dos, empezando desde la mas alta posible, verifico si el nodo con mayor profundidad puede subir esas posiciones y quedar en una profundidad igual  o mayor a la del otro nodo. Hasta que se igualen las profundidades.
-    \item Se verifica si el nodo padre de que era menor, es el otro nodo, de ser asi, devolvemos eso, sino continuamos.
-    \item Por cada potencia de dos, empezando desde la mas alta posible, verifico si el padre, en dicha potencia, de ambos, es distinto, entonces subimos ambos nodos hasta dichos padres.
-    \item Finalmente, tendremos los dos primeros ancestros distintos, por lo que devolvemos su padre.
-\end{itemize}
+\texttt{F[k][v]} guarda el ancestro $2^k$ de $v$ y \texttt{D[v]} su
+profundidad. Un DFS calcula padres y profundidades; luego se construyen
+los saltos. Para consultar, igualar profundidades y subir ambos nodos,
+desde el salto mayor, mientras sus ancestros sean distintos.
+La distancia es $D[x]+D[y]-2D[\operatorname{lca}(x,y)]$.
+Elegir $K$ con $2^K\ge N$; un \'arbol muy profundo puede agotar la pila del DFS.
 
 \begin{lstlisting} [style=cpp]
 const int K = 10;

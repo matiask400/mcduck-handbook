@@ -12,6 +12,7 @@ def render_page(branch: str, sha: str, repository: str, *, pending=False) -> str
     other_url = "dev/" if stable else "../"
     other_label = "Ver (dev)" if stable else "Ver (main)"
     repo_url = f"https://github.com/{escape(repository, quote=True)}"
+    pdf_url = f"McDuck-Handbook.pdf?v={escape(sha, quote=True)}"
     release = (
         f'<a href="{repo_url}/releases/latest">Última release</a>' if stable else ""
     )
@@ -19,9 +20,9 @@ def render_page(branch: str, sha: str, repository: str, *, pending=False) -> str
         '<p>El PDF de (main) estará disponible después de la primera publicación desde esa rama.</p>'
         if pending
         else f"""<p>Commit <a href="{repo_url}/commit/{escape(sha, quote=True)}">{escape(sha[:7])}</a></p>
-    <p><a href="McDuck-Handbook.pdf" download>Descargar PDF</a> ·
-       <a href="McDuck-Handbook.pdf">Abrir PDF</a></p>
-    <iframe src="McDuck-Handbook.pdf" title="McDuck ICPC Handbook — {title}"></iframe>"""
+    <p><a href="{pdf_url}" download>Descargar PDF</a> ·
+       <a href="{pdf_url}">Abrir PDF</a></p>
+    <iframe src="{pdf_url}" title="McDuck ICPC Handbook — {title}"></iframe>"""
     )
     return f"""<!doctype html>
 <html lang="es">

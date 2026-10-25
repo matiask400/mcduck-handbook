@@ -1,10 +1,18 @@
-\section{Miller--Rabin determinista para 64 bits}
-\whenuse{Testear primalidad de enteros de 64 bits demasiado grandes para una
-criba o divisi\'on hasta la ra\'iz.}
-\complexity{$O(\log^3 n)$ con una cantidad constante de bases; memoria $O(1)$.}
+\section{Pollard--Rho con Brent}
+\whenuse{Factorizar enteros de 64 bits con poco c\'odigo. Incluye Miller--Rabin
+determinista de siete bases y Brent con bloque 128 y reinicios.}
+\complexity{Primalidad: $O(\log n)$ productos modulares. Para encontrar un
+factor $p$, tiempo heur\'istico $O(\sqrt p)$, aproximadamente $O(n^{1/4})$
+en el caso dif\'icil; memoria $O(\log n)$ por recursi\'on. Sin cota de tiempo
+total por los reinicios.}
+
+Esta versi\'on es completa: copiar sus dos bloques. Usa \texttt{u128\%n};
+no requiere el c\'odigo optimizado de abajo. Requiere $1\le n<2^{64}$.
+Miller--Rabin verifica primalidad; Brent encuentra un divisor compuesto o primo.
 
 \begin{lstlisting}[style=cpp]
 using u64 = uint64_t;
+using u128 = __uint128_t;
 
 u64 multiply_mod_u64(u64 a, u64 b, u64 mod) {
     return (u128)a * b % mod;
@@ -46,11 +54,8 @@ bool is_prime_u64(u64 n) {
 }
 \end{lstlisting}
 
-\section{Pollard--Rho}
-\whenuse{Factorizar enteros compuestos de 64 bits sin factores peque\~nos; combinar
-con Miller--Rabin para detener la recursi\'on en primos.}
-\complexity{tiempo esperado aproximadamente $O(n^{1/4})$ por factor encontrado;
-memoria $O(\log n)$ por la recursi\'on.}
+\textbf{Brent y factorizaci\'on.} Un MCD por bloque; si da $n$, recuperar
+el bloque individualmente. Reiniciar si no se obtiene un divisor propio.
 
 \begin{lstlisting}[style=cpp]
 u64 pollard_rho(u64 n) {
@@ -61,22 +66,44 @@ u64 pollard_rho(u64 n) {
 
     while (true) {
         u64 c = uniform_int_distribution<u64>(1, n - 1)(rng);
-        u64 x = uniform_int_distribution<u64>(0, n - 1)(rng);
-        u64 y = x, divisor = 1;
+        u64 y = uniform_int_distribution<u64>(0, n - 1)(rng);
+        u64 x = 0, saved = y, divisor = 1;
+        constexpr u64 BLOCK = 128, LIMIT = 1ULL << 18;
+        u64 length = 1, batch = 0;
         auto advance = [&](u64 value) {
             return (u64)(((u128)multiply_mod_u64(value, value, n) + c) % n);
         };
-        while (divisor == 1) {
-            x = advance(x);
-            y = advance(advance(y));
-            u64 difference = x > y ? x - y : y - x;
-            divisor = gcd(difference, n);
+        while (divisor == 1 && length <= LIMIT) {
+            x = y;
+            for (u64 i = 0; i < length; ++i) y = advance(y);
+            for (u64 offset = 0; offset < length && divisor == 1;
+                 offset += batch) {
+                saved = y;
+                batch = min(BLOCK, length - offset);
+                u64 product = 1;
+                for (u64 i = 0; i < batch; ++i) {
+                    y = advance(y);
+                    u64 difference = x > y ? x - y : y - x;
+                    product = multiply_mod_u64(product, difference, n);
+                }
+                divisor = gcd(product, n);
+            }
+            length <<= 1;
         }
-        if (divisor != n) return divisor;
+        if (divisor == n) {
+            divisor = 1;
+            for (u64 i = 0; i < batch && divisor == 1; ++i) {
+                saved = advance(saved);
+                u64 difference = x > saved ? x - saved : saved - x;
+                divisor = gcd(difference, n);
+            }
+        }
+        if (divisor > 1 && divisor < n) return divisor;
     }
 }
 
 void factor_u64(u64 n, map<u64,int> &factors) {
+    assert(n >= 1);
     if (n == 1) return;
     if (is_prime_u64(n)) { ++factors[n]; return; }
     u64 divisor = pollard_rho(n);
@@ -85,5 +112,199 @@ void factor_u64(u64 n, map<u64,int> &factors) {
 }
 \end{lstlisting}
 
-El algoritmo es probabil\'istico en tiempo, pero los factores devueltos se
-validan recursivamente con Miller--Rabin.
+\textbf{Uso:} \texttt{factor\_u64(n, factores)}, donde
+\texttt{factores} es un \texttt{map<u64,int>}. Agrega los exponentes al mapa;
+para $n=1$ no agrega nada. Llamar directamente a \texttt{pollard\_rho}
+solo con un compuesto. Las siete bases garantizan exactitud de primalidad
+para 64 bits; la aleatoriedad de Brent afecta el tiempo, no los factores.
+
+\section{Pollard--Rho con Brent optimizado}
+\whenuse{Muchas factorizaciones o l\'imites ajustados. Esta alternativa completa
+incluye Montgomery, Miller--Rabin de siete bases, Brent con bloque 256,
+reinicios, extracci\'on de primos peque\~nos, cuadrados y acumulaci\'on en vector.}
+\complexity{Conserva el tiempo heur\'istico de Brent: $O(\sqrt p)$ operaciones
+modulares para hallar un factor $p$. Ordenar $k$ factores: $O(k\log k)$;
+memoria de salida y recursi\'on $O(\log n)$. No garantiza un tiempo total m\'aximo.}
+
+Copiar \textbf{solo este bloque}: no depende de la versi\'on anterior.
+Se usa un namespace para que ambas opciones puedan convivir en el notebook.
+La entrada es \texttt{rho\_optimized::factorize(n)} y requiere $n\ge1$;
+devuelve factores primos ordenados con repeticiones, o un vector vac\'io para $1$.
+La primalidad est\'a disponible como \texttt{rho\_optimized::is\_prime(n)}.
+
+Montgomery representa $a$ como $a2^{64}\bmod n$ y evita dividir en cada
+producto. La reducci\'on por diferencia de partes altas evita necesitar un
+acarreo de 129 bits, incluso cuando $n\ge2^{63}$. Los pares se quitan antes
+de construir el contexto. Cada contexto guarda su propio m\'odulo.
+
+\begin{lstlisting}[style=cpp]
+namespace rho_optimized {
+using u64 = uint64_t;
+using u128 = __uint128_t;
+
+constexpr array<u64, 12> SMALL_PRIMES64 = {
+    2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37
+};
+
+struct Montgomery64 {
+    u64 mod, inverse = 1, r2;
+    explicit Montgomery64(u64 n) : mod(n) {
+        assert(n > 1 && (n & 1));
+        // Inversa positiva de n modulo 2^64; overflow unsigned intencional.
+        for (int i = 0; i < 6; ++i)
+            inverse *= 2 - mod * inverse;
+        u64 r = (u128(1) << 64) % mod;
+        r2 = (u128)r * r % mod;
+    }
+    // Requiere t < mod * 2^64. Todo producto de residuos < mod cumple.
+    u64 reduce(u128 t) const {
+        u64 q = (u64)t * inverse;
+        u64 hi = t >> 64;
+        u64 subtract = ((u128)q * mod) >> 64;
+        return hi >= subtract ? hi - subtract : mod - (subtract - hi);
+    }
+    u64 encode(u64 a) const { return mul(a % mod, r2); }
+    u64 decode(u64 a) const { return reduce(a); }
+    u64 one() const { return reduce(r2); }
+    u64 mul(u64 a, u64 b) const { return reduce((u128)a * b); }
+    u64 add(u64 a, u64 b) const {
+        return a >= mod - b ? a - (mod - b) : a + b;
+    }
+};
+
+u64 power_mod_encoded(const Montgomery64& ctx, u64 base, u64 exponent) {
+    u64 result = ctx.one();
+    while (exponent) {
+        if (exponent & 1) result = ctx.mul(result, base);
+        base = ctx.mul(base, base);
+        exponent >>= 1;
+    }
+    return result;
+}
+
+bool is_prime(u64 n) {
+    if (n < 2) return false;
+    for (u64 p : SMALL_PRIMES64)
+        if (n % p == 0) return n == p;
+
+    int s = 0;
+    u64 d = n - 1;
+    while ((d & 1) == 0) d >>= 1, ++s;
+    Montgomery64 ctx(n);
+    u64 one = ctx.one(), minus_one = ctx.encode(n - 1);
+    for (u64 a : {2ULL, 325ULL, 9375ULL, 28178ULL, 450775ULL,
+                  9780504ULL, 1795265022ULL}) {
+        if (a % n == 0) continue;
+        u64 x = power_mod_encoded(ctx, ctx.encode(a), d);
+        if (x == one || x == minus_one) continue;
+        bool composite = true;
+        for (int r = 1; r < s; ++r) {
+            x = ctx.mul(x, x);
+            if (x == minus_one) { composite = false; break; }
+        }
+        if (composite) return false;
+    }
+    return true;
+}
+
+// Requiere n compuesto. Bloque 256 y reinicios por intento.
+u64 pollard(u64 n) {
+    if (n % 2 == 0) return 2;
+    if (n % 3 == 0) return 3;
+    static mt19937_64 rng(chrono::steady_clock::now()
+                          .time_since_epoch().count());
+    constexpr u64 BLOCK = 256, LIMIT = 1ULL << 18;
+    Montgomery64 ctx(n);
+    while (true) {
+        u64 c = ctx.encode(uniform_int_distribution<u64>(1, n - 1)(rng));
+        u64 y = ctx.encode(uniform_int_distribution<u64>(0, n - 1)(rng));
+        u64 x = 0, saved = y, divisor = 1;
+        u64 length = 1, batch = 0;
+        auto advance = [&](u64 value) {
+            return ctx.add(ctx.mul(value, value), c);
+        };
+        while (divisor == 1 && length <= LIMIT) {
+            x = y;
+            for (u64 i = 0; i < length; ++i) y = advance(y);
+            for (u64 offset = 0; offset < length && divisor == 1;
+                 offset += batch) {
+                saved = y;
+                batch = min(BLOCK, length - offset);
+                u64 product = ctx.one();
+                for (u64 i = 0; i < batch; ++i) {
+                    y = advance(y);
+                    u64 difference = x > y ? x - y : y - x;
+                    product = ctx.mul(product, difference);
+                }
+                divisor = gcd(product, n);
+            }
+            length <<= 1;
+        }
+        if (divisor == n) {
+            divisor = 1;
+            for (u64 i = 0; i < batch && divisor == 1; ++i) {
+                saved = advance(saved);
+                u64 difference = x > saved ? x - saved : saved - x;
+                divisor = gcd(difference, n);
+            }
+        }
+        if (divisor > 1 && divisor < n) return divisor;
+    }
+}
+
+// sqrtl solo aproxima; las correcciones enteras hacen exacta la raiz.
+u64 isqrt(u64 n) {
+    u64 r = (u64)sqrtl((long double)n);
+    while ((u128)r * r > n) --r;
+    while ((u128)(r + 1) * (r + 1) <= n) ++r;
+    return r;
+}
+
+void collect(u64 n, vector<u64>& out) {
+    if (n == 1) return;
+    u64 r = isqrt(n);
+    if ((u128)r * r == n) {
+        size_t begin = out.size();
+        collect(r, out);
+        size_t end = out.size();
+        for (size_t i = begin; i < end; ++i) {
+            u64 p = out[i];
+            out.push_back(p);
+        }
+        return;
+    }
+    if (is_prime(n)) { out.push_back(n); return; }
+    u64 d = pollard(n);
+    collect(d, out);
+    collect(n / d, out);
+}
+
+vector<u64> factorize(u64 n) {
+    assert(n >= 1); // 0 no tiene factorizacion prima finita.
+    vector<u64> out;
+    out.reserve(64);
+    // Quitar factores pequenos una sola vez, antes de la recursion.
+    for (u64 p : SMALL_PRIMES64) {
+        while (n % p == 0) { out.push_back(p); n /= p; }
+        if (n == 1) break;
+    }
+    collect(n, out);
+    sort(out.begin(), out.end());
+    return out;
+}
+} // namespace rho_optimized
+\end{lstlisting}
+
+\textbf{Detalles importantes.} La inversa usa overflow unsigned intencional;
+los productos usan \texttt{u128}. No mezclar residuos normales y codificados;
+la identidad codificada es \texttt{ctx.one()}. Los MCD tambi\'en sirven sobre
+residuos codificados porque $\gcd(2^{64}a,n)=\gcd(a,n)$ para $n$ impar.
+La ra\'iz usa \texttt{sqrtl} solo como aproximaci\'on y se corrige exactamente.
+Los cuadrados se factorizan por la ra\'iz una vez y se duplican sus factores.
+
+El bloque 256 mejor\'o los tiempos locales para factores grandes, pero no es
+un \'optimo universal. La versi\'on corta puede pasar el mismo problema y ser
+preferible por simplicidad. En \textit{Fuzzy Factorization}, conservar diez
+d\'igitos deja un n\'umero menor que $10^{10}$: incluso divisi\'on por tentativa
+alcanza. \texttt{assert} detecta entradas inv\'alidas durante pruebas y se
+elimina con \texttt{-DNDEBUG}; el llamador debe respetar $n\ge1$.
