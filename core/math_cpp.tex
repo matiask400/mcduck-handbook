@@ -30,7 +30,10 @@ Para calcular raíces cuadradas enteras, se recomienda utilizar la función
 Para realizar una división entera redondeando el resultado hacia arriba,
 utilizar \texttt{ceil\_division}.
 
-Para cualquier base entera y exponente no negativo usar \texttt{binary\_power}. Usar la de long double en caso de querer usar negativos como exponente
+Para potencias enteras usar \texttt{binary\_power}: requiere exponente no
+negativo y que la respuesta entre en \texttt{long long}. La sobrecarga real
+admite exponentes negativos. Usar \texttt{2LL} o \texttt{2.0L} para elegir
+expl\'icitamente la versi\'on entera o real.
 }
 
 \begin{lstlisting}[style=cpp]
@@ -42,96 +45,81 @@ ll integer_sqrt(ll value) {
     return root; // floor(sqrt(value))
 }
 
-ll ceil_division(ll numerator, ll denominator) {
-    assert(denominator != 0);
-    ll quotient = numerator / denominator;
-    ll remainder = numerator % denominator;
-    if (remainder != 0 && ((remainder > 0) == (denominator > 0))) ++quotient;
-    return quotient;
+ll ceil_division(ll a, ll b) {
+    assert(b && !(a == numeric_limits<ll>::min() && b == -1));
+    ll q = a / b, r = a % b;
+    return q + (r != 0 && ((r > 0) == (b > 0)));
 }
 
-ll floor_division(ll numerator, ll denominator) {
-    assert(denominator != 0);
-    ll quotient = numerator / denominator;
-    ll remainder = numerator % denominator;
-    if (remainder != 0 && ((remainder > 0) != (denominator > 0))) --quotient;
-    return quotient;
+ll floor_division(ll a, ll b) {
+    assert(b && !(a == numeric_limits<ll>::min() && b == -1));
+    ll q = a / b, r = a % b;
+    return q - (r != 0 && ((r > 0) != (b > 0)));
 }
 
-ll binary_power(ll base, long long exponent) {
+ll binary_power(ll base, ll exponent) {
     assert(exponent >= 0);
     ll result = 1;
-    while (exponent > 0) {
-        if (exponent & 1LL) {
-            result *= base;
-        }
-        base *= base;
-        exponent >>= 1;
+    for (; exponent; exponent >>= 1) {
+        if (exponent & 1) result *= base;
+        if (exponent > 1) base *= base; // Evita el cuadrado final innecesario.
     }
     return result;
 }
 
-long double binary_power(long double base, long long exponent) {
+long double binary_power(long double base, ll exponent) {
     assert(base != 0.0L || exponent >= 0);
-    bool negative_exponent = exponent < 0;
     // Convierte |exponent| sin desbordar cuando exponent == LLONG_MIN.
-    unsigned long long e;
-    if (negative_exponent) {
-        e = -(unsigned long long)exponent;
-    } else {
-        e = (unsigned long long)exponent;
-    }
+    unsigned long long e = exponent < 0 ? -(unsigned long long)exponent
+                                       : (unsigned long long)exponent;
     long double result = 1.0L;
-    while (e > 0) {
-        if (e & 1ULL) {
-            result *= base;
-        }
-        base *= base;
-        e >>= 1;
+    for (; e; e >>= 1) {
+        if (e & 1) result *= base;
+        if (e > 1) base *= base;
     }
-    return negative_exponent ? 1.0L / result : result;
+    return exponent < 0 ? 1.0L / result : result;
 }
 
-ll modular_power(ll base, long long exponent, ll modulus) {
-    assert(exponent >= 0);
-    assert(modulus > 0);
+ll modular_power(ll base, ll exponent, ll modulus) {
+    assert(exponent >= 0 && modulus > 0);
     base %= modulus;
     if (base < 0) base += modulus;
     ll result = 1 % modulus;
-    while (exponent > 0) {
-        if (exponent & 1LL) {
-            result = (i128)result * base % modulus;
-        }
-        base = (i128)base * base % modulus;
-        exponent >>= 1;
+    for (; exponent; exponent >>= 1) {
+        if (exponent & 1) result = (i128)result * base % modulus;
+        if (exponent > 1) base = (i128)base * base % modulus;
     }
     return result;
 }
 \end{lstlisting}
 
+\texttt{integer\_sqrt} ya usa una aproximaci\'on r\'apida con \texttt{sqrtl};
+las correcciones enteras conservan exactitud cerca de cuadrados grandes.
+Las divisiones requieren divisor no nulo y cociente representable: excluir
+\texttt{LLONG\_MIN / -1}. Las potencias usan $O(\log e)$ multiplicaciones
+y $O(1)$ memoria; para $e=0$ devuelven la identidad.
+
 \subsubsection{Potencia de 2}
 
-Para las potencias de dos, es mucho mas rapido y recomendado utilizar operaciones de bits "<<".
-\warning{Tener en cuenta que al estar moviendo bits, nos podríamos llegar a pasar en la cantidad de bits del tipo de dato, causando un overflow.
-Para cada tipo de dato la potencia maxima es:
-\begin{itemize}
-    \item Integer: 32 bits
-    \item Long Long: 64 bits
-    \item Integer 128: 128 bits
-\end{itemize}
-}
+Para potencias de dos, usar desplazamientos.
+\warning{El tipo de la izquierda se determina antes de asignar: usar
+\texttt{1LL << k} para \texttt{long long}, con $0\le k\le62$ para un resultado
+positivo. Para \texttt{unsigned long long}, usar \texttt{1ULL << k} con
+$0\le k\le63$. Nunca desplazar por un valor negativo ni por el ancho del tipo
+o m\'as.}
 
 \begin{lstlisting} [style=cpp]
-    // Potencia 2 elevado a la k
-    ll x = 1 << k;
+    // Potencia 2 elevado a la k; requiere 0 <= k <= 62.
+    int k = 40;
+    ll x = 1LL << k;
 
-    // Maxima potencia para cada tipo de dato
-    int x = 1 << 30;
-    unsigned int x = 1U << 31;
-    ll x = 1LL << 62;
-    ull x = 1ULL << 63;
-    i128 x = (i128)1 << 126;
-    u128 x = (u128)1 << 127;
+    // Maxima potencia positiva para tipos de 32, 64 y 128 bits.
+    int p_int = 1 << 30;
+    unsigned int p_uint = 1U << 31;
+    ll p_ll = 1LL << 62;
+    unsigned long long p_ull = 1ULL << 63;
+    i128 p_i128 = (i128)1 << 126;
+    u128 p_u128 = (u128)1 << 127;
 \end{lstlisting}
 
 \subsection{Punto flotante}
