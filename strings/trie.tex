@@ -41,6 +41,17 @@ struct Trie {
         }
         return nodes[v].terminal;
     }
+
+    int count_prefix(const string &prefix) const {
+        int v = 0;
+        for (char c : prefix) {
+            int letter = c - 'a';
+            if (letter < 0 || letter >= 26 || nodes[v].next[letter] == -1)
+                return 0;
+            v = nodes[v].next[letter];
+        }
+        return nodes[v].passing;
+    }
 };
 \end{lstlisting}
 
