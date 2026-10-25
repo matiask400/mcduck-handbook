@@ -136,13 +136,16 @@ cout<<point_in_polygon(polygon,{5,2})<<'\n'; // 0: afuera
 primero convex hull si la entrada es un conjunto desordenado.}
 \complexity{$O(n)$ tiempo y $O(1)$ memoria adicional.}
 
-El pol\'igono debe ser convexo, sin puntos repetidos y en orden c\'iclico.
+El pol\'igono debe ser convexo, sin puntos repetidos y con sus v\'ertices en
+orden sobre el borde, horario o antihorario. Se detecta el sentido una sola
+vez y se elige la comparaci\'on correspondiente, sin copiar ni invertir el
+pol\'igono. Eliminar v\'ertices colineales intermedios con \texttt{convex\_hull}
+antes de usar calipers. Si todos son colineales, se toman los extremos.
 
 \begin{lstlisting}[style=cpp]
-i128 convex_diameter_squared(const vector<Point> &polygon) {
+template<bool Clockwise>
+i128 convex_diameter_oriented(const vector<Point> &polygon) {
     int n = polygon.size();
-    if (n <= 1) return 0;
-    if (n == 2) return squared_distance(polygon[0], polygon[1]);
     i128 answer = 0;
     int opposite = 1;
     for (int i = 0; i < n; ++i) {
@@ -153,13 +156,32 @@ i128 convex_diameter_squared(const vector<Point> &polygon) {
                                       polygon[opposite] - polygon[i]);
             i128 next_area = cross(polygon[next] - polygon[i],
                                    polygon[candidate] - polygon[i]);
-            if (next_area <= current_area) break;
+            if constexpr (Clockwise) {
+                if (next_area >= current_area) break;
+            } else {
+                if (next_area <= current_area) break;
+            }
             opposite = candidate;
         }
         answer = max(answer, squared_distance(polygon[i], polygon[opposite]));
         answer = max(answer, squared_distance(polygon[next], polygon[opposite]));
     }
     return answer;
+}
+
+i128 convex_diameter_squared(const vector<Point> &polygon) {
+    int n = polygon.size();
+    if (n <= 1) return 0;
+    if (n == 2) return squared_distance(polygon[0], polygon[1]);
+    for (int i = 0; i < n; ++i) {
+        i128 turn = cross(polygon[i], polygon[(i + 1) % n],
+                          polygon[(i + 2) % n]);
+        if (turn > 0) return convex_diameter_oriented<false>(polygon);
+        if (turn < 0) return convex_diameter_oriented<true>(polygon);
+    }
+    // Todos colineales: los extremos lexicograficos son los mas lejanos.
+    auto [first, last] = minmax_element(polygon.begin(), polygon.end());
+    return squared_distance(*first, *last);
 }
 \end{lstlisting}
 
@@ -168,5 +190,7 @@ vector<Point> points={{0,0},{2,0},{2,2},{0,2},{1,1}};
 vector<Point> hull=convex_hull(points);
 i128 diameter_squared=convex_diameter_squared(hull);
 cout<<(ll)diameter_squared<<'\n'; // 8: distancia entre esquinas opuestas
+reverse(hull.begin(),hull.end()); // El mismo poligono en sentido horario.
+cout<<(ll)convex_diameter_squared(hull)<<'\n'; // Tambien 8
 // La distancia real es sqrt(8); se conserva al cuadrado para evitar decimales.
 \end{lstlisting}
