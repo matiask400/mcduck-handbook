@@ -25,21 +25,46 @@ ll knapsack_01(const vector<int> &weight, const vector<ll> &value,
 \whenuse{El estado depende del subconjunto exacto de elementos ya usados y
 $n$ es peque\~no, normalmente $n\le 20$.}
 
+Encuentra el costo m\'inimo de un camino que visita cada v\'ertice exactamente
+una vez, con inicio y fin libres; no exige volver al inicio. La matriz cuadrada
+\texttt{cost[u][v]} representa un grafo dirigido: usar \texttt{LINF} si no existe
+la arista $u\to v$. Para un grafo no dirigido, cargar ambos sentidos.
+Admite costos negativos y devuelve \texttt{LINF} si no existe un camino completo;
+con un solo v\'ertice devuelve cero. Devuelve el costo, no la secuencia de nodos.
+Se precalculan m\'ascaras de aristas existentes para recorrer s\'olo los vecinos
+que a\'un no fueron visitados.
+
 \begin{lstlisting}[style=cpp]
 ll hamiltonian_path(const vector<vector<ll>> &cost) {
     int n = cost.size();
     assert(1 <= n && n < 31);
+    assert(all_of(cost.begin(), cost.end(), [n](const auto &row) {
+        return (int)row.size() == n;
+    }));
     int states = 1 << n;
+    vector<int> outgoing(n, 0);
+    for (int u = 0; u < n; ++u)
+        for (int v = 0; v < n; ++v)
+            if (cost[u][v] != LINF) outgoing[u] |= 1 << v;
     vector<vector<ll>> dp(states, vector<ll>(n, LINF));
     for (int v = 0; v < n; ++v) dp[1 << v][v] = 0;
     for (int mask = 1; mask < states; ++mask)
         for (int last = 0; last < n; ++last) if (dp[mask][last] != LINF)
-            for (int next = 0; next < n; ++next) if (!(mask >> next & 1))
+            for (int nexts = outgoing[last] & ~mask; nexts; nexts &= nexts - 1) {
+                int next = __builtin_ctz((unsigned)nexts); // nexts != 0
                 dp[mask | (1 << next)][next] = min(
                     dp[mask | (1 << next)][next],
                     dp[mask][last] + cost[last][next]);
+            }
     return *min_element(dp.back().begin(), dp.back().end());
 }
 \end{lstlisting}
 
 \complexity{$O(2^n n^2)$ tiempo y $O(2^n n)$ memoria; usar para $n$ peque\~no.}
+
+\warning{Requiere $1\le n<31$ para la m\'ascara, pero tiempo y memoria suelen
+limitarlo mucho antes: con $n=20$, s\'olo los valores de la DP ocupan 160 MiB,
+m\'as el costo de los vectores. Los costos finitos y todas las sumas parciales
+deben estar estrictamente entre $-\texttt{LINF}$ y $\texttt{LINF}$.
+Una cota suficiente, para $n>1$, es $(n-1)\max|w|<\texttt{LINF}$ sobre las
+aristas existentes. Nunca sumar la marca de arista inexistente.}
