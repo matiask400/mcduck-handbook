@@ -58,7 +58,8 @@ jobs:
           retention-days: 30
 
       - name: Publicar PDF en Releases (solo main)
-        if: github.ref == 'refs/heads/main'
+        # Permite actualizar Pages sin crear una release en ese push.
+        if: github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[skip release]')
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
