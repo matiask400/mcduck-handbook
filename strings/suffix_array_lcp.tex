@@ -71,14 +71,13 @@ Ejemplo de uso:
 string s="banana";
 vector<int> sa=suffix_array(s);  // 5 3 1 0 4 2
 vector<int> lcp=lcp_array(s,sa); // 1 3 0 0 2
-ll distinct=(ll)s.size()*(s.size()+1)/2
-            -accumulate(lcp.begin(),lcp.end(),0LL);
-cout<<distinct<<'\n'; // 15
 // Cantidad de substrings distintos:
-ll total=(ll)n*(n+1)/2;
+ll n=s.size();
+ll total=n*(n+1)/2;
 ll repeated=accumulate(lcp.begin(),lcp.end(),0LL);
 ll distinct=total-repeated;
-//Porque hay \(n(n+1)/2\) substrings en total, pero cada lcp[i] representa prefijos ya vistos en el sufijo anterior.
+cout<<distinct<<'\n'; // 15
+// Cada lcp[i] cuenta prefijos compartidos por dos sufijos consecutivos.
 \end{lstlisting}
 
 La cantidad de substrings distintos es
