@@ -101,39 +101,87 @@ cout << distance[3] << '\n'; // 1
 alcanzables; s\'olo para grafos moderados por su costo cuadr\'atico.}
 
 Admite pesos negativos. Tras $V-1$ rondas, una relajaci\'on adicional indica
-un ciclo negativo alcanzable desde la fuente.
+un ciclo negativo alcanzable desde la fuente. Usa \texttt{i128} internamente,
+sin recortar distancias durante la detecci\'on. Devuelve \texttt{\{distancias,false\}}
+o \texttt{\{\{\},true\}} si hay ciclo negativo alcanzable. Los inalcanzables valen
+\texttt{LINF}; lanza \texttt{overflow\_error} si una distancia finita no entra en
+\texttt{long long} o coincide con esa marca.
+Para reconstruir, descomentar las l\'ineas marcadas \texttt{Reconstruccion} y
+el ejemplo opcional: agrega $O(V)$ memoria; recuperar un camino cuesta $O(V)$.
 
 \begin{lstlisting}[style=cpp]
 struct WeightedEdge { int from, to; ll weight; };
 
 pair<vector<ll>, bool> bellman_ford(
-        int n, const vector<WeightedEdge> &edges, int source) {
-    vector<ll> distance(n, LINF);
+        int n, const vector<WeightedEdge> &edges, int source
+        // , vector<int>& parent // Reconstruccion: parametro de salida.
+) {
+    assert(n > 0 && 0 <= source && source < n);
+    // parent.assign(n, -1); // Reconstruccion: sin padre inicialmente.
+    const i128 INF128 = (i128)1 << 126;
+    vector<i128> distance(n, INF128);
     distance[source] = 0;
     for (int iteration = 0; iteration < n - 1; ++iteration) {
         bool changed = false;
         for (auto [from, to, weight] : edges) {
-            if (distance[from] == LINF) continue;
-            i128 raw = (i128)distance[from] + weight;
-            ll candidate = raw < -LINF ? -LINF
-                         : raw > LINF ? LINF : (ll)raw;
+            if (distance[from] == INF128) continue;
+            i128 candidate = distance[from] + weight;
             if (candidate < distance[to]) {
                 distance[to] = candidate;
+                // parent[to] = from; // Reconstruccion: guardar predecesor.
                 changed = true;
             }
         }
         if (!changed) break;
     }
-    bool negative_cycle = false;
     for (auto [from, to, weight] : edges)
-        if (distance[from] != LINF &&
-            (i128)distance[from] + weight < distance[to])
-            negative_cycle = true;
-    return {distance, negative_cycle};
+        if (distance[from] != INF128 && distance[from] + weight < distance[to])
+            return {{}, true};
+    vector<ll> result(n, LINF);
+    for (int v = 0; v < n; ++v) if (distance[v] != INF128) {
+        if (distance[v] < numeric_limits<ll>::min() ||
+            distance[v] > numeric_limits<ll>::max() || distance[v] == LINF)
+            throw overflow_error("distance outside output range");
+        result[v] = (ll)distance[v];
+    }
+    return {std::move(result), false};
 }
+
+// Ejemplo opcional: activar antes las tres lineas de Reconstruccion.
+// vector<WeightedEdge> edges = {{0,1,4}, {0,2,5}, {1,2,-2}, {2,3,3}};
+// vector<int> parent;
+// int source = 0, target = 3;
+// auto [distance, negative_cycle] = bellman_ford(4, edges, source, parent);
+// vector<int> path;
+// if (!negative_cycle && distance[target] != LINF) {
+//     for (int v = target; v != -1; v = parent[v]) path.push_back(v);
+//     reverse(path.begin(), path.end());
+// }
+// for (int v : path) cout << v << ' '; // 0 1 2 3, costo 5
+// Si no hay ciclo y target == source, path contiene solo source.
 \end{lstlisting}
 
 \complexity{$O(VE)$ tiempo y $O(V)$ memoria.}
+\warning{Requiere v\'ertices 0-indexados y pesos \texttt{long long}.
+No usar las distancias si el indicador de ciclo es verdadero.}
+
+Ejemplo de manejo de salida: cada arista entra en \texttt{long long}, pero
+la suma de dos costos m\'aximos no. El \texttt{catch} imprime \texttt{overflow}.
+
+\begin{lstlisting}[style=cpp]
+void bellman_ford_output_example() {
+    ll weight = numeric_limits<ll>::max();
+    vector<WeightedEdge> edges = {{0,1,weight}, {1,2,weight}};
+    try {
+        auto [distance, negative_cycle] = bellman_ford(3, edges, 0);
+        if (negative_cycle) cout << "Ciclo negativo\n";
+        else if (distance[2] == LINF) cout << "Inalcanzable\n";
+        else cout << distance[2] << '\n';
+    } catch (const overflow_error&) {
+        cout << "overflow\n";
+    }
+}
+\end{lstlisting}
 
 \section{Floyd--Warshall}
 \whenuse{Distancias entre todos los pares cuando $V$ es peque\~no; tambi\'en para
