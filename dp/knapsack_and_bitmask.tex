@@ -4,22 +4,44 @@ maximizar valor o decidir qu\'e sumas son alcanzables.}
 
 Cada objeto puede elegirse a lo sumo una vez; por eso la capacidad se recorre
 en orden descendente.
+Para recuperar sus \emph{\'indices}, activar los comentarios: las decisiones
+usan $O(nW)$ bits adicionales y la recuperaci\'on cuesta $O(n)$. Admite peso cero;
+pesos no negativos y sumas de valores que entren en \texttt{long long}.
 
 \begin{lstlisting}[style=cpp]
 ll knapsack_01(const vector<int> &weight, const vector<ll> &value,
-               int capacity) {
+               int capacity
+    // , vector<int>& chosen // Reconstruccion: indices elegidos.
+) {
     assert(weight.size() == value.size() && capacity >= 0);
     assert(all_of(weight.begin(), weight.end(), [](int w) { return w >= 0; }));
     vector<ll> dp(capacity + 1, 0);
+    // vector<vector<bool>> take(weight.size(), vector<bool>(capacity + 1, false));
     for (int item = 0; item < (int)weight.size(); ++item)
-        for (int current = capacity; current >= weight[item]; --current)
+        for (int current = capacity; current >= weight[item]; --current) {
+            // if (dp[current - weight[item]] + value[item] > dp[current]) take[item][current] = true;
             dp[current] = max(dp[current],
                               dp[current - weight[item]] + value[item]);
+        }
+    // chosen.clear();
+    // for (int item = (int)weight.size() - 1, current = capacity; item >= 0; --item)
+    //     if (take[item][current]) { chosen.push_back(item); current -= weight[item]; }
+    // reverse(chosen.begin(), chosen.end());
     return *max_element(dp.begin(), dp.end());
 }
 \end{lstlisting}
 
 \complexity{$O(nW)$ tiempo y $O(W)$ memoria.}
+
+Ejemplo opcional, tras activar los comentarios anteriores:
+\begin{lstlisting}[style=cpp]
+// void knapsack_recovery_example() {
+//     vector<int> weight = {2,3,4}, chosen;
+//     vector<ll> value = {4,5,7};
+//     cout << knapsack_01(weight, value, 5, chosen) << '\n'; // 9
+//     for (int item : chosen) cout << item << ' '; // 0 1
+// }
+\end{lstlisting}
 
 \section{Bitmask DP: camino hamiltoniano m\'inimo}
 \whenuse{El estado depende del subconjunto exacto de elementos ya usados y
@@ -33,9 +55,13 @@ Admite costos negativos y devuelve \texttt{LINF} si no existe un camino completo
 con un solo v\'ertice devuelve cero. Devuelve el costo, no la secuencia de nodos.
 Se precalculan m\'ascaras de aristas existentes para recorrer s\'olo los vecinos
 que a\'un no fueron visitados.
+La reconstrucci\'on comentada reutiliza la DP: agrega $O(n)$ memoria para la
+secuencia y cuesta $O(n^2)$ al terminar. Si no hay camino, queda vac\'ia.
 
 \begin{lstlisting}[style=cpp]
-ll hamiltonian_path(const vector<vector<ll>> &cost) {
+ll hamiltonian_path(const vector<vector<ll>> &cost
+    // , vector<int>& path // Reconstruccion: vertices en orden.
+) {
     int n = cost.size();
     assert(1 <= n && n < 31);
     assert(all_of(cost.begin(), cost.end(), [n](const auto &row) {
@@ -56,6 +82,23 @@ ll hamiltonian_path(const vector<vector<ll>> &cost) {
                     dp[mask | (1 << next)][next],
                     dp[mask][last] + cost[last][next]);
             }
+    // path.clear();
+    // int last = min_element(dp.back().begin(), dp.back().end()) - dp.back().begin();
+    // if (dp.back()[last] != LINF) for (int mask = states - 1; ; ) {
+    //     path.push_back(last);
+    //     int previous_mask = mask ^ (1 << last);
+    //     if (previous_mask == 0) break;
+    //     int previous = -1;
+    //     for (int v = 0; v < n; ++v)
+    //         if ((previous_mask >> v & 1) && cost[v][last] != LINF &&
+    //             dp[previous_mask][v] != LINF &&
+    //             dp[previous_mask][v] + cost[v][last] == dp[mask][last]) {
+    //             previous = v; break;
+    //         }
+    //     assert(previous != -1);
+    //     last = previous; mask = previous_mask;
+    // }
+    // reverse(path.begin(), path.end());
     return *min_element(dp.back().begin(), dp.back().end());
 }
 \end{lstlisting}
@@ -68,3 +111,15 @@ m\'as el costo de los vectores. Los costos finitos y todas las sumas parciales
 deben estar estrictamente entre $-\texttt{LINF}$ y $\texttt{LINF}$.
 Una cota suficiente, para $n>1$, es $(n-1)\max|w|<\texttt{LINF}$ sobre las
 aristas existentes. Nunca sumar la marca de arista inexistente.}
+
+\begin{lstlisting}[style=cpp]
+// void hamiltonian_recovery_example() {
+//     vector<vector<ll>> cost = {{0,4,5}, {LINF,0,-2}, {LINF,LINF,0}};
+//     vector<int> path;
+//     ll answer = hamiltonian_path(cost, path);
+//     if (answer == LINF) cout << "Sin camino\n";
+//     else { cout << answer << '\n'; // 2
+//         for (int v : path) cout << v << ' '; // 0 1 2
+//     }
+// }
+\end{lstlisting}
