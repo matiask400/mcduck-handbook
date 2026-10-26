@@ -1,0 +1,32 @@
+{
+  "compiler": "g++-15",
+  "cxxflags": [
+    "-isysroot",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+    "-idirafter",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+  ],
+  "architecture": "arm64",
+  "system": "Darwin",
+  "n": 40,
+  "runs": 3,
+  "median_wall_s": 0.22491016700223554,
+  "max_peak_rss_mib": 34.46875,
+  "samples": [
+    {
+      "wall_s": 0.2917070420080563,
+      "peak_rss_mib": 34.46875,
+      "output": "algorithm_ms=282.014"
+    },
+    {
+      "wall_s": 0.22491016700223554,
+      "peak_rss_mib": 34.46875,
+      "output": "algorithm_ms=216.025"
+    },
+    {
+      "wall_s": 0.21284062499762513,
+      "peak_rss_mib": 34.453125,
+      "output": "algorithm_ms=203.087"
+    }
+  ]
+}
