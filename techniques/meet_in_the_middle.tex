@@ -1,0 +1,46 @@
+\section{Meet-in-the-middle: suma de subconjuntos}
+\whenuse{Unos 40 elementos hacen inviable $2^n$, pero se pueden enumerar dos
+mitades y combinar sus sumas. Admite n\'umeros negativos.}
+\complexity{Tiempo $O(n2^{n/2})$ por enumeraci\'on, ordenamiento y b\'usquedas;
+memoria $O(2^{n/2})$. Con $n=40$, las dos listas suelen ocupar unos 32 MiB.}
+
+\begin{lstlisting}[style=cpp]
+optional<vector<int>> subset_sum_mitm(const vector<ll> &a, ll target) {
+    int n = a.size(), middle = n / 2;
+    assert(n <= 40);
+    auto enumerate = [&](int begin, int length) {
+        vector<pair<ll,int>> sums{{0, 0}};
+        sums.reserve(1 << length);
+        for (int i = 0; i < length; ++i) {
+            int size = sums.size();
+            for (int mask = 0; mask < size; ++mask)
+                sums.push_back({sums[mask].first + a[begin + i],
+                                sums[mask].second | (1 << i)});
+        }
+        return sums;
+    };
+    auto left = enumerate(0, middle), right = enumerate(middle, n - middle);
+    sort(right.begin(), right.end());
+    for (auto [sum, mask] : left) {
+        i128 raw = (i128)target - sum;
+        if (raw < numeric_limits<ll>::min() || raw > numeric_limits<ll>::max()) continue;
+        ll wanted = (ll)raw;
+        auto it = lower_bound(right.begin(), right.end(), pair<ll,int>{wanted, 0});
+        if (it == right.end() || it->first != wanted) continue;
+        vector<int> chosen;
+        for (int i = 0; i < middle; ++i) if (mask >> i & 1) chosen.push_back(i);
+        for (int i = 0; i < n - middle; ++i)
+            if (it->second >> i & 1) chosen.push_back(middle + i);
+        return chosen;
+    }
+    return nullopt;
+}
+void mitm_example() {
+    auto chosen = subset_sum_mitm({7,-3,10,5}, 12);
+    if (chosen) for (int i : *chosen) cout << i << ' '; // Una solucion: 0 3.
+}
+\end{lstlisting}
+
+\warning{Todas las sumas de subconjuntos deben entrar en \texttt{long long}.
+Con $n=50$ estas dos listas ocupar\'ian aproximadamente 1 GiB: esta plantilla
+no escala a miles de elementos sin una reducci\'on adicional.}
