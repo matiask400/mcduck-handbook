@@ -2,11 +2,15 @@
 \whenuse{Buscar simult\'aneamente muchas palabras en uno o varios textos,
 reportando coincidencias mientras se recorre cada texto una sola vez.}
 
-Busca simult\'aneamente muchos patrones. Esta versi\'on usa letras min\'usculas
-inglesas y devuelve el ID de cada patr\'on junto con su posici\'on final.
+Busca simult\'aneamente muchos patrones no vac\'ios. Esta versi\'on usa letras
+min\'usculas inglesas y devuelve el ID de cada patr\'on junto con su posici\'on
+final. Cada nodo guarda s\'olo sus propios patrones; un enlace de salida apunta
+al sufijo terminal m\'as cercano, evitando copiar las coincidencias heredadas.
 
-\complexity{construcci\'on $O(\sum |p|\cdot\Sigma)$ con transiciones completas;
-b\'usqueda $O(|texto|+\#coincidencias)$; memoria $O(\sum |p|\cdot\Sigma)$.}
+\complexity{Con $L=\sum |p|$, alfabeto de tama\~no $\Sigma=26$ y $z$
+coincidencias: construcci\'on $O(L\Sigma)$ con transiciones completas;
+b\'usqueda $O(|texto|+z)$. Aut\'omata: memoria $O(L\Sigma)$;
+devolver las coincidencias agrega $O(z)$ memoria de salida.}
 
 \begin{lstlisting}[style=cpp]
 struct AhoCorasick {
@@ -14,12 +18,14 @@ struct AhoCorasick {
     struct Node {
         array<int, ALPHABET> next;
         int suffix_link = 0;
+        int output_link = -1; // Sufijo terminal mas cercano.
         vector<int> output;
         Node() { next.fill(-1); }
     };
     vector<Node> nodes{Node()};
 
     void insert(const string &pattern, int pattern_id) {
+        assert(!pattern.empty());
         int v = 0;
         for (char character : pattern) {
             int letter = character - 'a';
@@ -44,9 +50,8 @@ struct AhoCorasick {
         while (!q.empty()) {
             int v = q.front(); q.pop();
             int link = nodes[v].suffix_link;
-            nodes[v].output.insert(nodes[v].output.end(),
-                                   nodes[link].output.begin(),
-                                   nodes[link].output.end());
+            nodes[v].output_link = !nodes[link].output.empty()
+                                ? link : nodes[link].output_link;
             for (int letter = 0; letter < ALPHABET; ++letter) {
                 int child = nodes[v].next[letter];
                 if (child == -1) {
@@ -66,8 +71,9 @@ struct AhoCorasick {
             int letter = text[position] - 'a';
             assert(0 <= letter && letter < ALPHABET);
             state = nodes[state].next[letter];
-            for (int pattern_id : nodes[state].output)
-                matches.push_back({position, pattern_id});
+            for (int v = state; v != -1; v = nodes[v].output_link)
+                for (int pattern_id : nodes[v].output)
+                    matches.push_back({position, pattern_id});
         }
         return matches;
     }
