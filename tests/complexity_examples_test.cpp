@@ -9,11 +9,16 @@ void test_binary_search() {
         double threshold = 1.0 + (test_random() % 1000) / 1000.0;
         int calls = 0;
         double answer = real_search(0.0, 2.0, threshold, calls);
-        assert(abs(answer - sqrt(threshold)) < 1e-12 && calls <= 100);
+        assert(abs(answer - sqrt(threshold)) <= 1e-6 && calls == 21);
+        assert(answer * answer >= threshold);
     }
     int calls = 0;
     double left = 1e18, right = nextafter(left, numeric_limits<double>::infinity());
-    assert(real_search(left, right, right * right, calls) == right && calls <= 100);
+    assert(real_search(left, right, right * right, calls) == right && calls == 0);
+    calls = 0;
+    // Already within tolerance: no predicate evaluation is necessary.
+    assert(real_search(1.0, 1.0 + 1e-7, 1.0 + 1e-7, calls) == 1.0 + 1e-7);
+    assert(calls == 0);
 }
 
 int brute_window(const vector<ll> &a, ll limit) {
