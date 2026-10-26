@@ -6,7 +6,11 @@ Busca la primera posici\'on donde una condici\'on mon\'otona pasa de falsa a
 verdadera. 
 
 
-\complexity{$O(n*\log(n))$ evaluaciones; memoria $O(1)$ aparte del chequeo.}
+\complexity{Dominio discreto de $n$ candidatos: $O(\log(n+1))$ evaluaciones;
+si cada chequeo cuesta $C$, tiempo $O(C\log(n+1))$. Para reales con ancho
+inicial $W$ y tolerancia $\varepsilon$, $O(\log(1+W/\varepsilon))$
+evaluaciones hasta alcanzar la tolerancia o el l\'imite de precisi\'on.
+Memoria adicional $O(1)$ aparte del chequeo.}
 
 \begin{lstlisting}[style=cpp]
 int l = start;
@@ -26,14 +30,17 @@ while (l <= r) {
 
 El algoritmo anterior permite usar la busqueda binaria unicamente en un dominio discreto.
 En este caso $r$ nos da el ultimo valor que no cumple la condicion y $l$ el menor valor que si la cumple.
-Para reales es preferible fijar iteraciones; evita ciclos por redondeo.
+Para reales, mantener un intervalo con \texttt{can(l)==false} y
+\texttt{can(r)==true}. Usar la tolerancia pedida por el enunciado y cortar
+si el punto medio coincide con un extremo para evitar ciclos por redondeo.
 
 \begin{lstlisting}[style=cpp]
 double l = start;
 double r = end;
-double eps = 1e-6; // precision deseada
+double eps = 1e-6; // Ajustar al error permitido por el enunciado.
 while (r - l > eps) {
-    double m = l + (r - l) / 2.0; 
+    double m = l + (r - l) / 2.0;
+    if (m == l || m == r) break; // Limite de precision de double.
     if (can(m)) { 
         // La condicion se cumple para m, ajustamos el limite superior 
         r = m; 
@@ -42,4 +49,10 @@ while (r - l > eps) {
        l = m; 
     } 
 }
+// r cumple la condicion; l no la cumple.
 \end{lstlisting}
+
+El ancho se divide por dos en cada iteraci\'on. La precisi\'on final tambi\'en
+est\'a limitada por la representaci\'on de \texttt{double}: el corte por
+redondeo puede detener la b\'usqueda antes de alcanzar \texttt{eps}.
+Si se permite error relativo, adaptar la tolerancia a la escala del resultado.
