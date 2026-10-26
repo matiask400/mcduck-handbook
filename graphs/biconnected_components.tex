@@ -28,7 +28,9 @@ cumple
 su subárbol no puede alcanzar un antecesor de \texttt{vertex} sin pasar por él;
 las aristas de la pila hasta \texttt{vertex--to} forman un bloque completo.
 
-\complexity{Tiempo $O(n+m)$; memoria $O(n+m)$.}
+\complexity{Esta implementaci\'on: tiempo $O(n+m\log(m+1))$ y memoria
+$O(n+m)$. El DFS es lineal, pero ordenar los extremos de las aristas de cada
+bloque para eliminar repetidos agrega el factor logar\'itmico.}
 
 \begin{lstlisting}[style=cpp]
 struct VertexBiconnectedComponents {
