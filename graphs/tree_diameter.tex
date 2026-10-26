@@ -1,0 +1,53 @@
+\section{Di\'ametro de un \`arbol y camino}
+\whenuse{Hallar el camino m\'as largo de un \`arbol con pesos no negativos.
+Con pesos uno, su centro y radio tambi\'en ayudan a conectar varios \`arboles.}
+\complexity{Dos recorridos: tiempo y memoria $O(n)$. Son iterativos para
+admitir cadenas largas sin agotar la pila.}
+
+\begin{lstlisting}[style=cpp]
+pair<ll, vector<int>> tree_diameter(
+        const vector<vector<pair<int,ll>>> &tree) {
+    int n = tree.size();
+    if (n == 0) return {0, {}};
+    vector<ll> distance(n);
+    vector<int> parent(n);
+    auto farthest = [&](int source) {
+        fill(distance.begin(), distance.end(), -1);
+        fill(parent.begin(), parent.end(), -1);
+        vector<int> order{source};
+        distance[source] = 0;
+        for (int i = 0; i < (int)order.size(); ++i) {
+            int v = order[i];
+            for (auto [to, weight] : tree[v]) if (distance[to] == -1) {
+                assert(weight >= 0);
+                distance[to] = distance[v] + weight;
+                parent[to] = v; order.push_back(to);
+            }
+        }
+        assert((int)order.size() == n);
+        return (int)(max_element(distance.begin(), distance.end()) - distance.begin());
+    };
+    int start = farthest(0), finish = farthest(start);
+    vector<int> path;
+    for (int v = finish; v != -1; v = parent[v]) path.push_back(v);
+    reverse(path.begin(), path.end());
+    return {distance[finish], path};
+}
+void tree_diameter_example() {
+    vector<vector<pair<int,ll>>> tree(4);
+    auto add = [&](int a, int b, ll w) {
+        tree[a].push_back({b,w}); tree[b].push_back({a,w});
+    };
+    add(0,1,2); add(1,2,5); add(1,3,4);
+    auto [length, path] = tree_diameter(tree);
+    cout << length << '\n'; // 9; camino 2--1--3 (o su inverso).
+}
+\end{lstlisting}
+
+\warning{Requiere un \`arbol conectado, cada arista en ambos sentidos y
+distancias que entren en \texttt{long long}. Con pesos negativos, usar DP de
+\`arbol en lugar de estos dos recorridos. Para un bosque, procesar componentes.}
+Si todas las aristas pesan uno, el radio es $\lceil diametro/2\rceil$ y un
+centro es \texttt{path[path.size()/2]}. Es la herramienta base de
+Adjoin the Networks (NCPC 2015); no resolver cada componente recorriendo de
+nuevo todos los v\'ertices del bosque.
