@@ -11,8 +11,8 @@ Cambiar \texttt{combine} y \texttt{NEUTRAL} para min, max, gcd, etc.
 \hline
 Consulta & \texttt{oper} & \texttt{NEUT} \\
 \hline
-Minimo & \texttt{min} & \texttt{INF} \\
-Maximo & \texttt{max} & \texttt{-INF} \\
+Minimo & \texttt{min} & \texttt{LINF} \\
+Maximo & \texttt{max} & \texttt{-LINF} \\
 Suma & \texttt{+} & \texttt{0} \\
 Producto & \texttt{*} & \texttt{1} \\
 XOR & \texttt{\^} & \texttt{0} \\
@@ -28,34 +28,36 @@ LCM & \texttt{lcm} & \texttt{1} \\
 
 \begin{lstlisting}[style=cpp]
 struct SegmentTree {
+    static constexpr ll NEUTRAL = 0;
+    static ll combine(ll a, ll b) { return a + b; }
     int n = 1;
     vector<ll> tree;
 
     explicit SegmentTree(int size) {
         while (n < size) n <<= 1;
-        tree.assign(2 * n, 0);
+        tree.assign(2 * n, NEUTRAL);
     }
 
     explicit SegmentTree(const vector<ll> &a) : SegmentTree(a.size()) {
         copy(a.begin(), a.end(), tree.begin() + n);
         for (int p = n - 1; p; --p)
-            tree[p] = tree[p << 1] + tree[p << 1 | 1];
+            tree[p] = combine(tree[p << 1], tree[p << 1 | 1]);
     }
 
     void set_value(int pos, ll value) {
         int p = pos + n;
         tree[p] = value;
         while (p >>= 1)
-            tree[p] = tree[p << 1] + tree[p << 1 | 1];
+            tree[p] = combine(tree[p << 1], tree[p << 1 | 1]);
     }
 
     ll query(int l, int r) const { // [l, r)
-        ll left = 0, right = 0;
+        ll left = NEUTRAL, right = NEUTRAL;
         for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
-            if (l & 1) left += tree[l++];
-            if (r & 1) right = tree[--r] + right;
+            if (l & 1) left = combine(left, tree[l++]);
+            if (r & 1) right = combine(tree[--r], right);
         }
-        return left + right;
+        return combine(left, right);
     }
 };
 \end{lstlisting}
