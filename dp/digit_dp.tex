@@ -1,0 +1,44 @@
+\section{Digit DP: contar enteros por sus d\'igitos}
+\whenuse{Contar n\'umeros de un intervalo enorme cuya validez depende de los
+d\'igitos, no recorrer uno por uno todos los valores hasta $10^{18}$.}
+\complexity{Esta plantilla: $O(d\cdot11\cdot10)$ tiempo y $O(d\cdot11)$
+memoria para $d$ d\'igitos. Otros estados, como un residuo m\'odulo $k$, agregan
+su propio factor.}
+
+Ejemplo: contar enteros no negativos sin dos d\'igitos adyacentes iguales.
+\texttt{last=10} significa que a\'un s\'olo se leyeron ceros iniciales.
+El cero se cuenta como un n\'umero v\'alido.
+
+\begin{lstlisting}[style=cpp]
+ll count_no_equal_neighbors(ll upper) {
+    if (upper < 0) return 0;
+    string digits = to_string(upper);
+    ll memo[20][11];
+    for (auto &row : memo) fill(begin(row), end(row), -1);
+    function<ll(int,int,bool)> dfs = [&](int position, int last, bool tight) -> ll {
+        if (position == (int)digits.size()) return 1;
+        ll &cached = memo[position][last];
+        if (!tight && cached != -1) return cached;
+        ll answer = 0;
+        int limit = tight ? digits[position] - '0' : 9;
+        for (int digit = 0; digit <= limit; ++digit) {
+            if (digit == last) continue;
+            int next = last == 10 && digit == 0 ? 10 : digit;
+            answer += dfs(position + 1, next, tight && digit == limit);
+        }
+        if (!tight) cached = answer;
+        return answer;
+    };
+    return dfs(0, 10, true);
+}
+void digit_dp_example() {
+    ll left = 0, right = 20;
+    cout << count_no_equal_neighbors(right) - count_no_equal_neighbors(left - 1)
+         << '\n'; // 20: solo 11 queda excluido.
+}
+\end{lstlisting}
+
+\warning{Requiere $0\le L\le R\le LLONG\_MAX$ para la resta de prefijos del
+ejemplo. Los ceros iniciales no deben confundirse con un d\'igito real. Adaptar
+el estado y el caso base al problema: Score Values (World Finals 2025) necesita
+residuos y maximizar frecuencias; esta funci\'on no lo resuelve directamente.}
