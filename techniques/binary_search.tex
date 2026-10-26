@@ -6,7 +6,9 @@ Busca la primera posici\'on donde una condici\'on mon\'otona pasa de falsa a
 verdadera. 
 
 
-\complexity{$O(n*\log(n))$ evaluaciones; memoria $O(1)$ aparte del chequeo.}
+\complexity{Dominio discreto de $n$ candidatos: $O(\log(n+1))$ evaluaciones;
+si cada chequeo cuesta $C$, tiempo $O(C\log(n+1))$. Para reales con $t$
+iteraciones, tiempo $O(tC)$. Memoria adicional $O(1)$ aparte del chequeo.}
 
 \begin{lstlisting}[style=cpp]
 int l = start;
@@ -26,14 +28,16 @@ while (l <= r) {
 
 El algoritmo anterior permite usar la busqueda binaria unicamente en un dominio discreto.
 En este caso $r$ nos da el ultimo valor que no cumple la condicion y $l$ el menor valor que si la cumple.
-Para reales es preferible fijar iteraciones; evita ciclos por redondeo.
+Para reales, mantener un intervalo con \texttt{can(l)==false} y
+\texttt{can(r)==true}. Fijar un m\'aximo de iteraciones evita ciclos por
+redondeo; cortar antes si el punto medio coincide con un extremo.
 
 \begin{lstlisting}[style=cpp]
 double l = start;
 double r = end;
-double eps = 1e-6; // precision deseada
-while (r - l > eps) {
-    double m = l + (r - l) / 2.0; 
+for (int iteration = 0; iteration < 100; ++iteration) {
+    double m = l + (r - l) / 2.0;
+    if (m == l || m == r) break; // Limite de precision de double.
     if (can(m)) { 
         // La condicion se cumple para m, ajustamos el limite superior 
         r = m; 
@@ -42,4 +46,9 @@ while (r - l > eps) {
        l = m; 
     } 
 }
+// r cumple la condicion; l no la cumple.
 \end{lstlisting}
+
+Elegir $t$ seg\'un el ancho inicial y el error buscado: en aritm\'etica exacta,
+el ancho se divide por $2^t$. La precisi\'on final tambi\'en est\'a limitada
+por la representaci\'on de \texttt{double}.
