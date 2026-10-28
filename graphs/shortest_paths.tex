@@ -189,15 +189,32 @@ clausura transitiva o detectar ciclos negativos mediante la diagonal.}
 
 Todos contra todos. Inicializar diagonal en cero, aristas en su peso m\'inimo y
 el resto en \texttt{LINF}.
+Usar pesos y distancias finitas estrictamente entre $-\texttt{LINF}$ y
+$\texttt{LINF}$; alcanza con $V\max|w|<\texttt{LINF}$.
+Al detectar una diagonal negativa se activa la saturaci\'on por debajo en
+$-\texttt{LINF}$, antes de procesar ese v\'ertice como intermediario. Evita
+que los ciclos negativos hagan decrecer los valores hasta desbordar y
+conserva el bucle sin saturaci\'on mientras no se detecta un ciclo negativo.
+Un par afectado por un ciclo negativo no tiene distancia m\'inima finita:
+consultar \texttt{negative\_cycle\_between}, no interpretar su valor num\'erico.
 
 \begin{lstlisting}[style=cpp]
 void floyd_warshall(vector<vector<ll>> &distance) {
     int n = distance.size();
-    for (int k = 0; k < n; ++k)
-        for (int i = 0; i < n; ++i) if (distance[i][k] != LINF)
-            for (int j = 0; j < n; ++j) if (distance[k][j] != LINF)
-                distance[i][j] = min(distance[i][j],
-                    distance[i][k] + distance[k][j]);
+    bool negative_cycle = false;
+    for (int k = 0; k < n; ++k) {
+        negative_cycle = negative_cycle || distance[k][k] < 0;
+        auto relax = [&](bool saturate) {
+            for (int i = 0; i < n; ++i) if (distance[i][k] != LINF)
+                for (int j = 0; j < n; ++j) if (distance[k][j] != LINF) {
+                    ll candidate = distance[i][k] + distance[k][j];
+                    if (saturate) candidate = max(-LINF, candidate);
+                    distance[i][j] = min(distance[i][j], candidate);
+                }
+        };
+        if (negative_cycle) relax(true);
+        else relax(false);
+    }
 }
 
 bool negative_cycle_between(const vector<vector<ll>> &d, int a, int b) {
