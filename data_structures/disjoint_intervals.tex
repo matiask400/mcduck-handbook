@@ -25,6 +25,7 @@ struct DisjointIntervals {
     }
 
     void assign(int left, int right, ll value) {
+        if (left >= right) return; // Rango vacio: no modificar la particion.
         auto after = split(right);
         auto first = split(left);
         intervals.erase(first, after);
@@ -36,5 +37,6 @@ odt.assign(300, 800, 2);
 odt.assign(700, 900, 3);
 \end{lstlisting}
 
-\warning{Inicializar la partici\'on cubriendo todo el dominio. No usar ODT si un
+\warning{Inicializar la partici\'on cubriendo todo el dominio y operar dentro
+de sus l\'imites. Asignar un rango vac\'io no hace nada. No usar ODT si un
 adversario puede fragmentar los intervalos en cada operaci\'on.}
