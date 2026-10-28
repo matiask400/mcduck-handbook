@@ -5,6 +5,8 @@ también se necesita subir $k$ niveles o ahorrar memoria.}
 El Euler tour guarda un vértice al visitarlo y cada vez que el DFS regresa a él.
 El LCA de $a$ y $b$ es el vértice de menor profundidad entre sus primeras
 apariciones en el recorrido. Una Sparse Table responde este mínimo en $O(1)$.
+La DFS usa marcos explícitos para registrar las entradas y los regresos, sin
+consumir pila de llamadas proporcional a la altura.
 
 \complexity{Preproceso $O(n\log n)$; consulta $O(1)$; memoria $O(n\log n)$.}
 
@@ -37,13 +39,23 @@ struct EulerRMQLCA {
     }
     void dfs(int v, int parent,
              const vector<vector<int>> &tree) {
+        struct Frame { int v, parent, next = 0; };
+        vector<Frame> pending{{v, parent}};
         first[v] = euler.size();
         euler.push_back(v);
-        for (int to : tree[v]) {
-            if (to == parent) continue;
-            depth[to] = depth[v] + 1;
-            dfs(to, v, tree);
-            euler.push_back(v); // Regreso desde el hijo.
+        while (!pending.empty()) {
+            auto &frame = pending.back();
+            int from = frame.v;
+            if (frame.next == (int)tree[from].size()) {
+                pending.pop_back();
+                if (!pending.empty()) euler.push_back(pending.back().v);
+            } else {
+                int to = tree[from][frame.next++];
+                if (to == frame.parent) continue;
+                depth[to] = depth[from] + 1;
+                first[to] = euler.size(); euler.push_back(to);
+                pending.push_back({to, from});
+            }
         }
     }
     int lca(int a, int b) const {
@@ -67,5 +79,5 @@ cout << lca.distance(3, 2) << '\n'; // Distancia en aristas
 \end{lstlisting}
 
 
-\warning{El grafo debe ser un árbol conectado. El DFS recursivo puede desbordar
-la pila en árboles muy profundos.}
+\warning{El grafo debe ser un árbol conectado no vacío. Los marcos de DFS se
+guardan en memoria dinámica; no se necesita aumentar el límite de pila.}
