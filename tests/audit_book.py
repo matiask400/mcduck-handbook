@@ -111,11 +111,11 @@ SELECTION = [
  ('core/input_output.tex',0,None),('core/input_output.tex',1,None),
 ]
 
-CORRECTNESS = ['structures','graphs','trees','numeric','geometry','techniques','core']
-FINDINGS = ['odt_empty','bcc_loop','matrix_mod_one','dijkstra_large',
-            'window_threshold','floyd_negative_overflow','point_subtraction',
-            'binary_int_max','binary_wide_domain','base_roundtrip',
-            'divide_conquer_infinite','flow_reverse_index','stl_empty','mcmf_disconnected_cycle']
+REGRESSIONS = ['odt_empty','matrix_mod_one','floyd_negative_overflow',
+               'binary_int_max','binary_wide_domain','divide_conquer_infinite']
+CORRECTNESS = ['structures','graphs','trees','numeric','geometry','techniques','core',*REGRESSIONS]
+FINDINGS = ['bcc_loop','dijkstra_large','window_threshold','point_subtraction',
+            'base_roundtrip','flow_reverse_index','stl_empty','mcmf_disconnected_cycle']
 BENCHMARKS = ['bench_structures','bench_scc','bench_ntt','bench_suffix','bench_dijkstra','bench_trees',
               'stack_hld','stack_lowlink','stack_reroot','stack_euler_lca']
 
@@ -140,7 +140,7 @@ def library():
     # Wrap the integer example literally, to test its actual endpoint updates.
     text = (ROOT/'techniques/binary_search.tex').read_text()
     block = list(LISTING.finditer(text))[0][2]
-    code += '\nint audit_integer_search(int start,int end,int threshold,bool strict=false) {\n'
+    code += '\nll audit_integer_search(int start,int end,int threshold,bool strict=false) {\n'
     code += 'auto can=[&](int x){return strict?x>threshold:x>=threshold;};\n'
     code += f'#line 16 "{ROOT/"techniques/binary_search.tex"}"\n'+block+'\nreturn l;\n}\n'
     hashes['techniques/binary_search.tex'] = hashlib.sha256(text.encode()).hexdigest()

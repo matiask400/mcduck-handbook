@@ -1,0 +1,291 @@
+{
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "cxxflags": [
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all"
+  ],
+  "stack_mib": 8,
+  "seed": 20261026,
+  "source_sha256": "66b78a7c80dc58c347b08bbeef9afdf8967889b609f58f77c104bf813254573c",
+  "file_sha256": {
+    "data_structures/dsu.tex": "76c2b14f72491d5867b2629cbef3f1c3990b93b2d65520338528896e3d8dadaa",
+    "data_structures/segment_tree.tex": "3d98e1d46350b05132d6dd6f329326cca024be7970d75889cf1eaa16e9adb75e",
+    "data_structures/lazy_segment_tree.tex": "d82862708ac381599a4b1076b53c7f9e6b2df5be3f5559b373dbb81a27456fbe",
+    "data_structures/persistent_segment_tree.tex": "3971946a4d9cac0566fbe6c46bc07f6c6512c372c43c58c984b65ec418fdc9b7",
+    "data_structures/sparse_table.tex": "263d0b68dbbbc6c7a559ca25df4a64494478d7b056a809dbb1c9ce97d350d98f",
+    "data_structures/disjoint_sparse_table.tex": "3cd57545c4a75627b862694e760b3984d009955a3de964217152792fdfe4551a",
+    "data_structures/monotonic_structures.tex": "05f1191a008b963812e2c35aee6295a10f38252929aa18b4e1232a16900037a1",
+    "data_structures/fenwick_2d_offline.tex": "e6c8fb0c3120ce30fb9cd79d3eb16a0ce6135101684ca72099471a80ac0c0be3",
+    "data_structures/wavelet_tree.tex": "082c3d04450ca5a278b77e6fda480fbfe3fcd2a4f018a87a8c90795e61e7566a",
+    "data_structures/implicit_treap.tex": "0138502613748657733b1c622c2756ea4b49f3faaee1e066cbcae8c4068febee",
+    "data_structures/cht_li_chao.tex": "4713952338aea1c9f055250020d6ae13a5f4f6dfbc8b0b5a483ddd0f756692b5",
+    "data_structures/fenwick.tex": "0d7efeb5812b93497b8c7b97a95f8a2ef58ebbe45441dcfecd6952a5c8a0046b",
+    "data_structures/disjoint_intervals.tex": "e1b19ae2e64d3e1022fba713cdc7a3d7098e6161486f17473ded70bb2507ba5e",
+    "graphs/bridges_articulation.tex": "60b708d4aa842b91694c7f6b8d6c34bf17dc58f2482ba28e14f931ab25c187e0",
+    "graphs/biconnected_components.tex": "b47b948054b85294af974372812240e837cd5d76a85120dc2d77578ba0491d8c",
+    "graphs/dag_and_scc.tex": "7c2a13dff1e15eb05baedf7ee8fbe05fd33f8b72e88115be7b20c72a42466c04",
+    "graphs/two_sat.tex": "7b82fd0a10290489c7b97bd63432edaf97f3c1811aac62aff982c3748475107e",
+    "graphs/eulerian_path.tex": "f72eb87d45546836d63255b19258afc7107150851587220004d5154907836937",
+    "graphs/flows.tex": "8310ee89097fb24194aa85473266fbc7a04cf00425b02c0f0e8bfca6aca89a74",
+    "graphs/matching.tex": "20125622ce1322b4fe7fbcdac377def5e37488bb2671032bb84087e31cbaadab",
+    "graphs/mst.tex": "cd7bbb4ba76cb59a7829878233be21bcf0110e59c159f4becd34e0c1eb52b14e",
+    "graphs/trees_lca.tex": "a8678670f370a019769204bcdbef0c0382691a4cab8441b9339cfbb6935fcedd",
+    "graphs/lca_euler_rmq.tex": "08b7f0c4854c603ef3279ef5f727d3005d0ff6e73ef2c3dc0b99408ae29f2f3a",
+    "graphs/heavy_light_decomposition.tex": "71f187b22715fadc111e599f6a64d1589a15778efd78896a296a0c14ec7f5046",
+    "graphs/centroid_decomposition.tex": "b72188f2b90ef278672a4ccbce640ce6449a9c7aff42a0902b10fe047f6c90b5",
+    "graphs/rerooting_dp.tex": "ad376dd67579b4ca6f7bffefa0f29aafbfaa8ca9fe41261539d058b2dd10dd68",
+    "graphs/virtual_tree.tex": "70a8748fe33929b3b467209f34dd6729a699db9bcd08ab67fdb7bccdbd554157",
+    "graphs/shortest_paths.tex": "2da649d5b11df12128b722412db56efcfe24268c16a8bb1f5240a96cd60379e2",
+    "math/gcd_and_modular.tex": "0edf41f1fd30c5765b7cf88ea5cee67f38d997f52e274249dcb291ee74b1e86e",
+    "math/gaussian_elimination.tex": "4330e5df97845d75d79145f5da28dbf18208132d20dcc75e1562efca5edbc612",
+    "math/matrices.tex": "aec68e6b225d82c03a1a602c7f5d22854ab424a664bc22262f7ab3d32f9a9a32",
+    "math/lucas.tex": "ca8c1d4b298c34dec80dfbf849cfacb6891bb1727205546042b03ed69bb682ee",
+    "math/ntt.tex": "6490db43b7833f54b1ebe4a122b7d15bc0c91e3257f6303e1b7f9ffe1e547ca6",
+    "math/miller_rabin_pollard_rho.tex": "389bc896c11ce0918ae3a49b2fdc042788025ee763d07cd1cdf1c8cffb758ffa",
+    "geometry/geometry_2d.tex": "b21b80305e5190d45a154136631cac110bc22a3f0b4ee929279105e13033e97a",
+    "geometry/lines_circles_polygons.tex": "7fb8c847aa34520a1954e166e7a314df5ff219f9a89d5892e95936ba6dcf0660",
+    "geometry/geometry_3d.tex": "1380061380aea4285d63691d74d991d53382eb270205f76ba2d44074134d8a1f",
+    "techniques/bitmasks_and_bases.tex": "4a7cfbfd78dc4bebe8405fbdeb1c19f7a7d3c5860fc9de9096f4d054315e4871",
+    "techniques/mos_algorithm.tex": "dbe90f32bacc77e46df73641ec183fff504130b5934495883c3c6b7db4e88557",
+    "dp/divide_conquer_optimization.tex": "a77b2e3376c10c6da88f3e97228f5557bc3ca7f3850bb526eb2baafe4527b7f0",
+    "dp/triangular_bound_dp.tex": "555a8022c8d3a35fd91b6066b9b58cb960f57443ffed680c4ec12cc14a29c5f8",
+    "techniques/prefix_sums.tex": "7787a18abc5792910c1e5574495f6ddd41f64c4b46695f3a23e778e5e821f5b4",
+    "techniques/coordinate_compression.tex": "0947e588f0e4a612592e4d70492fe385ad0007e2e397e90ff7044d6db67a17d3",
+    "techniques/sqrt_heavy_light.tex": "1e0a2f17bf442c10d749bb62364679117ee7c9ae40d3d27f9eaa1c409560c640",
+    "techniques/two_pointers.tex": "d7d216e4aa9674c96b223b69cd6b7ffa5221e547285ed1604d43f89531410995",
+    "core/parsing.tex": "ea3be8869677c46a7c4422c2e1c138d8797e650941c97201d671100389ad7aed",
+    "strings/suffix_array_lcp.tex": "798a5f97e56d41ec371fd9566ec91f5a3bd2b08b85575c6284ca1fd33a0a25ec",
+    "core/math_cpp.tex": "3f6cf68332eb85832ded71bad3fddf05daedbf481e8ab94c8fd9c4117c2e7f63",
+    "core/containers.tex": "c216cb70903c2b33361f2ac940c2ec75302fab3173eda82e3fb7be71fd8eb983",
+    "core/cpp_language_basics.tex": "dc003845f42a41af973b820a789ca08f40fc242fa8edd90193f758af63797158",
+    "core/cpp_utilities.tex": "75ee57a65a7be03b989821c2c25c6d22e8a511c56420dde960ea098029059a53",
+    "core/stl_algorithms.tex": "0b235876b533368261af9305c9ea26ca446d8e154528bd80068af72650078e42",
+    "core/stl_cheatsheet.tex": "e9246fa40e25103147b5f3d858f1634eb284971192645d8753d2a822dbb00d5e",
+    "core/tipos_y_overflow.tex": "c5b9fbc180bfbe2a89240d7c5e82a1dae8e07fb24d10a86f39086877d1a5444b",
+    "core/input_output.tex": "54c4bbaa2449103483417a54c433974aed49249f4eaaaf9c187672c31208a2b0",
+    "techniques/binary_search.tex": "64631171da4127018a8d8c2bb678280bc124090e4cff05e3b19d9f548e22887d"
+  },
+  "results": [
+    {
+      "case": "structures",
+      "exit_code": 0,
+      "wall_s": 0.3512032080006975,
+      "peak_rss_mib": 54.984375,
+      "output": "OK structures: 628214 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "structures",
+          "exit_code": 0,
+          "wall_s": 0.3512032080006975,
+          "peak_rss_mib": 54.984375,
+          "output": "OK structures: 628214 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "graphs",
+      "exit_code": 0,
+      "wall_s": 0.12059649999991962,
+      "peak_rss_mib": 41.359375,
+      "output": "OK graphs: 39146 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "graphs",
+          "exit_code": 0,
+          "wall_s": 0.12059649999991962,
+          "peak_rss_mib": 41.359375,
+          "output": "OK graphs: 39146 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "trees",
+      "exit_code": 0,
+      "wall_s": 0.21833570800026791,
+      "peak_rss_mib": 44.8125,
+      "output": "OK trees: 906663 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "trees",
+          "exit_code": 0,
+          "wall_s": 0.21833570800026791,
+          "peak_rss_mib": 44.8125,
+          "output": "OK trees: 906663 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "numeric",
+      "exit_code": 0,
+      "wall_s": 0.06397883299996465,
+      "peak_rss_mib": 23.59375,
+      "output": "OK numeric: 156692 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "numeric",
+          "exit_code": 0,
+          "wall_s": 0.06397883299996465,
+          "peak_rss_mib": 23.59375,
+          "output": "OK numeric: 156692 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "techniques",
+      "exit_code": 0,
+      "wall_s": 0.15717495799981407,
+      "peak_rss_mib": 60.5625,
+      "output": "OK techniques: 75973 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "techniques",
+          "exit_code": 0,
+          "wall_s": 0.15717495799981407,
+          "peak_rss_mib": 60.5625,
+          "output": "OK techniques: 75973 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "odt_empty",
+      "exit_code": 0,
+      "wall_s": 0.020075792000170622,
+      "peak_rss_mib": 16.6875,
+      "output": "assign(3,3,99): containing interval=0,10 value=7\nOK odt_empty: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "odt_empty",
+          "exit_code": 0,
+          "wall_s": 0.020075792000170622,
+          "peak_rss_mib": 16.6875,
+          "output": "assign(3,3,99): containing interval=0,10 value=7\nOK odt_empty: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "matrix_mod_one",
+      "exit_code": 0,
+      "wall_s": 0.020015292000607587,
+      "peak_rss_mib": 16.875,
+      "output": "A^0 mod 1=0\nOK matrix_mod_one: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "matrix_mod_one",
+          "exit_code": 0,
+          "wall_s": 0.020015292000607587,
+          "peak_rss_mib": 16.875,
+          "output": "A^0 mod 1=0\nOK matrix_mod_one: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "floyd_negative_overflow",
+      "exit_code": 0,
+      "wall_s": 0.021021167000071728,
+      "peak_rss_mib": 16.90625,
+      "output": "40 vertices, all non-diagonal edges -1, diagonal 0\nOK floyd_negative_overflow: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "floyd_negative_overflow",
+          "exit_code": 0,
+          "wall_s": 0.021021167000071728,
+          "peak_rss_mib": 16.90625,
+          "output": "40 vertices, all non-diagonal edges -1, diagonal 0\nOK floyd_negative_overflow: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "binary_int_max",
+      "exit_code": 0,
+      "wall_s": 0.02004183400003967,
+      "peak_rss_mib": 16.75,
+      "output": "first_true [INT_MAX,INT_MAX], false\nOK binary_int_max: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "binary_int_max",
+          "exit_code": 0,
+          "wall_s": 0.02004183400003967,
+          "peak_rss_mib": 16.75,
+          "output": "first_true [INT_MAX,INT_MAX], false\nOK binary_int_max: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "binary_wide_domain",
+      "exit_code": 0,
+      "wall_s": 0.020702832999631937,
+      "peak_rss_mib": 16.59375,
+      "output": "first_true [INT_MIN,INT_MAX], threshold 0\nOK binary_wide_domain: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "binary_wide_domain",
+          "exit_code": 0,
+          "wall_s": 0.020702832999631937,
+          "peak_rss_mib": 16.59375,
+          "output": "first_true [INT_MIN,INT_MAX], threshold 0\nOK binary_wide_domain: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "divide_conquer_infinite",
+      "exit_code": 0,
+      "wall_s": 0.020194833000459766,
+      "peak_rss_mib": 16.75,
+      "output": "D&C: one unreachable state\nOK divide_conquer_infinite: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "divide_conquer_infinite",
+          "exit_code": 0,
+          "wall_s": 0.020194833000459766,
+          "peak_rss_mib": 16.75,
+          "output": "D&C: one unreachable state\nOK divide_conquer_infinite: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    }
+  ]
+}

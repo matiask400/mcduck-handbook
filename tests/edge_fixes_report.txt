@@ -1,0 +1,64 @@
+Handbook edge-case fixes
+
+Baseline: 3a4aa53
+Compiler: g++-15 (Homebrew GCC 15.2.0) 15.2.0
+Platform: macOS-27.2-arm64-arm-64bit-Mach-O
+Flags: -std=c++17 -O2 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -idirafter /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+Medians of five independent processes, alternating before/after. Stack limited to 8 MiB; core dumps disabled.
+Input generation excluded; tree timings include construction/destruction and result checks. Deep-chain timings include all-vertex verification.
+RSS is peak total process memory, including graph/input storage. Old crashes have only one sample.
+Local measurements are not judge acceptance guarantees.
+
+case / shape | ms before -> after | MiB before -> after
+odt / random | 45.863 -> 45.108 | 9.48 -> 9.48
+matrix / random | 1.774 -> 1.766 | 9.48 -> 9.48
+divide / random | 3.818 -> 3.920 | 9.48 -> 9.48
+hld / random | 20.401 -> 21.463 | 23.06 -> 24.83
+lowlink / random | 7.947 -> 8.560 | 24.69 -> 24.69
+reroot / random | 8.528 -> 5.029 | 12.86 -> 15.41
+euler / random | 13.536 -> 14.336 | 42.47 -> 42.47
+floyd / random | 9.895 -> 9.820 | 9.48 -> 9.48
+binary / random | 147.933 -> 155.623 | 9.48 -> 9.48
+hld / star | 10.184 -> 10.517 | 24.36 -> 26.05
+hld / chain | CRASH -> 11.146 | 30.50 -> 24.36
+lowlink / star | 2.054 -> 2.714 | 26.58 -> 26.59
+lowlink / chain | CRASH -> 4.421 | 27.62 -> 26.84
+reroot / star | 1.737 -> 1.628 | 13.62 -> 16.08
+reroot / chain | CRASH -> 3.262 | 20.53 -> 15.17
+euler / star | 9.973 -> 10.141 | 45.09 -> 45.09
+euler / chain | CRASH -> 11.770 | 20.62 -> 44.59
+
+Active C++ lines excluding comments and blank lines (committed baseline -> current working listing):
+odt: 19 -> 20
+matrix: 25 -> 25
+divide: 22 -> 33
+hld: 44 -> 48
+lowlink: 35 -> 46
+reroot: 27 -> 28
+euler: 47 -> 57
+floyd: 14 -> 24
+binary: 10 -> 10
+Floyd committed correction: 14 -> 23 active lines. The working listing has a previously uncommitted optional reconstruction signature; its extra active header line is included in the after count above.
+
+Validation:
+OK: 2740821 edge-case and differential checks
+OK: 2736149 edge-case and differential checks (Clang AddressSanitizer + UndefinedBehaviorSanitizer)
+All four iterative algorithms passed 200000-vertex chains with 8 MiB stack, including under sanitizers.
+Existing audited structures/graphs/trees/numeric/techniques and all six fixed reproducers passed.
+Optional Floyd reconstruction also passed 56222 source/target pairs and 12504 finite paths via the local validate_floyd_paths.py.
+The main.tex document compiled successfully in the desktop editor.
+
+Behavior and tradeoffs:
+Floyd activates saturation once a negative diagonal is encountered before processing that intermediary. Until then its fast loop is unchanged.
+Finite values need to fit strictly inside +/-LINF; V*max(abs(weight)) < LINF is a sufficient bound. Pairs affected by negative cycles must be queried via negative_cycle_between.
+ODT: empty assignment returns before splitting; the existing initialized-domain contract remains.
+Matrices: identity uses 1%mod and positive modulus is asserted, including exponent zero.
+Integer binary search: int domain, ll bounds/midpoint/sentinels; l can be INT_MAX+1 and r can be INT_MIN-1.
+Divide/conquer DP: trim unreachable option endpoints; leave an impossible midpoint at LINF; without a finite argmin, retain both option bounds.
+DP finite-state monotonicity and representable finite sums remain required. Cost-impossible midpoints can force O(k*n^2) fallback; restrict computation to feasible state ranges when possible.
+HLD, LowLink, rerooting and Euler LCA use O(n) explicit heap traversal storage. Tree queries and asymptotic complexity remain unchanged.
+On random trees, HLD/LowLink/Euler LCA have a modest constant-factor overhead here; rerooting is faster. LowLink star also shows overhead; all raw samples are retained.
+
+References checked:
+https://cp-algorithms.com/graph/all-pair-shortest-path-floyd-warshall.html
+https://cp-algorithms.com/dynamic_programming/divide-and-conquer-dp.html

@@ -455,7 +455,7 @@ void techniques() {
     check(!parse_int("2147483648",value)&&!parse_int("3x",value)&&!parse_int(" 3",value));
 }
 
-// Minimal failing checks. Keep them failing until a separately approved fix.
+// Regression reproducers and outstanding findings from the book audit.
 void core_examples() {
     for(int trial=0;trial<1000;++trial) {
         long double angle=(rnd(20001)-10000)/100.0L;
@@ -509,8 +509,7 @@ void finding(const string& name) {
         i128 want=(i128)b.x-a.x;want*=want;check(squared_distance(a,b)==want);
     } else if(name=="binary_int_max") {
         cout<<"first_true [INT_MAX,INT_MAX], false"<<endl;
-        // No answer needs a representable sentinel, but m+1 overflows first.
-        (void)audit_integer_search(numeric_limits<int>::max(),numeric_limits<int>::max(),numeric_limits<int>::max(),true);
+        check(audit_integer_search(numeric_limits<int>::max(),numeric_limits<int>::max(),numeric_limits<int>::max(),true)==ll(numeric_limits<int>::max())+1);
     } else if(name=="binary_wide_domain") {
         cout<<"first_true [INT_MIN,INT_MAX], threshold 0"<<endl;
         check(audit_integer_search(numeric_limits<int>::min(),numeric_limits<int>::max(),0)==0);
