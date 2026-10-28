@@ -5,6 +5,8 @@ con Fenwick o Segment Tree.}
 Para cada vértice se elige como hijo pesado al hijo con mayor subárbol. Las
 aristas pesadas forman cadenas cuyos vértices ocupan posiciones consecutivas.
 Así, un camino se divide en $O(\log n)$ intervalos del arreglo base.
+La construcción usa recorridos iterativos, sin depender de la altura para
+consumir pila de llamadas.
 
 \complexity{Build $O(n)$; camino con Segment Tree $O(\log^2 n)$; subárbol
 $O(\log n)$; memoria $O(n)$.}
@@ -18,27 +20,31 @@ struct HLD {
     tree(move(tree)),parent(n,-1),depth(n),size(n),heavy(n,-1),
         head(n),pos(n) {
         assert(n>0);
-        dfs_size(root);
-        dfs_decompose(root,root);
-    }
-    int dfs_size(int v) {
-        size[v]=1;
-        int largest=0;
-        for(int to:tree[v]) if(to!=parent[v]) {
-            parent[to]=v;
-            depth[to]=depth[v]+1;
-            int child_size=dfs_size(to);
-            size[v]+=child_size;
-            if(child_size>largest) largest=child_size,heavy[v]=to;
+        vector<int> order{root};
+        for(int at=0;at<(int)order.size();++at) {
+            int v=order[at];
+            for(int to:this->tree[v]) if(to!=parent[v]) {
+                parent[to]=v; depth[to]=depth[v]+1; order.push_back(to);
+            }
         }
-        return size[v];
-    }
-    void dfs_decompose(int v,int chain_head) {
-        head[v]=chain_head;
-        pos[v]=timer++;
-        if(heavy[v]!=-1) dfs_decompose(heavy[v],chain_head);
-        for(int to:tree[v])
-            if(to!=parent[v]&&to!=heavy[v]) dfs_decompose(to,to);
+        for(int at=n-1;at>=0;--at) {
+            int v=order[at]; size[v]=1;
+            for(int to:this->tree[v]) if(to!=parent[v]) {
+                size[v]+=size[to];
+                if(heavy[v]==-1||size[to]>size[heavy[v]]) heavy[v]=to;
+            }
+        }
+        head[root]=root; order.clear(); order.push_back(root);
+        while(!order.empty()) {
+            int v=order.back(); order.pop_back(); pos[v]=timer++;
+            for(auto it=this->tree[v].rbegin();it!=this->tree[v].rend();++it)
+                if(*it!=parent[v]&&*it!=heavy[v]) {
+                    head[*it]=*it; order.push_back(*it);
+                }
+            if(heavy[v]!=-1) {
+                head[heavy[v]]=head[v]; order.push_back(heavy[v]);
+            }
+        }
     }
     // Intervalos [l,r) que cubren el camino a--b.
     template<class Callback>
