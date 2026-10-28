@@ -57,3 +57,48 @@ $O(1)$ y cada estado procesado tiene candidato finito; memoria $O(n)$ con dos
 capas. Si hay estados imposibles por restricciones de \texttt{cost}, el
 fallback sin poda puede costar $O(kn^2)$; conviene acotar el dominio a los
 estados factibles cuando el problema lo permita.}
+
+\subsection{Acotar los estados factibles}
+
+Para dividir los primeros $i$ elementos en exactamente $g$ segmentos no
+vacíos, los estados $i<g$ son imposibles. Si el último segmento es $[j,i)$,
+el corte cumple $g-1\le j<i$. Inicializar los demás estados en
+\texttt{LINF} y calcular sólo $i\in[g,n]$:
+
+\begin{lstlisting}[style=cpp]
+template<class SegmentCost>
+ll partition_nonempty(int n, int groups, SegmentCost segment_cost) {
+    assert(n >= 0);
+    if (groups < 0 || groups > n) return LINF;
+    vector<ll> previous(n + 1, LINF), current(n + 1, LINF);
+    previous[0] = 0; // Cero elementos y cero grupos.
+    for (int g = 1; g <= groups; ++g) {
+        fill(current.begin(), current.end(), LINF);
+        auto cost = [&](int j, int i) -> ll {
+            if (j >= i) return LINF; // Segmento vacio o invertido.
+            return segment_cost(j, i); // Costo de [j,i).
+        };
+        compute_divide_conquer(g, n, g - 1, n - 1,
+                               previous, current, cost);
+        previous.swap(current);
+    }
+    return previous[n];
+}
+\end{lstlisting}
+
+Si todo segmento no vacío tiene costo finito, cada estado procesado tiene al
+menos un candidato finito: el prefijo de longitud $g-1$ puede formar $g-1$
+grupos y dejar el resto como último segmento. Con óptimos monótonos y costo
+$O(1)$, se conserva $O(\texttt{groups}\cdot n\log n)$ tiempo y $O(n)$ memoria.
+No hace falta que todas las transiciones sean válidas.
+
+\warning{Que existan exactamente $g$ grupos no garantiza la monotonía del
+corte óptimo; hay que demostrarla para el costo del problema. Si hay otras
+restricciones sobre los segmentos, pueden quedar estados imposibles dentro
+de $[g,n]$ y esta llamada por sí sola no elimina el fallback cuadrático.}
+
+Si se conocen estados factibles con huecos, se puede adaptar la recursión
+para recorrer una lista ordenada de ellos. Conservar los índices originales
+al evaluar costos y acotar candidatos; la posición dentro de la lista no es
+el extremo del segmento. Si la factibilidad sólo se descubre probando todos
+los candidatos, esta plantilla no garantiza evitar $O(n^2)$ por capa.
