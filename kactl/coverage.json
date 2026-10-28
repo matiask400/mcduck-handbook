@@ -1,0 +1,362 @@
+{
+  "revision": "b3548e973f8772010c1ef84e6d427c749733fd2c",
+  "new_capabilities": [
+    {
+      "source": "data-structures/UnionFindRollback.h",
+      "title": "DSU rollback",
+      "chapter": "data_structures/kactl_additions.tex"
+    },
+    {
+      "source": "data-structures/LazySegmentTree.h",
+      "title": "Range assignment, addition and maximum",
+      "chapter": "data_structures/kactl_additions.tex"
+    },
+    {
+      "source": "data-structures/SubMatrix.h",
+      "title": "2D prefix sums",
+      "chapter": "data_structures/kactl_additions.tex"
+    },
+    {
+      "source": "data-structures/MoQueries.h",
+      "title": "Mo queries on tree paths",
+      "chapter": "data_structures/kactl_additions.tex"
+    },
+    {
+      "source": "graph/BellmanFord.h",
+      "title": "Bellman--Ford: affected destinations",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/BiconnectedComponents.h",
+      "title": "Biconnected edge blocks",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/MinCut.h",
+      "title": "Recovering a minimum s-t cut",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/GlobalMinCut.h",
+      "title": "Global minimum cut",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/GomoryHu.h",
+      "title": "Gomory--Hu tree",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/GeneralMatching.h",
+      "title": "Matching in general graphs",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/EdgeColoring.h",
+      "title": "Edge coloring",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/MaximalCliques.h",
+      "title": "Enumerating maximal cliques",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/MaximumClique.h",
+      "title": "Maximum clique",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/MaximumIndependentSet.h",
+      "title": "Maximum independent set",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/LinkCutTree.h",
+      "title": "Dynamic forests: link-cut tree",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "graph/DirectedMST.h",
+      "title": "Directed minimum spanning arborescence",
+      "chapter": "graphs/kactl_additions.tex"
+    },
+    {
+      "source": "strings/MinRotation.h",
+      "title": "Minimum string rotation",
+      "chapter": "strings/kactl_additions.tex"
+    },
+    {
+      "source": "strings/SuffixTree.h",
+      "title": "Online suffix tree and longest common substring",
+      "chapter": "strings/kactl_additions.tex"
+    },
+    {
+      "source": "number-theory/ContinuedFractions.h",
+      "title": "Continued fractions",
+      "chapter": "math/kactl_number_theory.tex"
+    },
+    {
+      "source": "number-theory/FracBinarySearch.h",
+      "title": "Binary search on fractions",
+      "chapter": "math/kactl_number_theory.tex"
+    },
+    {
+      "source": "number-theory/ModInverse.h",
+      "title": "Table of modular inverses",
+      "chapter": "math/kactl_number_theory.tex"
+    },
+    {
+      "source": "number-theory/ModLog.h",
+      "title": "Discrete logarithm",
+      "chapter": "math/kactl_number_theory.tex"
+    },
+    {
+      "source": "number-theory/ModSqrt.h",
+      "title": "Modular square root",
+      "chapter": "math/kactl_number_theory.tex"
+    },
+    {
+      "source": "number-theory/ModSum.h",
+      "title": "Sums of floors and modular progressions",
+      "chapter": "math/kactl_number_theory.tex"
+    },
+    {
+      "source": "number-theory/phiFunction.h",
+      "title": "Totient sieve",
+      "chapter": "math/kactl_number_theory.tex"
+    },
+    {
+      "source": "numerical/BerlekampMassey.h",
+      "title": "Recovering a linear recurrence",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/LinearRecurrence.h",
+      "title": "Distant term of a linear recurrence",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/Polynomial.h",
+      "title": "Polynomial operations",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/PolyInterpolate.h",
+      "title": "Polynomial interpolation",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/PolyRoots.h",
+      "title": "Real polynomial roots",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/FastFourierTransform.h",
+      "title": "Real convolution with FFT",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/FastFourierTransformMod.h",
+      "title": "Convolution modulo arbitrary integers",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/FastSubsetTransform.h",
+      "title": "AND, OR and XOR convolutions",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/GoldenSectionSearch.h",
+      "title": "Golden-section search",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/HillClimbing.h",
+      "title": "Two-dimensional local optimization",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/IntegrateAdaptive.h",
+      "title": "Adaptive numerical integration",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/IntDeterminant.h",
+      "title": "Determinant modulo a composite integer",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/MatrixInverse.h",
+      "title": "Real matrix inverse",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/MatrixInverse-mod.h",
+      "title": "Matrix inverse modulo a prime",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/SolveLinear2.h",
+      "title": "Uniquely determined variables in singular systems",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/SolveLinearBinary.h",
+      "title": "Linear systems over F2",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "numerical/Simplex.h",
+      "title": "Linear programming: simplex",
+      "chapter": "math/kactl_numerical.tex"
+    },
+    {
+      "source": "geometry/Angle.h",
+      "title": "Angular ordering",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/SegmentDistance.h",
+      "title": "Distance to a segment",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/SegmentIntersection.h",
+      "title": "Intersection points of segments",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/LineProjectionReflection.h",
+      "title": "Reflection across a line",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/linearTransformation.h",
+      "title": "Similarity between oriented segments",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/CircleLine.h",
+      "title": "Circle--line intersection",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/CircleTangents.h",
+      "title": "Common circle tangents",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/CirclePolygonIntersection.h",
+      "title": "Circle--polygon intersection area",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/circumcircle.h",
+      "title": "Circumcircle",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/MinimumEnclosingCircle.h",
+      "title": "Minimum enclosing circle",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/PolygonCenter.h",
+      "title": "Polygon centroid",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/PolygonCut.h",
+      "title": "Polygon clipping",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/PolygonUnion.h",
+      "title": "Polygon union area",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/LineHullIntersection.h",
+      "title": "Line--convex hull intersection",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/ClosestPair.h",
+      "title": "Closest pair of points",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/kdTree.h",
+      "title": "Nearest-neighbor queries: KD-tree",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/ManhattanMST.h",
+      "title": "Manhattan MST candidate edges",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/FastDelaunay.h",
+      "title": "Delaunay triangulation",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/3dHull.h",
+      "title": "Three-dimensional convex hull",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/PolyhedronVolume.h",
+      "title": "Polyhedron volume",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "geometry/sphericalDistance.h",
+      "title": "Spherical distance",
+      "chapter": "geometry/kactl_additions.tex"
+    },
+    {
+      "source": "combinatorial/IntPerm.h",
+      "title": "Permutation indexing",
+      "chapter": "math/kactl_combinatorial.tex"
+    },
+    {
+      "source": "various/KnuthDP.h",
+      "title": "Knuth optimization",
+      "chapter": "dp/kactl_additions.tex"
+    },
+    {
+      "source": "various/ConstantIntervals.h",
+      "title": "Constant intervals of a monotone function",
+      "chapter": "techniques/kactl_additions.tex"
+    },
+    {
+      "source": "various/IntervalContainer.h",
+      "title": "Union and subtraction of intervals",
+      "chapter": "techniques/kactl_additions.tex"
+    },
+    {
+      "source": "various/IntervalCover.h",
+      "title": "Minimum interval cover",
+      "chapter": "techniques/kactl_additions.tex"
+    },
+    {
+      "source": "various/TernarySearch.h",
+      "title": "Discrete ternary search",
+      "chapter": "techniques/kactl_additions.tex"
+    }
+  ],
+  "dependency_headers": [
+    "contest/template.cpp",
+    "geometry/OnSegment.h",
+    "geometry/Point.h",
+    "geometry/Point3D.h",
+    "geometry/sideOf.h",
+    "graph/PushRelabel.h",
+    "number-theory/ModPow.h",
+    "numerical/SolveLinear.h",
+    "various/BumpAllocator.h"
+  ],
+  "excluded": "Existing equivalents, alternative implementations of existing capabilities, and performance-only utilities are not added as sections."
+}
