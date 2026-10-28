@@ -1,0 +1,299 @@
+{
+  "baseline_ref": "e068fdf",
+  "flags": [
+    "-std=c++17",
+    "-O2",
+    "-isysroot",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+    "-idirafter",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+  ],
+  "active_code_lines": {
+    "before": {
+      "strings/suffix_array_lcp.tex": 43,
+      "graphs/dag_and_scc.tex": 24,
+      "graphs/two_sat.tex": 50
+    },
+    "after": {
+      "strings/suffix_array_lcp.tex": 49,
+      "graphs/dag_and_scc.tex": 25,
+      "graphs/two_sat.tex": 50
+    }
+  },
+  "after_sha256": {
+    "strings/suffix_array_lcp.tex": "798a5f97e56d41ec371fd9566ec91f5a3bd2b08b85575c6284ca1fd33a0a25ec",
+    "graphs/dag_and_scc.tex": "7c2a13dff1e15eb05baedf7ee8fbe05fd33f8b72e88115be7b20c72a42466c04",
+    "graphs/two_sat.tex": "7b82fd0a10290489c7b97bd63432edaf97f3c1811aac62aff982c3748475107e"
+  },
+  "benchmarks": [
+    {
+      "case": "suffix_random",
+      "samples": {
+        "before": [
+          {
+            "ms": 154.609,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 9.484375
+          },
+          {
+            "ms": 156.038,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 9.484375
+          },
+          {
+            "ms": 151.127,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 9.484375
+          },
+          {
+            "ms": 150.471,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 9.484375
+          },
+          {
+            "ms": 151.288,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 9.484375
+          }
+        ],
+        "after": [
+          {
+            "ms": 32.651,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 10.8125
+          },
+          {
+            "ms": 31.678,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 10.8125
+          },
+          {
+            "ms": 30.167,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 10.8125
+          },
+          {
+            "ms": 30.434,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 10.8125
+          },
+          {
+            "ms": 30.863,
+            "checksum": "5499036813139374561",
+            "peak_rss_mib": 10.8125
+          }
+        ]
+      },
+      "before": {
+        "median_ms": 151.288,
+        "peak_rss_mib": 9.484375
+      },
+      "after": {
+        "median_ms": 30.863,
+        "peak_rss_mib": 10.8125
+      }
+    },
+    {
+      "case": "suffix_repeated",
+      "samples": {
+        "before": [
+          {
+            "ms": 238.491,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 9.484375
+          },
+          {
+            "ms": 282.044,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 9.484375
+          },
+          {
+            "ms": 236.47,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 9.484375
+          },
+          {
+            "ms": 236.157,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 9.484375
+          },
+          {
+            "ms": 236.54,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 9.484375
+          }
+        ],
+        "after": [
+          {
+            "ms": 71.965,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 10.8125
+          },
+          {
+            "ms": 67.287,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 10.8125
+          },
+          {
+            "ms": 79.368,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 10.8125
+          },
+          {
+            "ms": 75.951,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 10.8125
+          },
+          {
+            "ms": 79.691,
+            "checksum": "13799227535765403712",
+            "peak_rss_mib": 10.8125
+          }
+        ]
+      },
+      "before": {
+        "median_ms": 236.54,
+        "peak_rss_mib": 9.484375
+      },
+      "after": {
+        "median_ms": 75.951,
+        "peak_rss_mib": 10.8125
+      }
+    },
+    {
+      "case": "scc_dag",
+      "samples": {
+        "before": [
+          {
+            "ms": 30.293,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 19.5
+          },
+          {
+            "ms": 26.511,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 19.5
+          },
+          {
+            "ms": 26.62,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 19.484375
+          },
+          {
+            "ms": 27.032,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 19.484375
+          },
+          {
+            "ms": 27.621,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 19.484375
+          }
+        ],
+        "after": [
+          {
+            "ms": 1.392,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 11.8125
+          },
+          {
+            "ms": 1.298,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 11.8125
+          },
+          {
+            "ms": 1.29,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 11.8125
+          },
+          {
+            "ms": 1.281,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 11.8125
+          },
+          {
+            "ms": 1.315,
+            "checksum": "10301817731100077568",
+            "peak_rss_mib": 11.8125
+          }
+        ]
+      },
+      "before": {
+        "median_ms": 27.032,
+        "peak_rss_mib": 19.5
+      },
+      "after": {
+        "median_ms": 1.298,
+        "peak_rss_mib": 11.8125
+      }
+    },
+    {
+      "case": "scc_cycles",
+      "samples": {
+        "before": [
+          {
+            "ms": 25.877,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 19.984375
+          },
+          {
+            "ms": 25.242,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 19.984375
+          },
+          {
+            "ms": 25.631,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 19.984375
+          },
+          {
+            "ms": 25.454,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 19.984375
+          },
+          {
+            "ms": 25.406,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 19.984375
+          }
+        ],
+        "after": [
+          {
+            "ms": 2.487,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 11.8125
+          },
+          {
+            "ms": 2.467,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 11.8125
+          },
+          {
+            "ms": 2.645,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 11.8125
+          },
+          {
+            "ms": 2.542,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 11.8125
+          },
+          {
+            "ms": 2.49,
+            "checksum": "11035922735068637952",
+            "peak_rss_mib": 11.8125
+          }
+        ]
+      },
+      "before": {
+        "median_ms": 25.454,
+        "peak_rss_mib": 19.984375
+      },
+      "after": {
+        "median_ms": 2.49,
+        "peak_rss_mib": 11.8125
+      }
+    }
+  ],
+  "correctness": "OK: 27147 byte-string SA/LCP cases; 68067 graphs vs reachability + topological IDs; 4096-vertex chain/cycle; 10000 formulas using every 2-SAT helper vs all assignments"
+}
