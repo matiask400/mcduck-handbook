@@ -7,6 +7,8 @@ la información de sus subárboles. Evita ejecutar una DFS $O(n)$ desde cada
 vértice, lo que costaría $O(n^2)$.}
 
 \complexity{tiempo $O(n)$; memoria $O(n)$.}
+Se calcula un orden padre--hijos y se recorre en ambos sentidos, sin DFS
+recursiva. El grafo debe ser un árbol conectado; se admite el árbol vacío.
 
 \begin{lstlisting}[style=cpp]
 struct DistanceRerooting {
@@ -17,24 +19,24 @@ struct DistanceRerooting {
 
     explicit DistanceRerooting(const vector<vector<int>> &input_tree)
         : node_count(input_tree.size()), tree(input_tree),
-          subtree_size(node_count), distance_sum(node_count) {
-        dfs_down(0, -1);
-        dfs_up(0, -1);
-    }
-
-    void dfs_down(int vertex, int parent) {
-        subtree_size[vertex] = 1;
-        for (int to : tree[vertex]) if (to != parent) {
-            dfs_down(to, vertex);
-            subtree_size[vertex] += subtree_size[to];
-            distance_sum[vertex] += distance_sum[to] + subtree_size[to];
+          subtree_size(node_count, 1), distance_sum(node_count) {
+        if (!node_count) return;
+        vector<int> parent(node_count, -1), order{0};
+        for (int at = 0; at < node_count; ++at) {
+            int v = order[at];
+            for (int to : tree[v]) if (to != parent[v]) {
+                parent[to] = v; order.push_back(to);
+            }
         }
-    }
-    void dfs_up(int vertex, int parent) {
-        for (int to : tree[vertex]) if (to != parent) {
-            distance_sum[to] = distance_sum[vertex]
-                             - subtree_size[to] + (node_count - subtree_size[to]);
-            dfs_up(to, vertex);
+        for (int at = node_count - 1; at > 0; --at) {
+            int v = order[at], p = parent[v];
+            subtree_size[p] += subtree_size[v];
+            distance_sum[p] += distance_sum[v] + subtree_size[v];
+        }
+        for (int at = 1; at < node_count; ++at) {
+            int v = order[at];
+            distance_sum[v] = distance_sum[parent[v]]
+                           + node_count - 2 * subtree_size[v];
         }
     }
 };
