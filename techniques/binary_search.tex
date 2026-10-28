@@ -13,11 +13,11 @@ evaluaciones hasta alcanzar la tolerancia o el l\'imite de precisi\'on.
 Memoria adicional $O(1)$ aparte del chequeo.}
 
 \begin{lstlisting}[style=cpp]
-int l = start;
-int r = end;
+ll l = start; // start y end son int; los limites pueden salir de ese dominio.
+ll r = end;
 while (l <= r) {
-    int m = l + (r - l) / 2; 
-    if (can(m)) { 
+    ll m = l + (r - l) / 2;
+    if (can((int)m)) {
         // La condicion se cumple en m, ajustar el limite superior 
         r = m - 1; 
     } else { 
@@ -30,6 +30,10 @@ while (l <= r) {
 
 El algoritmo anterior permite usar la busqueda binaria unicamente en un dominio discreto.
 En este caso $r$ nos da el ultimo valor que no cumple la condicion y $l$ el menor valor que si la cumple.
+El dominio inicial es de \texttt{int}, pero los l\'imites se guardan en
+\texttt{long long}: esto permite calcular el ancho completo y representar
+\texttt{end+1} o \texttt{start-1} sin desbordar. Si no hay ning\'un verdadero,
+$l=\texttt{end}+1$; si todos son verdaderos, $r=\texttt{start}-1$.
 Para reales, mantener un intervalo con \texttt{can(l)==false} y
 \texttt{can(r)==true}. Usar la tolerancia pedida por el enunciado y cortar
 si el punto medio coincide con un extremo para evitar ciclos por redondeo.
