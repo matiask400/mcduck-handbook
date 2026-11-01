@@ -1,4 +1,0 @@
-Source: https://github.com/kth-competitive-programming/kactl
-Revision: b3548e973f8772010c1ef84e6d427c749733fd2c
-Only additions providing new capabilities and their dependencies are retained. Source files are unchanged.
-The listings are included from the normal chapters through main.tex.
