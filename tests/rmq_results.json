@@ -1,0 +1,337 @@
+{
+  "baseline_ref": "cd5adda",
+  "compiler": "g++-15 (Homebrew GCC 15.2.0) 15.2.0",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "flags": [
+    "-std=c++17",
+    "-O2",
+    "-isysroot",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+    "-idirafter",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+  ],
+  "seed": 20261027,
+  "active_code_lines": {
+    "before": 21,
+    "after": 18
+  },
+  "source_sha256": "263d0b68dbbbc6c7a559ca25df4a64494478d7b056a809dbb1c9ce97d350d98f",
+  "benchmarks": [
+    {
+      "case": "random",
+      "n": 200000,
+      "queries": 1000000,
+      "samples": {
+        "before": [
+          {
+            "build_ms": 5.411,
+            "query_ms": 6.045,
+            "total_ms": 11.456,
+            "table_cells": 3600000,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 41.78125
+          },
+          {
+            "build_ms": 5.549,
+            "query_ms": 7.589,
+            "total_ms": 13.138,
+            "table_cells": 3600000,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 41.78125
+          },
+          {
+            "build_ms": 5.36,
+            "query_ms": 7.435,
+            "total_ms": 12.795,
+            "table_cells": 3600000,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 41.78125
+          },
+          {
+            "build_ms": 5.89,
+            "query_ms": 7.678,
+            "total_ms": 13.568,
+            "table_cells": 3600000,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 41.78125
+          },
+          {
+            "build_ms": 6.052,
+            "query_ms": 7.574,
+            "total_ms": 13.626,
+            "table_cells": 3600000,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 41.78125
+          }
+        ],
+        "after": [
+          {
+            "build_ms": 4.158,
+            "query_ms": 6.779,
+            "total_ms": 10.937,
+            "table_cells": 3337875,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 37.484375
+          },
+          {
+            "build_ms": 4.262,
+            "query_ms": 6.991,
+            "total_ms": 11.253,
+            "table_cells": 3337875,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 37.484375
+          },
+          {
+            "build_ms": 4.233,
+            "query_ms": 6.612,
+            "total_ms": 10.845,
+            "table_cells": 3337875,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 37.484375
+          },
+          {
+            "build_ms": 4.333,
+            "query_ms": 6.984,
+            "total_ms": 11.317,
+            "table_cells": 3337875,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 37.484375
+          },
+          {
+            "build_ms": 4.703,
+            "query_ms": 5.811,
+            "total_ms": 10.514,
+            "table_cells": 3337875,
+            "checksum": "655380577472945996",
+            "peak_rss_mib": 37.484375
+          }
+        ]
+      },
+      "before": {
+        "build_ms": 5.549,
+        "query_ms": 7.574,
+        "total_ms": 13.138,
+        "peak_rss_mib": 41.78125,
+        "table_cells": 3600000
+      },
+      "after": {
+        "build_ms": 4.262,
+        "query_ms": 6.779,
+        "total_ms": 10.937,
+        "peak_rss_mib": 37.484375,
+        "table_cells": 3337875
+      }
+    },
+    {
+      "case": "large",
+      "n": 1000000,
+      "queries": 1000000,
+      "samples": {
+        "before": [
+          {
+            "build_ms": 31.083,
+            "query_ms": 16.812,
+            "total_ms": 47.895,
+            "table_cells": 20000000,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 182.515625
+          },
+          {
+            "build_ms": 31.779,
+            "query_ms": 15.805,
+            "total_ms": 47.584,
+            "table_cells": 20000000,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 182.515625
+          },
+          {
+            "build_ms": 32.248,
+            "query_ms": 17.364,
+            "total_ms": 49.612,
+            "table_cells": 20000000,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 182.515625
+          },
+          {
+            "build_ms": 30.578,
+            "query_ms": 15.081,
+            "total_ms": 45.659,
+            "table_cells": 20000000,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 182.515625
+          },
+          {
+            "build_ms": 29.511,
+            "query_ms": 17.896,
+            "total_ms": 47.407,
+            "table_cells": 20000000,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 182.515625
+          }
+        ],
+        "after": [
+          {
+            "build_ms": 24.539,
+            "query_ms": 15.143,
+            "total_ms": 39.682,
+            "table_cells": 18951445,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 163.015625
+          },
+          {
+            "build_ms": 24.555,
+            "query_ms": 14.609,
+            "total_ms": 39.164,
+            "table_cells": 18951445,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 163.015625
+          },
+          {
+            "build_ms": 23.809,
+            "query_ms": 11.951,
+            "total_ms": 35.76,
+            "table_cells": 18951445,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 163.015625
+          },
+          {
+            "build_ms": 24.172,
+            "query_ms": 14.637,
+            "total_ms": 38.809,
+            "table_cells": 18951445,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 163.015625
+          },
+          {
+            "build_ms": 25.484,
+            "query_ms": 12.452,
+            "total_ms": 37.936,
+            "table_cells": 18951445,
+            "checksum": "10654627917404276151",
+            "peak_rss_mib": 163.015625
+          }
+        ]
+      },
+      "before": {
+        "build_ms": 31.083,
+        "query_ms": 16.812,
+        "total_ms": 47.584,
+        "peak_rss_mib": 182.515625,
+        "table_cells": 20000000
+      },
+      "after": {
+        "build_ms": 24.539,
+        "query_ms": 14.609,
+        "total_ms": 38.809,
+        "peak_rss_mib": 163.015625,
+        "table_cells": 18951445
+      }
+    },
+    {
+      "case": "short",
+      "n": 200000,
+      "queries": 1000000,
+      "samples": {
+        "before": [
+          {
+            "build_ms": 5.827,
+            "query_ms": 4.695,
+            "total_ms": 10.522,
+            "table_cells": 3600000,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 41.78125
+          },
+          {
+            "build_ms": 4.992,
+            "query_ms": 4.005,
+            "total_ms": 8.997,
+            "table_cells": 3600000,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 41.78125
+          },
+          {
+            "build_ms": 5.188,
+            "query_ms": 4.126,
+            "total_ms": 9.314,
+            "table_cells": 3600000,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 41.78125
+          },
+          {
+            "build_ms": 5.877,
+            "query_ms": 4.771,
+            "total_ms": 10.648,
+            "table_cells": 3600000,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 41.78125
+          },
+          {
+            "build_ms": 5.286,
+            "query_ms": 4.471,
+            "total_ms": 9.757,
+            "table_cells": 3600000,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 41.78125
+          }
+        ],
+        "after": [
+          {
+            "build_ms": 4.306,
+            "query_ms": 4.917,
+            "total_ms": 9.223,
+            "table_cells": 3337875,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 37.484375
+          },
+          {
+            "build_ms": 9.158,
+            "query_ms": 6.597,
+            "total_ms": 15.755,
+            "table_cells": 3337875,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 37.484375
+          },
+          {
+            "build_ms": 3.91,
+            "query_ms": 5.672,
+            "total_ms": 9.582,
+            "table_cells": 3337875,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 37.484375
+          },
+          {
+            "build_ms": 4.232,
+            "query_ms": 4.695,
+            "total_ms": 8.927,
+            "table_cells": 3337875,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 37.484375
+          },
+          {
+            "build_ms": 4.306,
+            "query_ms": 4.817,
+            "total_ms": 9.123,
+            "table_cells": 3337875,
+            "checksum": "2420162580114692464",
+            "peak_rss_mib": 37.484375
+          }
+        ]
+      },
+      "before": {
+        "build_ms": 5.286,
+        "query_ms": 4.471,
+        "total_ms": 9.757,
+        "peak_rss_mib": 41.78125,
+        "table_cells": 3600000
+      },
+      "after": {
+        "build_ms": 4.306,
+        "query_ms": 4.917,
+        "total_ms": 9.223,
+        "peak_rss_mib": 37.484375,
+        "table_cells": 3337875
+      }
+    }
+  ],
+  "correctness": "OK: 11342 arrays; 4372849 inclusive queries vs direct minima; empty/singleton, duplicates, negatives, LLONG limits and power-of-two boundaries"
+}
