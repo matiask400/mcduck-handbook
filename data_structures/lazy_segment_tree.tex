@@ -13,9 +13,12 @@ por elemento. El m\'inimo/m\'aximo aumenta en $v$, pero la suma en $v(r-l)$.
 
 \begin{lstlisting}[style=cpp]
 struct LazySegmentTree {
+    // Para obtener el indice de la posicion buscada se debe carmbiar y devolver pares. Esto funciona solo para cuando se busca posiciones tipo MAX o MIN, no para sumas u operaciones
     // SUMA (activo). MIN/MAX: cambiar estas dos lineas y apply.
     static constexpr ll NEUTRAL = 0;
+    // static constexpr pll NEUTRAL = {INF,INF}
     static ll combine(ll a, ll b) { return a + b; }
+    // static pll combine(pll a, pll b) { return (a.fst <= b.fst) ? a : b; }
     // MIN: static constexpr ll NEUTRAL = numeric_limits<ll>::max();
     // MIN: static ll combine(ll a, ll b) { return min(a, b); }
     // MAX: static constexpr ll NEUTRAL = numeric_limits<ll>::min();
@@ -31,6 +34,7 @@ struct LazySegmentTree {
 
     void build(int p, int l, int r, const vector<ll> &a) {
         if (r - l == 1) { tree[p] = a[l]; return; }
+        // if (r - l == 1) { tree[p] = {a[l], l}; return; } // Esto es para guardar el indice
         int m = (l + r) / 2;
         build(p << 1, l, m, a);
         build(p << 1 | 1, m, r, a);
@@ -40,6 +44,7 @@ struct LazySegmentTree {
     void apply(int p, int l, int r, ll value) {
         tree[p] += value * (r - l); // SUMA (activo).
         // tree[p] += value;       // MIN/MAX: reemplaza la anterior.
+        // tree[p].fst += value    // MIN/MAS: obteniendo indice
         lazy[p] += value; // Igual para SUMA, MIN y MAX.
     }
 
@@ -64,6 +69,7 @@ struct LazySegmentTree {
         tree[p] = combine(tree[p << 1], tree[p << 1 | 1]);
     }
 
+    // Si quieres obtener el indice cambia ll por pll en ambas querys
     ll query(int ql, int qr) {
         return n ? query(1, 0, n, ql, qr) : NEUTRAL;
     }
