@@ -1,4 +1,4 @@
-\documentclass[10pt,landscape,twocolumn,a4paper,notitlepage]{book}
+\documentclass[10pt,landscape,oneside,openany,a4paper,notitlepage]{book}
 
 \usepackage{graphicx}
 
@@ -28,7 +28,15 @@
     \vspace*{1.5cm}
 \end{titlepage}
 
+\begin{multicols}{3}
+\small
 \tableofcontents
+\end{multicols}
+
+\clearpage
+\footnotesize
+\begin{multicols*}{3}
+\raggedcolumns
 
 \chapter{Base de competencia}
 \input{core/template_cpp}
@@ -155,4 +163,5 @@
 \chapter{Algoritmos offline}
 \input{techniques/mos_algorithm}
 
+\end{multicols*}
 \end{document}
