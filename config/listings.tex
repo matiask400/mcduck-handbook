@@ -2,6 +2,16 @@
 % language=C++ hace que Overleaf Free alcance su timeout. El c\'odigo y los
 % saltos de l\'inea se conservan, pero no se carga ning\'un lexer de lenguaje.
 
+% listings procesa los bytes UTF-8 por separado con pdfLaTeX. Declarar los
+% caracteres usados en comentarios y archivos importados conserva sus glifos.
+\lstset{literate=
+  {á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{i}}}1
+  {ó}{{\'{o}}}1 {ú}{{\'{u}}}1 {ü}{{\"{u}}}1 {ñ}{{\~{n}}}1
+  {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1
+  {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1 {Ü}{{\"{U}}}1 {Ñ}{{\~{N}}}1
+  {å}{{\aa}}1 {Å}{{\AA}}1
+}
+
 \definecolor{backcolour}{RGB}{245,245,245}      % Fondo claro
 \definecolor{codecomment}{RGB}{90,105,120}
 \definecolor{codekeyword}{RGB}{0,87,170}
