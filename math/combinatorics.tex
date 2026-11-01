@@ -31,3 +31,19 @@ struct Combinations {
 \end{lstlisting}
 
 \complexity{preproceso $O(N+\log mod)$; consulta $O(1)$; memoria $O(N)$.}
+
+\subsection{Elegir el m\'etodo antes de programar}
+\begin{itemize}
+  \item Muchas consultas, primo $p$ y m\'aximo $N<p$: usar
+  \texttt{Combinations(N,p)}. Consultar s\'olo $0\le n\le N$.
+  \item $n$ chico y m\'odulo cualquiera: usar Pascal, sin inversos.
+  \item $n$ enorme y primo peque\~no: usar Lucas; reserva $O(p)$ valores,
+  por lo que no conviene con $p=10^9+7$.
+\end{itemize}
+
+Los snippets junto a los teoremas usan las funciones de ``Aritm\'etica modular'' y
+\texttt{Combinations}. En esta plantilla los productos de factoriales usan
+\texttt{long long}: para $10^9+7$ y $998244353$ entran; con un primo grande
+de 64 bits se deben promover los productos antes de multiplicar.
+Las f\'ormulas exactas no autorizan usar divisi\'on entera despu\'es de tomar
+m\'odulo: dividir requiere un inverso coprimo con el m\'odulo.
