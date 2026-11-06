@@ -482,7 +482,28 @@ void core_examples() {
 }
 
 void finding(const string& name) {
-    if(name=="odt_empty") {
+    if(name=="matching_repeat") {
+        HopcroftKarp matching(2,2);
+        matching.add_edge(0,0);
+        check(matching.maximum_matching()==1);
+        check(matching.maximum_matching()==1);
+        matching.add_edge(1,1);
+        check(matching.maximum_matching()==2);
+        check(matching.maximum_matching()==2);
+    } else if(name=="dijkstra_limits") {
+        const ll maximum=numeric_limits<ll>::max();
+        vector<vector<pair<int,ll>>> graph(3);
+        graph[0]={{1,1},{2,maximum}};
+        graph[1]={{2,maximum}}; // Overflowing alternative must not beat the direct edge.
+        check(dijkstra(graph,0)==vector<ll>({0,1,maximum}));
+        graph[0]={{1,maximum}};graph[1]={{2,1}};
+        bool rejected=false;
+        try { dijkstra(graph,0); } catch(const overflow_error&) { rejected=true; }
+        check(rejected);
+        graph[0]={{1,LINF}};graph[1].clear();rejected=false;
+        try { dijkstra(graph,0); } catch(const overflow_error&) { rejected=true; }
+        check(rejected);
+    } else if(name=="odt_empty") {
         DisjointIntervals odt;odt.intervals[0]={10,7};odt.assign(3,3,99);
         auto it=prev(odt.intervals.upper_bound(4));
         cout<<"assign(3,3,99): containing interval="<<it->first<<','<<it->second.right<<" value="<<it->second.value<<endl;
@@ -499,6 +520,8 @@ void finding(const string& name) {
     } else if(name=="window_threshold") {
         vector<ll>a{0};ll limit=numeric_limits<ll>::min();cout<<"window {0}, limit LLONG_MIN"<<endl;
         check(longest_window_signed(a,limit)==0);
+        check(longest_window_signed({numeric_limits<ll>::max()},limit)==0);
+        check(longest_window_signed({limit},numeric_limits<ll>::max())==1);
     } else if(name=="floyd_negative_overflow") {
         vector<vector<ll>> d(40,vector<ll>(40,-1));
         for(int i=0;i<40;++i)d[i][i]=0;
@@ -507,6 +530,9 @@ void finding(const string& name) {
     } else if(name=="point_subtraction") {
         Point a{numeric_limits<ll>::min(),0},b{1,0};cout<<"distance LLONG_MIN -> 1"<<endl;
         i128 want=(i128)b.x-a.x;want*=want;check(squared_distance(a,b)==want);
+        Point c{0,1};
+        check(orientation(a,b,c)==1);
+        check(convex_diameter_squared(convex_hull({a,b,c}))==want);
     } else if(name=="binary_int_max") {
         cout<<"first_true [INT_MAX,INT_MAX], false"<<endl;
         check(audit_integer_search(numeric_limits<int>::max(),numeric_limits<int>::max(),numeric_limits<int>::max(),true)==ll(numeric_limits<int>::max())+1);
@@ -515,6 +541,19 @@ void finding(const string& name) {
         check(audit_integer_search(numeric_limits<int>::min(),numeric_limits<int>::max(),0)==0);
     } else if(name=="base_roundtrip") {
         auto s=to_base_string(-42,16);cout<<"to_base_string(-42,16)="<<s<<endl;check(from_base(s,16)==-42);
+        for(int base=2;base<=36;++base)
+            for(ll value:{numeric_limits<ll>::min(),-42LL,0LL,42LL,numeric_limits<ll>::max()})
+                check(from_base(to_base_string(value,base),base)==value);
+        bool rejected=false;
+        try { from_base("9223372036854775808",10); }
+        catch(const overflow_error&) { rejected=true; }
+        check(rejected);
+        for(const string& invalid:{"", "-", "G"}) {
+            rejected=false;
+            try { from_base(invalid,16); }
+            catch(const invalid_argument&) { rejected=true; }
+            check(rejected);
+        }
     } else if(name=="divide_conquer_infinite") {
         vector<ll> prev{LINF},next(1);cout<<"D&C: one unreachable state"<<endl;
         compute_divide_conquer(0,0,0,0,prev,next,[](int,int){return 0LL;});check(next[0]==LINF);
@@ -522,6 +561,10 @@ void finding(const string& name) {
         Dinic flow(1);flow.add_edge(0,0,7);
         auto e=flow.graph[0][0];cout<<"self-loop reverse="<<e.reverse<<" reverse capacity="<<flow.graph[e.to][e.reverse].capacity<<endl;
         check(e.reverse==1&&flow.graph[e.to][e.reverse].reverse==0);
+        FordFulkerson ford(1);ford.add_edge(0,0,7);
+        check(ford.graph[0][0].reverse==1&&ford.graph[0][1].reverse==0);
+        MinCostMaxFlow cost(1);cost.add_edge(0,0,7,2);
+        check(cost.graph[0][0].reverse==1&&cost.graph[0][1].reverse==0);
     } else if(name=="stl_empty") {
         cout<<"common_algorithms(empty vector)"<<endl;common_algorithms({});
     } else if(name=="mcmf_disconnected_cycle") {

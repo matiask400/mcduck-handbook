@@ -3,6 +3,9 @@
 0/1 usar 0--1 BFS; con negativos, Bellman--Ford.}
 
 Distancias desde una fuente con pesos no negativos.
+Usa \texttt{i128} internamente para evitar overflow al relajar. Los destinos
+inalcanzables valen \texttt{LINF}; lanza \texttt{overflow\_error} si una distancia
+finita supera \texttt{LLONG\_MAX} o coincide con esa marca.
 Para reconstruir caminos, descomentar las l\'ineas marcadas con
 \texttt{Reconstruccion} y el ejemplo opcional. Guardar padres no cambia
 el orden del tiempo de ejecuci\'on y agrega $O(V)$ de memoria;
@@ -13,10 +16,11 @@ vector<ll> dijkstra(const vector<vector<pair<int,ll>>> &graph, int source
     // , vector<int>& parent // Reconstruccion: parametro de salida.
 ) {
     int n = graph.size();
-    vector<ll> distance(n, LINF);
+    const i128 infinity = (i128)1 << 126;
+    vector<i128> distance(n, infinity);
     // parent.assign(n, -1); // Reconstruccion: sin padre inicialmente.
-    priority_queue<pair<ll,int>, vector<pair<ll,int>>,
-                   greater<pair<ll,int>>> pending;
+    priority_queue<pair<i128,int>, vector<pair<i128,int>>,
+                   greater<pair<i128,int>>> pending;
     distance[source] = 0;
     pending.push({0, source});
 
@@ -32,7 +36,13 @@ vector<ll> dijkstra(const vector<vector<pair<int,ll>>> &graph, int source
             }
         }
     }
-    return distance;
+    vector<ll> result(n, LINF);
+    for (int v = 0; v < n; ++v) if (distance[v] != infinity) {
+        if (distance[v] > numeric_limits<ll>::max() || distance[v] == LINF)
+            throw overflow_error("distance is not representable");
+        result[v] = (ll)distance[v];
+    }
+    return result;
 }
 // Ejemplo de uso: grafo dirigido con pesos no negativos.
 vector<vector<pair<int,ll>>> graph(4);

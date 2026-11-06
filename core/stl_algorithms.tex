@@ -2,6 +2,7 @@
 
 \begin{lstlisting}[style=cpp]
 void common_algorithms(vector<int> values) {
+    if (values.empty()) return; // min/max_element devolverian end().
     sort(values.begin(), values.end());
     sort(values.rbegin(), values.rend());
     stable_sort(values.begin(), values.end()); // conserva el orden relativo de elementos que empatan (noo mas rapido si mas memo)

@@ -22,7 +22,12 @@ Handbook compacto de programación competitiva en C++17.
 - Los módulos avanzados están inspirados en la cobertura temática del notebook
   de referencia “El Vasito”, con interfaces y validaciones propias de McDuck.
 
-Los snippets se validan con `tests/validate_snippets.py` usando GNU++17.
+Los snippets se validan con `python3 tests/validate_snippets.py` usando GNU++17.
+El comando comprueba la estructura del libro, la sintaxis y las suites de
+ejecución existentes. `--skip-run` limita la validación a documentación,
+sintaxis Python, template y definiciones C++ seleccionadas.
+En macOS, si `g++` apunta a Apple Clang, usar `--compiler g++-15` y los flags
+del SDK que requiera la instalación mediante `--cxxflag`.
 
 Ambas requieren `n >= 1`; para `1` la factorización es vacía. No hay que copiar
 las dos para resolver un problema. Para consultas moderadas también está

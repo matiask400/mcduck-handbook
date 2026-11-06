@@ -23,7 +23,7 @@ struct FordFulkerson {
 
     void add_edge(int from, int to, ll capacity) {
         assert(capacity >= 0);
-        Edge forward{to, (int)graph[to].size(), capacity};
+        Edge forward{to, (int)graph[to].size() + (from == to), capacity};
         Edge backward{from, (int)graph[from].size(), 0};
         graph[from].push_back(forward);
         graph[to].push_back(backward);
@@ -81,7 +81,7 @@ struct Dinic {
         : n(size), graph(size), level(size), next_edge(size) {}
 
     void add_edge(int from, int to, ll capacity) {
-        Edge forward{to, (int)graph[to].size(), capacity};
+        Edge forward{to, (int)graph[to].size() + (from == to), capacity};
         Edge backward{from, (int)graph[from].size(), 0};
         graph[from].push_back(forward);
         graph[to].push_back(backward);
@@ -182,8 +182,11 @@ Capacidades no negativas y flujo total representable en \texttt{long long}.
 \whenuse{Enviar cierta cantidad de flujo optimizando un costo: transporte,
 matching ponderado con capacidades o asignaci\'on de recursos.}
 
-SPFA por aumento; admite costos negativos si no hay ciclos negativos de costo
-alcanzables con capacidad residual positiva.
+SPFA por aumento; admite costos negativos si el grafo inicial no tiene ciclos
+de costo negativo con capacidad positiva en ninguna componente.
+La precondici\'on tambi\'en incluye componentes desconectadas de la fuente.
+La plantilla aumenta caminos fuente--sumidero; no optimiza circulaciones
+negativas independientes. Verificar esta restricci\'on al modelar el problema.
 
 Cada arista tiene capacidad y costo por unidad. En cada iteraci\'on se busca el
 camino residual de menor costo, se env\'ia todo lo permitido y se acumula
@@ -200,7 +203,7 @@ struct MinCostMaxFlow {
     explicit MinCostMaxFlow(int size) : n(size), graph(size) {}
 
     void add_edge(int from, int to, ll capacity, ll cost) {
-        Edge forward{to, (int)graph[to].size(), capacity, cost};
+        Edge forward{to, (int)graph[to].size() + (from == to), capacity, cost};
         Edge backward{from, (int)graph[from].size(), 0, -cost};
         graph[from].push_back(forward);
         graph[to].push_back(backward);

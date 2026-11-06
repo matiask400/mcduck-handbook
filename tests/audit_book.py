@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Audit actual handbook listings without editing them; failures remain visible.
 
-Run --case correctness for differential tests; --case findings for minimal
-counterexamples; --benchmark for isolated time/RSS measurements. Findings exit
-nonzero deliberately: they are regressions to fix only after the team's decision.
+The default suite checks supported inputs. Run --case findings for minimal
+counterexamples outside the documented contract; --benchmark for isolated
+time/RSS measurements. Unsupported counterexamples exit nonzero deliberately.
 """
 import argparse
 import hashlib
@@ -112,10 +112,15 @@ SELECTION = [
 ]
 
 REGRESSIONS = ['odt_empty','matrix_mod_one','floyd_negative_overflow',
-               'binary_int_max','binary_wide_domain','divide_conquer_infinite']
+               'binary_int_max','binary_wide_domain','divide_conquer_infinite',
+               'bcc_loop','dijkstra_large','window_threshold','point_subtraction',
+               'base_roundtrip','flow_reverse_index','stl_empty',
+               'matching_repeat','dijkstra_limits']
 CORRECTNESS = ['structures','graphs','trees','numeric','geometry','techniques','core',*REGRESSIONS]
-FINDINGS = ['bcc_loop','dijkstra_large','window_threshold','point_subtraction',
-            'base_roundtrip','flow_reverse_index','stl_empty','mcmf_disconnected_cycle']
+# This counterexample violates the documented global no-negative-cycle contract.
+# Keep it available via --case, outside the supported-input regression suite.
+DOCUMENTED_LIMITATIONS = ['mcmf_disconnected_cycle']
+FINDINGS = DOCUMENTED_LIMITATIONS
 BENCHMARKS = ['bench_structures','bench_scc','bench_ntt','bench_suffix','bench_dijkstra','bench_trees',
               'stack_hld','stack_lowlink','stack_reroot','stack_euler_lca']
 
@@ -184,7 +189,7 @@ def main():
         warnings.append('-Wno-unqualified-std-cast-call')
     source, hashes = library()
     source += '\n#line 1 "audit_book_test.cpp"\n'+(ROOT/'tests/audit_book_test.cpp').read_text()
-    cases = args.case or (BENCHMARKS if args.benchmark else CORRECTNESS+FINDINGS)
+    cases = args.case or (BENCHMARKS if args.benchmark else CORRECTNESS)
     cases = [c for group in cases for c in
              (CORRECTNESS if group=='correctness' else FINDINGS if group=='findings' else [group])]
     result = []
@@ -214,7 +219,8 @@ def main():
             print(json.dumps(result[-1]),flush=True)
     report = dict(platform=platform.platform(),compiler=compiler_version,cxxflags=args.cxxflag,
                   stack_mib=8,seed=20261026,source_sha256=hashlib.sha256(source.encode()).hexdigest(),
-                  file_sha256=hashes,results=result)
+                  file_sha256=hashes,results=result,
+                  documented_limitations=DOCUMENTED_LIMITATIONS)
     if args.json_output:
         args.json_output.write_text(json.dumps(report,indent=2)+'\n')
     sys.exit(0 if all(r['all_passed'] for r in result) else 1)

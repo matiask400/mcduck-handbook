@@ -152,10 +152,8 @@ i128 convex_diameter_oriented(const vector<Point> &polygon) {
         int next = (i + 1) % n;
         while (true) {
             int candidate = (opposite + 1) % n;
-            i128 current_area = cross(polygon[next] - polygon[i],
-                                      polygon[opposite] - polygon[i]);
-            i128 next_area = cross(polygon[next] - polygon[i],
-                                   polygon[candidate] - polygon[i]);
+            i128 current_area = cross(polygon[i], polygon[next], polygon[opposite]);
+            i128 next_area = cross(polygon[i], polygon[next], polygon[candidate]);
             if constexpr (Clockwise) {
                 if (next_area >= current_area) break;
             } else {

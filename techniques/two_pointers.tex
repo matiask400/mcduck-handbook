@@ -49,7 +49,7 @@ int longest_window_signed(const vector<ll> &a, ll limit) {
     for (int r = 0; r < (int)a.size(); ++r) {
         prefix += a[r];
         // Buscamos el menor i con prefix[i] >= prefix[r+1] - limit.
-        ll required = prefix - limit;
+        i128 required = (i128)prefix - limit;
         auto it = lower_bound(
             maximum_prefix.begin(), maximum_prefix.end(), required
         );
@@ -66,3 +66,6 @@ int longest_window_signed(const vector<ll> &a, ll limit) {
     return answer;
 }
 \end{lstlisting}
+
+Las sumas prefijas y las sumas mantenidas por la ventana no negativa deben
+entrar en \texttt{ll}. La diferencia entre prefijo y l\'imite usa \texttt{i128}.
