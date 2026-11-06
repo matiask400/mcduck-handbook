@@ -548,7 +548,7 @@ void finding(const string& name) {
         try { from_base("9223372036854775808",10); }
         catch(const overflow_error&) { rejected=true; }
         check(rejected);
-        for(const string& invalid:{"", "-", "G"}) {
+        for(const char* invalid:{"", "-", "G"}) {
             rejected=false;
             try { from_base(invalid,16); }
             catch(const invalid_argument&) { rejected=true; }
