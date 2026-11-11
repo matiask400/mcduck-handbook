@@ -3,11 +3,27 @@
 rango y consultar suma/m\'inimo/m\'aximo sin tocar cada elemento.}
 
 Suma en rango y suma sobre rango. Los intervalos son semiabiertos $[l,r)$.
+Para consultar m\'inimos o m\'aximos manteniendo las sumas en rango, reemplazar
+\texttt{NEUTRAL}, \texttt{combine} y la l\'inea marcada en \texttt{apply}
+por el mismo caso comentado. No cambiar \texttt{push}, build, add ni query.
+Cada nodo combina sus hijos; \texttt{lazy[p]} guarda el incremento pendiente
+por elemento. El m\'inimo/m\'aximo aumenta en $v$, pero la suma en $v(r-l)$.
 
 \complexity{build $O(n)$; update/query $O(\log n)$; memoria $O(n)$.}
 
 \begin{lstlisting}[style=cpp]
 struct LazySegmentTree {
+    // Para obtener el indice de la posicion buscada se debe carmbiar y devolver pares. Esto funciona solo para cuando se busca posiciones tipo MAX o MIN, no para sumas u operaciones
+    // SUMA (activo). MIN/MAX: cambiar estas dos lineas y apply.
+    static constexpr ll NEUTRAL = 0;
+    // static constexpr pll NEUTRAL = {INF,INF}
+    static ll combine(ll a, ll b) { return a + b; }
+    // static pll combine(pll a, pll b) { return (a.fst <= b.fst) ? a : b; }
+    // MIN: static constexpr ll NEUTRAL = numeric_limits<ll>::max();
+    // MIN: static ll combine(ll a, ll b) { return min(a, b); }
+    // MAX: static constexpr ll NEUTRAL = numeric_limits<ll>::min();
+    // MAX: static ll combine(ll a, ll b) { return max(a, b); }
+
     int n;
     vector<ll> tree, lazy;
 
@@ -18,15 +34,18 @@ struct LazySegmentTree {
 
     void build(int p, int l, int r, const vector<ll> &a) {
         if (r - l == 1) { tree[p] = a[l]; return; }
+        // if (r - l == 1) { tree[p] = {a[l], l}; return; } // Esto es para guardar el indice
         int m = (l + r) / 2;
         build(p << 1, l, m, a);
         build(p << 1 | 1, m, r, a);
-        tree[p] = tree[p << 1] + tree[p << 1 | 1];
+        tree[p] = combine(tree[p << 1], tree[p << 1 | 1]);
     }
 
     void apply(int p, int l, int r, ll value) {
-        tree[p] += value * (r - l);
-        lazy[p] += value;
+        tree[p] += value * (r - l); // SUMA (activo).
+        // tree[p] += value;       // MIN/MAX: reemplaza la anterior.
+        // tree[p].fst += value    // MIN/MAS: obteniendo indice
+        lazy[p] += value; // Igual para SUMA, MIN y MAX.
     }
 
     void push(int p, int l, int r) {
@@ -47,22 +66,113 @@ struct LazySegmentTree {
         int m = (l + r) / 2;
         add(p << 1, l, m, ql, qr, value);
         add(p << 1 | 1, m, r, ql, qr, value);
-        tree[p] = tree[p << 1] + tree[p << 1 | 1];
+        tree[p] = combine(tree[p << 1], tree[p << 1 | 1]);
     }
 
+    // Si quieres obtener el indice cambia ll por pll en ambas querys
     ll query(int ql, int qr) {
-        return n ? query(1, 0, n, ql, qr) : 0;
+        return n ? query(1, 0, n, ql, qr) : NEUTRAL;
     }
     ll query(int p, int l, int r, int ql, int qr) {
-        if (qr <= l || r <= ql) return 0;
+        if (qr <= l || r <= ql) return NEUTRAL;
         if (ql <= l && r <= qr) return tree[p];
         push(p, l, r);
         int m = (l + r) / 2;
-        return query(p << 1, l, m, ql, qr)
-             + query(p << 1 | 1, m, r, ql, qr);
+        return combine(query(p << 1, l, m, ql, qr),
+                       query(p << 1 | 1, m, r, ql, qr));
     }
 };
 \end{lstlisting}
 
+Con $n>0$, \texttt{tree[1]} contiene la respuesta global en $O(1)$.
+\texttt{query(l,r)} cuesta $O(\log n)$ y devuelve el neutro si $l=r$.
+Las sumas de valores y los acumulados lazy deben entrar en \texttt{ll}.
+
+\warning{Estas variantes conservan la actualizaci\'on de sumar en rango.
+No basta cambiar \texttt{combine} para consultar GCD, producto u operaciones
+bit a bit: su resumen no permite aplicar una suma usando s\'olo este lazy.}
+
 Para asignaci\'on de rango se necesita un lazy adicional que distinga ``sin
 asignaci\'on'' de asignar cero.
+
+\subsection{Reconocer el patr\'on: costos por umbral}
+\begin{enumerate}
+\item \textbf{Reordenar sin empeorar.} Si hay varias operaciones y se pide
+minimizar su cantidad, preguntar si se pueden agrupar por tipo. Demostrar
+que intercambiarlas conserva la validez y no aumenta el costo; no asumir
+que siempre conmutan. Si funciona, contar cu\'antas veces usar cada tipo
+puede reemplazar la simulaci\'on paso a paso.
+\item \textbf{Fijar un umbral.} Si una operaci\'on afecta a todos los objetos
+y otra a uno solo, fijar $x$ usos de la global y calcular el costo restante.
+Buscar una funci\'on $f(x)=g(x)+\sum_i h_i(x)$, donde cada objeto aporta
+seg\'un su relaci\'on con $x$. Probar que el costo calculado es necesario y
+que existe una estrategia que lo alcanza.
+\item \textbf{Acotar los candidatos.} Obtener una soluci\'on factible de
+costo $B$. Si $f(x)\ge x$, ning\'un $x>B$ mejora esa soluci\'on. Esta
+desigualdad, no el tama\~no de los valores de entrada, justifica recorrer
+s\'olo $[0,B]$. Si no hay una cota peque\~na, buscar puntos donde cambia la
+funci\'on y evaluar si se pueden comprimir coordenadas.
+\item \textbf{Traducir cada cambio a un rango.} Si insertar un objeto suma
+un mismo valor a $f(x)$ para $x<c$, actualiza el prefijo $[0,c)$; si afecta
+a $x\ge c$, actualiza un sufijo. Borrar revierte esa contribuci\'on. Para
+sumar sobre intervalos y pedir m\'inimos/m\'aximos, usar este lazy con el
+resumen adecuado. Si s\'olo cambian posiciones individuales, alcanza el
+Segment Tree puntual. Verificar siempre que el resumen permita aplicar
+la actualizaci\'on sin recorrer las hojas.
+\end{enumerate}
+
+\subsection{Ejemplo: Emergency Rations}
+Una caja tiene $c$ raciones. Cada d\'ia se vac\'ia una caja o se quita una
+raci\'on de todas las no vac\'ias. Tras cada alta/baja, pedir el m\'inimo de
+d\'ias, sin consumir realmente las raciones.
+
+Con $x$ operaciones globales, cada caja con $c>x$ necesita una operaci\'on
+individual. Hacer primero las globales y luego vaciar esas cajas alcanza
+el costo (si todas se vac\'ian antes, se omiten los d\'ias sobrantes).
+As\'i, el \textbf{m\'inimo} buscado es
+\[
+\min_{0\le x\le Q} f(x),\qquad f(x)=x+C(x),\quad
+C(x)=\#\{\text{cajas con }c>x\}.
+\]
+Hay a lo sumo $Q$ cajas: vaciarlas individualmente cuesta a lo sumo $Q$,
+y $f(x)\ge x$ permite descartar $x>Q$. Inicialmente $f(x)=x$.
+Agregar una caja suma $1$ en $[0,\min(c,Q+1))$; quitarla resta $1$ all\'i.
+
+\textbf{Antes de usar el ejemplo}, configurar el struct anterior para
+\textbf{MIN}: \texttt{NEUTRAL = numeric\_limits<ll>::max()},
+\texttt{combine(a,b) = min(a,b)} y, en \texttt{apply},
+\texttt{tree[p] += value} sin multiplicar por la longitud.
+Build y add deben combinar siempre con m\'inimo.
+El namespace permite conservar el ejemplo junto al template; al enviar,
+copiar solamente su \texttt{main} y el struct configurado para MIN.
+
+\begin{lstlisting}[style=cpp]
+namespace emergency_rations_example {
+int main() {FIN;
+    int Q;
+    cin >> Q;
+
+    vector<ll> a(Q + 1);
+    iota(a.begin(), a.end(), 0LL);
+    LazySegmentTree st(a); // Configurado para MIN.
+
+    for (int i = 0; i < Q; ++i) {
+        ll x;
+        cin >> x;
+
+        ll c = abs(x);
+        int fin = min(c, (ll)Q + 1);
+        // [0, fin): candidatos menores que c.
+        st.add(0, fin, x > 0 ? 1 : -1);
+
+        cout << st.tree[1]
+             << (i + 1 == Q ? '\n' : ' ');
+    }
+    return 0;
+}
+}
+\end{lstlisting}
+
+Para \texttt{+1 +2 +2 +7 -2 +10 -1 -2}, las respuestas son
+\texttt{1 2 2 3 3 4 3 2}. Cada cambio cuesta $O(\log Q)$ y leer la
+ra\'iz cuesta $O(1)$; tiempo total $O(Q\log Q)$ y memoria $O(Q)$.

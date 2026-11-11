@@ -3,7 +3,8 @@
 trabajar m\'odulo primo o transformar una suma aparentemente cuadr\'atica.}
 \complexity{Las f\'ormulas son $O(1)$ una vez conocidos sus datos;
 inclusi\'on--exclusi\'on cuesta normalmente $O(2^k)$ y Burnside recorre las
-simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
+simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.
+La memoria depende del algoritmo elegido; las identidades solas usan $O(1)$.}
 
 \subsection{Conteo y cotas}
 \begin{itemize}
@@ -47,6 +48,44 @@ simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
 \end{itemize}
 
 \subsection{Combinatoria}
+\textbf{Antes de elegir una f\'ormula.} Para tomar $k$ elementos entre $n$
+opciones, preguntar si importa el orden y si una opci\'on puede repetirse.
+Cambiar dos elementos importa si produce otro resultado: un equipo no tiene
+orden, pero los cargos de presidente y vicepresidente s\'i.
+
+\begin{center}
+\begin{tabular}{cccl}
+Orden & Repetici\'on & Cantidad & Ejemplo \\
+\hline
+No & No & $\binom nk$ & 3 personas entre 5: 10 \\
+S\'i & No & $n!/(n-k)!$ & 3 cargos entre 5: 60 \\
+S\'i & S\'i & $n^k$ & clave de 4 d\'igitos: $10^4$ \\
+No & S\'i & $\binom{n+k-1}{k}$ & 3 bochas, 5 sabores: 35 \\
+\end{tabular}
+\end{center}
+
+Las opciones de cada caso no tienen restricciones adicionales. En la \'ultima
+fila $n\ge1$: s\'olo importa cu\'antas veces se elige cada tipo, no el orden de
+las elecciones. En C++, calcular $n^k$ m\'odulo $m$ con
+\texttt{mod\_power(n,k,m)}, no con \texttt{pow} de punto flotante.
+
+Los snippets aparecen junto a cada f\'ormula. Requieren los tipos del template
+base, las funciones de ``Aritm\'etica modular'' y, donde se usa, la clase
+\texttt{Combinations} de ``Combinatoria m\'odulo primo''. Al copiarlos a C++,
+colocar esas dependencias antes de las funciones.
+
+\begin{lstlisting}[style=cpp]
+void counting_examples() {
+    const ll MOD = 1000000007;
+    Combinations c(100, MOD); // Incluye el maximo n de cada formula.
+    cout << c.choose(5, 3) << '\n'; // 10: equipo sin cargos.
+    cout << mod_power(10, 4, MOD) << '\n'; // 10000: clave con repeticion.
+    auto division = mod_divide(10, 3, 7);
+    cout << *division << '\n'; // 1: 10 * inverso(3) modulo 7.
+    assert(!mod_inverse(2, 4)); // No hay inverso; no significa "conteo cero".
+}
+\end{lstlisting}
+
 \begin{itemize}
   \item \textbf{Reglas de suma y producto:} si los casos son excluyentes, sus
   cantidades se suman. Si una elecci\'on de $a$ formas va seguida de otra
@@ -70,6 +109,23 @@ simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
       \frac{n!}{c_1!c_2!\cdots c_r!}.
   \]
   Por ejemplo, \texttt{AAB} tiene $3!/2!=3$ permutaciones distintas.
+  \texttt{BANANA} tiene $6!/(3!2!1!)=60$: permutar las tres A entre s\'i no
+  crea otra palabra, y lo mismo ocurre con las dos N.
+  Para el snippet, las cantidades son no negativas y su suma $n$ debe estar
+  precomputada, con $n<p$. Usar factoriales inversos, no divisi\'on entera
+  de valores ya reducidos m\'odulo $p$.
+
+\begin{lstlisting}[style=cpp]
+ll multinomial(const vector<int> &counts, const Combinations &c) {
+    int n = accumulate(counts.begin(), counts.end(), 0);
+    ll answer = c.factorial[n];
+    for (int amount : counts)
+        answer = answer * c.inverse_factorial[amount] % c.mod;
+    return answer; // {3,2,1}: BANANA tiene 60 ordenes.
+}
+\end{lstlisting}
+
+  Consulta $O(k)$ para $k$ tipos; memoria adicional $O(1)$ tras el preproceso.
   \item \textbf{Subconjuntos:} cada uno de los $n$ elementos puede estar o no,
   por lo que existen $2^n$ subconjuntos. Los de tama\~no $k$ son $\binom nk$ y
   \[
@@ -81,14 +137,32 @@ simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
   \]
   Al fijar un elemento, una selecci\'on o lo contiene o no lo contiene. Permite
   calcular combinaciones mediante DP, incluso cuando no existe divisi\'on
-  modular.
+  modular. Es la alternativa para $n$ chico y m\'odulo compuesto; no exige
+  primalidad ni inversos.
+
+\begin{lstlisting}[style=cpp]
+vector<vector<ll>> pascal_mod(int n, ll mod) {
+    assert(n >= 0 && mod > 0);
+    vector<vector<ll>> c(n + 1, vector<ll>(n + 1));
+    for (int i = 0; i <= n; ++i) {
+        c[i][0] = c[i][i] = 1 % mod;
+        for (int j = 1; j < i; ++j)
+            c[i][j] = mod_add(c[i-1][j-1], c[i-1][j], mod);
+    }
+    return c; // pascal_mod(5, 12)[5][2] == 10.
+}
+\end{lstlisting}
+
+  Construcci\'on $O(N^2)$ tiempo y memoria; consulta $O(1)$. Si s\'olo hace
+  falta una fila, actualizar de derecha a izquierda usa $O(N)$ memoria.
   \item \textbf{Hockey-stick:}
   \[
       \sum_{i=r}^n\binom ir=\binom{n+1}{r+1}.
   \]
   Convierte una suma de combinaciones consecutivas en una sola. Combinatoriamente,
   clasifica cada selecci\'on de $r+1$ elementos seg\'un cu\'al es su elemento
-  mayor.
+  mayor. Reconocerla cuando el \'indice inferior queda fijo mientras el superior
+  recorre un intervalo consecutivo.
   \item \textbf{Binomio de Newton:}
   \[
       (x+y)^n=\sum_{k=0}^n\binom nkx^ky^{n-k}.
@@ -104,13 +178,58 @@ simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
   es $\binom{n+k-1}{k-1}$: se ordenan $n$ estrellas y $k-1$ separadores. Si
   todas las variables deben ser positivas, entregar una unidad a cada una deja
   $n-k$ por repartir y resulta $\binom{n-1}{k-1}$. Sirve para distribuir objetos
-  id\'enticos entre cajas distinguibles.
+  id\'enticos entre cajas distinguibles, con $n\ge0$ y $k\ge1$.
+  Para positivos se necesita $n\ge k$; de otro modo hay cero soluciones.
+
+  Ejemplo: repartir 6 caramelos id\'enticos entre 3 personas da
+  $\binom82=28$ formas permitiendo ceros, o $\binom52=10$ si todos reciben.
+  Con m\'inimos $x_i\ge l_i$, sustituir $y_i=x_i-l_i$ y repartir
+  $n-\sum l_i$; si es negativo, la respuesta es cero.
+
+  Con cotas superiores $x_i\le u_i$, usar inclusi\'on--exclusi\'on:
+  \[
+  \sum_{S\subseteq\{1,\ldots,k\}}(-1)^{|S|}
+  \binom{n-\sum_{i\in S}(u_i+1)+k-1}{k-1}.
+  \]
+  Cada caja que viola su cota recibe al menos $u_i+1$: retirarlos transforma
+  esa intersecci\'on en otro reparto sin cotas. Si quedan objetos negativos,
+  el t\'ermino vale cero. Permitiendo ceros, 6 caramelos en 3 cajas de capacidad
+  3 dan $28-3\binom42=10$; dos cajas no pueden recibir 4 a la vez.
+  El siguiente c\'odigo implementa las cotas superiores, sin m\'inimos. Si
+  tambi\'en hay m\'inimos, retirarlos y reemplazar $u_i$ por $u_i-l_i$; una
+  capacidad negativa hace imposible el reparto. Requiere $n\ge0$, capacidades
+  no negativas, $k$ peque\~no (por ejemplo $k\le20$) y factoriales hasta
+  $n+k-1<p$.
+
+\begin{lstlisting}[style=cpp]
+ll bounded_distributions(int n, const vector<int> &upper,
+                         const Combinations &c) {
+    int k = upper.size();
+    assert(n >= 0 && 1 <= k && k < 63);
+    ll answer = 0;
+    for (unsigned long long mask = 0; mask < (1ULL << k); ++mask) {
+        ll remaining = n;
+        for (int i = 0; i < k; ++i) if (mask >> i & 1ULL)
+            remaining -= (ll)upper[i] + 1;
+        if (remaining < 0) continue; // Interseccion imposible.
+        ll term = c.choose((int)remaining + k - 1, k - 1);
+        answer = __builtin_popcountll(mask) & 1
+               ? mod_subtract(answer, term, c.mod)
+               : mod_add(answer, term, c.mod);
+    }
+    return answer; // n=6, upper={3,3,3}: devuelve 10.
+}
+\end{lstlisting}
+
+  Tiempo $O(k2^k)$ y memoria adicional $O(1)$ tras el preproceso.
   \item \textbf{Vandermonde:}
   \[
       \sum_i\binom ri\binom s{n-i}=\binom{r+s}n.
   \]
   Elegir $n$ elementos de dos grupos de tama\~nos $r$ y $s$ puede hacerse
-  directamente o fijando cu\'antos $i$ se toman del primero.
+  directamente o fijando cu\'antos $i$ se toman del primero. Por ejemplo,
+  elegir 3 personas entre 4 mujeres y 3 hombres da
+  $\sum_{i=0}^{3}\binom4i\binom3{3-i}=\binom73=35$.
   \item \textbf{Catalan:}
   \[
       C_n=\frac1{n+1}\binom{2n}n
@@ -120,6 +239,20 @@ simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
   $n$ pares, caminos que no bajan de cero, triangulaciones de un pol\'igono de
   $n+2$ lados y varios \'arboles ordenados. Los primeros valores son
   $1,1,2,5,14,42$.
+  En par\'entesis, todo prefijo debe tener al menos tantas aperturas como
+  cierres: \texttt{)(} tiene cantidades iguales, pero es inv\'alido.
+  Para 3 pares hay $C_3=5$ secuencias v\'alidas. La expresi\'on con resta evita
+  dividir por $n+1$; el m\'etodo elegido para calcular los binomios mantiene
+  sus propias precondiciones.
+  Con \texttt{Combinations}, precomputar hasta $2n<p$:
+
+\begin{lstlisting}[style=cpp]
+ll catalan(int n, const Combinations &c) {
+    return mod_subtract(c.choose(2*n, n), c.choose(2*n, n+1), c.mod);
+} // catalan(0,c)=1; catalan(3,c)=5.
+\end{lstlisting}
+
+  Consulta $O(1)$ tiempo y memoria adicional, tras el preproceso.
   \item \textbf{Desarreglos:} permutaciones donde ning\'un elemento queda en su
   posici\'on original:
   \[
@@ -127,7 +260,23 @@ simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
   \]
   Al decidir d\'onde va el primer elemento, el caso restante se reduce a un
   desarreglo de $n-1$ o de $n-2$. Aparece en asignaciones donde nadie puede
-  recibir su objeto original.
+  recibir su objeto original. Por ejemplo, repartir regalos entre 4 personas
+  sin que nadie reciba el suyo da $D_4=9$. No sirve directamente si se proh\'iben
+  otras parejas arbitrarias adem\'as de la diagonal.
+
+\begin{lstlisting}[style=cpp]
+vector<ll> derangements(int n, ll mod) {
+    assert(n >= 0 && mod > 0);
+    vector<ll> d(n + 1);
+    d[0] = 1 % mod;
+    for (int i = 2; i <= n; ++i)
+        d[i] = mod_multiply(i-1, mod_add(d[i-1], d[i-2], mod), mod);
+    return d; // derangements(4,1000000007)[4] == 9.
+}
+\end{lstlisting}
+
+  Tiempo y memoria $O(n)$; admite m\'odulo compuesto. Si s\'olo se necesita
+  $D_n$, conservar los dos valores anteriores reduce memoria a $O(1)$.
   \item \textbf{Burnside:} para contar configuraciones iguales bajo un grupo de
   rotaciones o reflexiones,
   \[
@@ -135,7 +284,38 @@ simetr\'ias. Precomputaciones y factorizaciones conservan sus propios costos.}
   \]
   Para cada simetr\'ia se cuentan las configuraciones que no cambian y luego se
   promedia. Es \'util para collares, pulseras, coloraciones y tableros considerados
-  iguales bajo simetr\'ias.
+  iguales bajo simetr\'ias. No dividir simplemente el total por $|G|$: algunas
+  configuraciones quedan fijas bajo varias simetr\'ias.
+
+  Ejemplo: colorear los 4 v\'ertices de un cuadrado con 2 colores, considerando
+  iguales s\'olo las rotaciones. Los giros de $0,90,180,270$ grados fijan
+  respectivamente $16,2,4,2$ coloraciones, as\'i que hay
+  $(16+2+4+2)/4=6$ clases. Si tambi\'en se permiten reflexiones, hay que
+  incorporarlas al grupo.
+
+  En general, un giro de $r$ posiciones de un ciclo de $n$ posiciones tiene
+  $\gcd(n,r)$ ciclos; una coloraci\'on fija debe ser constante en cada ciclo.
+  Con $c$ colores hay $c^{\gcd(n,r)}$ coloraciones fijas, y el promedio es
+  \[
+      \frac1n\sum_{r=0}^{n-1}c^{\gcd(n,r)}.
+  \]
+  El snippet modular requiere que $n$ tenga inverso m\'odulo $m$.
+
+\begin{lstlisting}[style=cpp]
+ll rotation_colorings(int n, ll colors, ll mod) {
+    assert(n > 0 && colors >= 0 && mod > 1);
+    auto inverse = mod_inverse(n, mod);
+    assert(inverse); // Si no existe, este promedio modular no se puede usar.
+    ll sum = 0;
+    for (int r = 0; r < n; ++r)
+        sum = mod_add(sum, mod_power(colors, gcd(n, r), mod), mod);
+    return mod_multiply(sum, *inverse, mod);
+} // rotation_colorings(4,2,1000000007) == 6.
+\end{lstlisting}
+
+  Tiempo $O(n\log n+\log m)$ y memoria adicional $O(\log m)$ por Euclides.
+  Si $n$ no es invertible m\'odulo $m$, el conteo sigue existiendo, pero
+  hace falta otro tratamiento para hacer la divisi\'on exacta.
 \end{itemize}
 
 \subsection{Teor\'ia de n\'umeros}
@@ -156,7 +336,13 @@ $12=2^2\cdot3$ da $\tau(12)=6$, $\sigma(12)=28$ y $\varphi(12)=4$.
   \]
   Por tanto, $ax+by=c$ tiene soluciones enteras si y s\'olo si
   $\gcd(a,b)\mid c$. Euclides extendido encuentra $x,y$ y permite construir
-  inversos modulares cuando el gcd es $1$.
+  inversos modulares cuando el gcd es $1$. Para $a,b>0$, si
+  $ax_0+by_0=g=\gcd(a,b)$ y $g\mid c$, todas las soluciones son
+  \[
+  x=x_0(c/g)+(b/g)t,\qquad y=y_0(c/g)-(a/g)t,\quad t\in\mathbb Z.
+  \]
+  Si se exigen soluciones no negativas o acotadas, restringir $t$ usando ambas
+  desigualdades; una soluci\'on entera cualquiera no garantiza cumplirlas.
   \item \textbf{Peque\~no teorema de Fermat:} si $p$ es primo y $p\nmid a$,
   \[
       a^{p-1}\equiv1\pmod p.
@@ -168,7 +354,9 @@ $12=2^2\cdot3$ da $\tau(12)=6$, $\sigma(12)=28$ y $\varphi(12)=4$.
       a^{\varphi(m)}\equiv1\pmod m.
   \]
   Generaliza Fermat a m\'odulos no primos y permite reducir exponentes m\'odulo
-  $\varphi(m)$ bajo la condici\'on de coprimalidad.
+  $\varphi(m)$ bajo la condici\'on de coprimalidad. No omitirla:
+  $2^2\bmod4=0$, pero reducir el exponente m\'odulo $\varphi(4)=2$ producir\'ia
+  $2^0\bmod4=1$, que es incorrecto.
   \item \textbf{Wilson:} $p>1$ es primo si y s\'olo si
   \[
       (p-1)!\equiv-1\pmod p.

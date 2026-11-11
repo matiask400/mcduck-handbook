@@ -5,7 +5,20 @@ exacta bajo un primo compatible, evitando errores de punto flotante.}
 Convoluci\'on exacta m\'odulo $998244353=119\cdot2^{23}+1$, cuya ra\'iz
 primitiva es 3. La longitud transformada no puede superar $2^{23}$.
 
-\complexity{$O(n\log n)$ tiempo y $O(n)$ memoria.}
+Las raíces de cada etapa se precalculan una sola vez y se reutilizan en
+llamadas posteriores. Para invertir se revierten los índices $1,\ldots,n-1$,
+se aplica la misma transformada y se divide por $n$ módulo \texttt{NTT\_MOD}.
+Se conservan \texttt{vector<int>}, la raíz primitiva 3 y la interfaz
+\texttt{number\_theoretic\_transform(values,inverse)}.
+
+\complexity{Para una longitud transformada $n$: $O(n\log n)$ tiempo;
+$O(n)$ memoria de trabajo y $O(N_{\max})$ memoria persistente para raíces,
+donde $N_{\max}$ es la mayor longitud transformada hasta el momento.}
+
+\warning{La caché conserva la memoria de la mayor transformada, incluso si
+las siguientes son pequeñas. En jueces con \texttt{int} de 4 bytes, las raíces
+ocupan aproximadamente 2 MiB para $2^{19}$ elementos y 32 MiB para $2^{23}$,
+además de los arreglos de entrada y trabajo.}
 
 \begin{lstlisting}[style=cpp]
 const int NTT_MOD = 998244353;
@@ -14,33 +27,30 @@ const int NTT_ROOT = 3;
 void number_theoretic_transform(vector<int> &values, bool inverse) {
     int n = values.size();
     assert(n > 0 && (n & (n - 1)) == 0 && n <= (1 << 23));
+    static vector<int> roots(2, 1);
+    for (int half = roots.size() / 2; half < n / 2; half *= 2) {
+        int root = mod_power(NTT_ROOT, (NTT_MOD - 1) / (4 * half), NTT_MOD);
+        roots.resize(4 * half);
+        for (int i = 2 * half; i < 4 * half; ++i)
+            roots[i] = (ll)roots[i / 2] * (i & 1 ? root : 1) % NTT_MOD;
+    }
+    if (inverse) reverse(values.begin() + 1, values.end());
     for (int i = 1, j = 0; i < n; ++i) {
         int bit = n >> 1;
         for (; j & bit; bit >>= 1) j ^= bit;
         j ^= bit;
         if (i < j) swap(values[i], values[j]);
     }
-
-    for (int length = 2; length <= n; length <<= 1) {
-        int root = mod_power(NTT_ROOT, (NTT_MOD - 1) / length, NTT_MOD);
-        if (inverse) root = mod_power(root, NTT_MOD - 2, NTT_MOD);
-        for (int start = 0; start < n; start += length) {
-            ll multiplier = 1;
-            for (int offset = 0; offset < length / 2; ++offset) {
+    for (int half = 1; half < n; half *= 2)
+        for (int start = 0; start < n; start += 2 * half)
+            for (int offset = 0; offset < half; ++offset) {
                 int even = values[start + offset];
-                int odd = multiplier * values[start + offset + length / 2]
-                        % NTT_MOD;
+                int odd = (ll)roots[half + offset] * values[start + half + offset] % NTT_MOD;
                 values[start + offset] = even + odd;
-                if (values[start + offset] >= NTT_MOD)
-                    values[start + offset] -= NTT_MOD;
-                values[start + offset + length / 2] = even - odd;
-                if (values[start + offset + length / 2] < 0)
-                    values[start + offset + length / 2] += NTT_MOD;
-                multiplier = multiplier * root % NTT_MOD;
+                if (values[start + offset] >= NTT_MOD) values[start + offset] -= NTT_MOD;
+                values[start + half + offset] = even - odd;
+                if (values[start + half + offset] < 0) values[start + half + offset] += NTT_MOD;
             }
-        }
-    }
-
     if (inverse) {
         int inverse_n = mod_power(n, NTT_MOD - 2, NTT_MOD);
         for (int &value : values) value = (ll)value * inverse_n % NTT_MOD;

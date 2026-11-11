@@ -55,12 +55,14 @@ unsigned long long lowest_set_bit(unsigned long long value) {
 } // devuelve solo el bit 1 mas bajo
 
 void bitset_example() {
+    bitset<64> bits; // requiere <bitset>; inicialmente todos en 0
     bits.set(5);    // pone el bit 5 en 1
     bits.flip(7);   // invierte el bit 7
     bits.reset(5);  // pone el bit 5 en 0
-    bits.test(7);   // consulta si el bit 7 esta en 1
-    bits.count();   // cuenta bits en 1
-    (void)seventh; (void)active;
+    bool seventh = bits.test(7); // consulta el bit de indice 7
+    size_t active = bits.count(); // cuenta bits en 1
+    cout << seventh << '\n'; // 1
+    cout << active << '\n';  // 1
 }
 \end{lstlisting}
 

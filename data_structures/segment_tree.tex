@@ -3,16 +3,19 @@
 asociativa sobre rangos; tambi\'en para buscar la primera posici\'on que cumple.}
 
 Versi\'on para suma, actualizaci\'on puntual y consultas semiabiertas $[l,r)$.
-Cambiar \texttt{combine} y \texttt{NEUTRAL} para min, max, gcd, etc.
+Para cambiar la consulta, reemplazar las dos l\'ineas de \texttt{SUMA} por
+las dos del caso comentado elegido: \texttt{combine} y \texttt{NEUTRAL}.
+No se cambia build, update ni query. El neutro tambi\'en llena las hojas de
+relleno y es la respuesta de un rango vac\'io.
 
 \textbf{Operaciones comunes}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
-Consulta & \texttt{oper} & \texttt{NEUT} \\
+Consulta & \texttt{combine(a,b)} & \texttt{NEUTRAL} \\
 \hline
-Minimo & \texttt{min} & \texttt{INF} \\
-Maximo & \texttt{max} & \texttt{-INF} \\
+Minimo & \texttt{min} & mayor \texttt{ll} \\
+Maximo & \texttt{max} & menor \texttt{ll} \\
 Suma & \texttt{+} & \texttt{0} \\
 Producto & \texttt{*} & \texttt{1} \\
 XOR & \texttt{\^} & \texttt{0} \\
@@ -28,34 +31,119 @@ LCM & \texttt{lcm} & \texttt{1} \\
 
 \begin{lstlisting}[style=cpp]
 struct SegmentTree {
+    // SUMA (activo): reemplazar ambas lineas por un mismo caso.
+    static constexpr ll NEUTRAL = 0;
+    static ll combine(ll a, ll b) { return a + b; }
+    // MIN: static constexpr ll NEUTRAL = numeric_limits<ll>::max();
+    // MIN: static ll combine(ll a, ll b) { return min(a, b); }
+    // MAX: static constexpr ll NEUTRAL = numeric_limits<ll>::min();
+    // MAX: static ll combine(ll a, ll b) { return max(a, b); }
+    // PRODUCTO: static constexpr ll NEUTRAL = 1;
+    // PRODUCTO: static ll combine(ll a, ll b) { return a * b; }
+    // XOR: static constexpr ll NEUTRAL = 0;
+    // XOR: static ll combine(ll a, ll b) { return a ^ b; }
+    // OR: static constexpr ll NEUTRAL = 0;
+    // OR: static ll combine(ll a, ll b) { return a | b; }
+    // AND: static constexpr ll NEUTRAL = ~0LL;
+    // AND: static ll combine(ll a, ll b) { return a & b; }
+    // GCD: static constexpr ll NEUTRAL = 0;
+    // GCD: static ll combine(ll a, ll b) { return gcd(a, b); }
+    // LCM: static constexpr ll NEUTRAL = 1;
+    // LCM: static ll combine(ll a, ll b) { return lcm(a, b); }
+
     int n = 1;
     vector<ll> tree;
 
     explicit SegmentTree(int size) {
         while (n < size) n <<= 1;
-        tree.assign(2 * n, 0);
+        tree.assign(2 * n, NEUTRAL);
     }
 
     explicit SegmentTree(const vector<ll> &a) : SegmentTree(a.size()) {
         copy(a.begin(), a.end(), tree.begin() + n);
         for (int p = n - 1; p; --p)
-            tree[p] = tree[p << 1] + tree[p << 1 | 1];
+            tree[p] = combine(tree[p << 1], tree[p << 1 | 1]);
     }
 
     void set_value(int pos, ll value) {
         int p = pos + n;
         tree[p] = value;
         while (p >>= 1)
-            tree[p] = tree[p << 1] + tree[p << 1 | 1];
+            tree[p] = combine(tree[p << 1], tree[p << 1 | 1]);
     }
 
     ll query(int l, int r) const { // [l, r)
-        ll left = 0, right = 0;
+        ll left = NEUTRAL, right = NEUTRAL;
         for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
-            if (l & 1) left += tree[l++];
-            if (r & 1) right = tree[--r] + right;
+            if (l & 1) left = combine(left, tree[l++]);
+            if (r & 1) right = combine(tree[--r], right);
         }
-        return left + right;
+        return combine(left, right);
     }
 };
 \end{lstlisting}
+
+\warning{GCD/LCM requieren C++17 y \texttt{<numeric>}; usar valores no
+negativos representables. Sumas, productos y LCM deben entrar en \texttt{ll};
+para producto modular adaptar \texttt{combine}. El constructor por tama\~no
+llena con el neutro, no necesariamente con cero: para representar un arreglo
+de ceros usar el constructor con \texttt{vector<ll>(size, 0)}.}
+
+\subsection{Elegir entre normal, lazy y persistente}
+\begin{itemize}
+\item \textbf{Normal:} cambia una posici\'on por update y s\'olo importa el
+estado actual. Ejemplo: modificar un precio y consultar el m\'inimo o la
+suma de un intervalo. Update/query $O(\log n)$; memoria $O(n)$.
+\item \textbf{Lazy:} un update modifica un intervalo entero y su efecto
+se puede aplicar al resumen del nodo sin recorrerlo. Ejemplo: sumar $v$
+a todos los precios de $[l,r)$ y consultar el m\'inimo. Con las operaciones
+de la siguiente secci\'on, update/query $O(\log n)$; memoria $O(n)$.
+\item \textbf{Persistente:} hace falta consultar estados anteriores o
+crear una versi\'on desde otra. Ejemplo: cambiar un precio en la versi\'on
+3 y conservarla para futuras consultas. Con updates puntuales, update/query
+$O(\log n)$; memoria total $O(n+q\log n)$.
+\end{itemize}
+Lazy describe \textbf{c\'omo actualizar rangos}; persistencia describe
+\textbf{c\'omo conservar versiones}. Se pueden combinar, pero el struct
+persistente de este handbook s\'olo tiene asignaciones puntuales.
+Pedir una respuesta despu\'es de cada cambio no exige persistencia si
+nunca se vuelve a consultar el pasado: Emergency Rations usa lazy.
+
+\textbf{Antes de elegir:} si no hay updates, para sumas suelen alcanzar
+prefijos y para m\'inimos/m\'aximos puede convenir Sparse Table. Para sumas
+con incrementos puntuales, Fenwick suele ser m\'as simple. Segment Tree
+sirve cuando el resumen de un intervalo se obtiene combinando sus dos
+partes de forma asociativa; definir tambi\'en el neutro.
+
+\subsection{Reconocer el patr\'on y usar el normal}
+\begin{enumerate}
+\item Identificar qu\'e representa cada hoja: posici\'on, valor comprimido
+o estado de una DP.
+\item Definir el resumen que responde la consulta: suma, m\'inimo, GCD,
+etc. Debe poder combinarse desde los hijos en tiempo constante para
+mantener las complejidades indicadas.
+\item Verificar qu\'e cambia por operaci\'on. Si cambia una hoja, actualizar
+su camino hasta la ra\'iz. Si cambia un intervalo, evaluar lazy.
+\item Preguntar si se necesitan versiones viejas. Si s\'olo se consulta
+el presente, sobrescribir los nodos del \texttt{SegmentTree} normal.
+\end{enumerate}
+
+Ejemplo con la configuraci\'on \textbf{SUMA} activa. Los rangos son $[l,r)$
+y \texttt{set\_value} asigna el nuevo valor, no suma un incremento.
+Copiar el cuerpo de esta funci\'on dentro del \texttt{main} del problema.
+
+\begin{lstlisting}[style=cpp]
+void example_segment_tree() {
+    vector<ll> a = {2, 1, 3, 4};
+    SegmentTree st(a);
+    cout << st.query(1, 3) << '\n'; // 1 + 3 = 4.
+
+    st.set_value(1, 7); // Actual: [2, 7, 3, 4].
+    cout << st.query(1, 3) << '\n'; // 7 + 3 = 10.
+    cout << st.query(0, 4) << '\n'; // Total = 16.
+}
+\end{lstlisting}
+
+Para consultar m\'inimos, cambiar \texttt{combine} y \texttt{NEUTRAL} al
+caso MIN: las mismas llamadas imprimen $1$, $3$ y $2$. No cambia la forma
+de actualizar ni de consultar.

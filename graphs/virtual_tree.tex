@@ -14,8 +14,12 @@ cambian la estructura de los caminos.
 Requiere precomputar \texttt{tin}, \texttt{tout} y LCA. La función devuelve
 los vértices virtuales y sus aristas \texttt{(padre,hijo)}.
 
-\complexity{Por consulta $O(k\log k)$ tiempo y $O(k)$ memoria; para $k$
-marcados se crean como máximo $2k-1$ vértices.}
+\complexity{Por consulta $O(k\log k+kT_{LCA})$ tiempo y $O(k)$ memoria
+adicional, donde $T_{LCA}$ es el costo de consultar un LCA. Con Euler tour y
+RMQ, $T_{LCA}=O(1)$; con binary lifting, $T_{LCA}=O(\log n)$ y el tiempo es
+$O(k\log k+k\log n)$. Estas cotas excluyen el preproceso y almacenamiento del
+LCA, \texttt{tin} y \texttt{tout}. Para $k\ge1$ marcados se crean como
+máximo $2k-1$ vértices; sin marcados se devuelve un árbol vacío.}
 
 \begin{lstlisting}[style=cpp]
 template<class LCAFunction>

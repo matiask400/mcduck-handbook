@@ -2,6 +2,7 @@
 
 \begin{lstlisting}[style=cpp]
 void common_algorithms(vector<int> values) {
+    if (values.empty()) return; // min/max_element devolverian end().
     sort(values.begin(), values.end());
     sort(values.rbegin(), values.rend());
     stable_sort(values.begin(), values.end()); // conserva el orden relativo de elementos que empatan (noo mas rapido si mas memo)
@@ -54,8 +55,10 @@ void sequence_algorithms() {
         // procesar permutation
     } while (next_permutation(permutation.begin(), permutation.end()));
 
-    vector<int> values(5);
-    iota(values.begin(), values.end(), 10); // 10,11,12,13,14
+    // partial_sum acumula con el tipo de entrada, no con el de prefix.
+    // Usar ll; cada suma parcial debe entrar en ese tipo.
+    vector<ll> values(5);
+    iota(values.begin(), values.end(), 10LL); // 10,11,12,13,14
     vector<ll> prefix(values.size());
     partial_sum(values.begin(), values.end(), prefix.begin());
 }

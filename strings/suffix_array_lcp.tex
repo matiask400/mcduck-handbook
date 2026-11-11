@@ -4,42 +4,52 @@ contar substrings distintos o conocer prefijos comunes sin usar hashing.}
 
 \texttt{sa[i]} es la posición donde comienza el $i$-ésimo sufijo en orden
 lexicográfico. \texttt{lcp[i]} es la longitud del prefijo común entre los
-sufijos \texttt{sa[i]} y \texttt{sa[i+1]}. Esta versión usa doubling y
-Con sa podés:
-- Ordenar los sufijos.
-- Buscar un patrón con búsqueda binaria.
-- Comparar substrings.
-- Encontrar repeticiones.
-Con lcp podés:
-- Encontrar el substring repetido más largo.
-- Contar substrings distintos.
-- Consultar cuánto coinciden dos sufijos.
-\texttt{sort}.
+sufijos \texttt{sa[i]} y \texttt{sa[i+1]}. Para una cadena de longitud $n$,
+SA tiene $n$ posiciones y LCP tiene $\max(0,n-1)$ valores. Ambas funciones
+aceptan la cadena vacía.
 
-\complexity{Suffix Array $O(n\log^2 n)$; LCP $O(n)$; memoria $O(n)$.}
+Construcción basada en el doubling con counting sort de KACTL (Luo Suiqian y
+chilli): en cada ronda se ordenan pares de clases que representan prefijos de
+longitud $k$, obteniendo clases para longitud $2k$. Ordenar por clases enteras
+en tiempo lineal por ronda evita el \texttt{sort} comparativo.
+
+Internamente se agrega un centinela menor que cualquier carácter y se elimina
+su posición antes de devolver SA. Se codifica cada byte como
+\texttt{(unsigned char)c+1}, reservando cero para el centinela: no se modifica
+la entrada y también se admiten bytes NUL y valores mayores que 127.
+\texttt{lcp\_array} conserva la convención del handbook y usa Kasai; no devuelve
+el LCP adicional asociado al centinela de la interfaz original de KACTL.
+
+\complexity{Suffix Array $O(n\log n)$; LCP $O(n)$; memoria $O(n)$.}
 
 \begin{lstlisting}[style=cpp]
 vector<int> suffix_array(const string &s) {
-    int n=s.size();
-    vector<int> order(n),rank(n),new_rank(n);
+    int n=(int)s.size()+1, classes=257; // Incluye el centinela.
+    vector<int> order(n),rank(n),work(n),count(max(n,classes));
     iota(order.begin(),order.end(),0);
-    for(int i=0;i<n;++i) rank[i]=(unsigned char)s[i];
-    for(int length=1;length<n;length<<=1) {
-        auto key=[&](int position) {
-            return pair<int,int>{
-                rank[position],
-                position+length<n?rank[position+length]:-1
-            };
-        };
-        sort(order.begin(),order.end(),
-             [&](int a,int b){ return key(a)<key(b); });
-        new_rank[order[0]]=0;
-        for(int i=1;i<n;++i)
-            new_rank[order[i]]=new_rank[order[i-1]]
-                +(key(order[i-1])!=key(order[i]));
-        rank.swap(new_rank);
-        if(rank[order.back()]==n-1) break;
+    for(int i=0;i<n-1;++i) rank[i]=(unsigned char)s[i]+1;
+    for(int length=0,groups=0;groups<n;
+        length=length?2*length:1,classes=groups) {
+        int at=length;
+        iota(work.begin(),work.begin()+length,n-length);
+        for(int position:order)
+            if(position>=length) work[at++]=position-length;
+        fill(count.begin(),count.begin()+classes,0);
+        for(int value:rank) ++count[value];
+        for(int i=1;i<classes;++i) count[i]+=count[i-1];
+        for(int i=n;i--;)
+            order[--count[rank[work[i]]]]=work[i];
+        rank.swap(work); // work conserva las clases anteriores.
+        groups=1; rank[order[0]]=0;
+        for(int i=1;i<n;++i) {
+            int a=order[i-1],b=order[i];
+            bool same=work[a]==work[b] &&
+                (a+length<n?work[a+length]:-1)==
+                (b+length<n?work[b+length]:-1);
+            rank[b]=same?groups-1:groups++;
+        }
     }
+    order.erase(order.begin()); // Quitar el sufijo vacío, posición s.size().
     return order;
 }
 
@@ -71,14 +81,13 @@ Ejemplo de uso:
 string s="banana";
 vector<int> sa=suffix_array(s);  // 5 3 1 0 4 2
 vector<int> lcp=lcp_array(s,sa); // 1 3 0 0 2
-ll distinct=(ll)s.size()*(s.size()+1)/2
-            -accumulate(lcp.begin(),lcp.end(),0LL);
-cout<<distinct<<'\n'; // 15
 // Cantidad de substrings distintos:
-ll total=(ll)n*(n+1)/2;
+ll n=s.size();
+ll total=n*(n+1)/2;
 ll repeated=accumulate(lcp.begin(),lcp.end(),0LL);
 ll distinct=total-repeated;
-//Porque hay \(n(n+1)/2\) substrings en total, pero cada lcp[i] representa prefijos ya vistos en el sufijo anterior.
+cout<<distinct<<'\n'; // 15
+// Cada lcp[i] cuenta prefijos compartidos por dos sufijos consecutivos.
 \end{lstlisting}
 
 La cantidad de substrings distintos es

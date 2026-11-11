@@ -15,9 +15,16 @@ struct Point {
 };
 
 i128 cross(Point a, Point b) { return (i128)a.x * b.y - (i128)a.y * b.x; }
-i128 cross(Point a, Point b, Point c) { return cross(b - a, c - a); }
+i128 cross(Point a, Point b, Point c) {
+    i128 bx = (i128)b.x - a.x, by = (i128)b.y - a.y;
+    i128 cx = (i128)c.x - a.x, cy = (i128)c.y - a.y;
+    return bx * cy - by * cx;
+}
 i128 dot(Point a, Point b) { return (i128)a.x * b.x + (i128)a.y * b.y; }
-i128 squared_distance(Point a, Point b) { return dot(b - a, b - a); }
+i128 squared_distance(Point a, Point b) {
+    i128 dx = (i128)b.x - a.x, dy = (i128)b.y - a.y;
+    return dx * dx + dy * dy;
+}
 
 int orientation(Point a, Point b, Point c) {
     i128 value = cross(a, b, c);
@@ -39,6 +46,10 @@ bool segments_intersect(Point a, Point b, Point c, Point d) {
     return ab_c != ab_d && cd_a != cd_b;
 }
 \end{lstlisting}
+
+\warning{Los productos y sus sumas deben entrar en \texttt{i128}.
+Orientaci\'on y distancia promueven antes de restar. Los operadores
+\texttt{Point+Point} y \texttt{Point-Point} requieren resultados en \texttt{ll}.}
 
 \begin{lstlisting}[style=cpp]
 Point a{0,0},b{4,0},c{2,2},d{2,-2},p{2,0};

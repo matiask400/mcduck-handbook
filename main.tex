@@ -1,4 +1,4 @@
-\documentclass[10pt,landscape,twocolumn,a4paper,notitlepage]{book}
+\documentclass[10pt,landscape,oneside,openany,a4paper,notitlepage]{book}
 
 \usepackage{graphicx}
 
@@ -28,7 +28,15 @@
     \vspace*{1.5cm}
 \end{titlepage}
 
+\begin{multicols}{3}
+\small
 \tableofcontents
+\end{multicols}
+
+\clearpage
+\footnotesize
+\begin{multicols*}{3}
+\raggedcolumns
 
 \chapter{Base de competencia}
 \input{core/template_cpp}
@@ -53,6 +61,7 @@
 \input{techniques/bitmasks_and_bases}
 \input{techniques/coordinate_compression}
 \input{techniques/sqrt_heavy_light}
+\input{techniques/meet_in_the_middle}
 
 \chapter{Estructuras de datos}
 \input{data_structures/dsu}
@@ -98,12 +107,14 @@
 \input{graphs/centroid_decomposition}
 ------------------------------------------------------------------------------------------------------
 \input{graphs/rerooting_dp}
+\input{graphs/tree_diameter}
 ------------------------------------------------------------------------------------------------------
 \input{graphs/eulerian_path}
 ------------------------------------------------------------------------------------------------------
 \input{graphs/flows}
 ------------------------------------------------------------------------------------------------------
 \input{graphs/matching}
+\input{graphs/konig_vertex_cover}
 
 \chapter{Strings}
 \input{strings/hashing}
@@ -122,7 +133,9 @@
 \input{math/miller_rabin_pollard_rho}
 \input{math/matrices}
 \input{math/gaussian_elimination}
+\input{math/xor_basis}
 \input{math/ntt}
+
 
 \chapter{Geometr\'ia}
 \input{geometry/geometry_2d}
@@ -132,11 +145,15 @@
 
 \chapter{Programaci\'on din\'amica}
 \input{dp/lis}
+\input{dp/string_dp}
 \input{dp/knapsack_and_bitmask}
+\input{dp/knapsack_variants}
+\input{dp/digit_dp}
 \input{dp/divide_conquer_optimization}
 \input{dp/triangular_bound_dp}
 
 \chapter{Algoritmos offline}
 \input{techniques/mos_algorithm}
 
+\end{multicols*}
 \end{document}

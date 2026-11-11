@@ -1,12 +1,15 @@
 """Actualiza una versión del visor sin borrar la publicada por la otra rama."""
 
 import argparse
+from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 import shutil
+from zoneinfo import ZoneInfo
 
 
-def render_page(branch: str, sha: str, repository: str, *, pending=False) -> str:
+def render_page(branch: str, sha: str, repository: str, *, pending=False,
+                updated_at: datetime | None = None) -> str:
     stable = branch == "main"
     title = "(main)" if stable else "(dev)"
     other_url = "dev/" if stable else "../"
@@ -16,6 +19,15 @@ def render_page(branch: str, sha: str, repository: str, *, pending=False) -> str
     release = (
         f'<a href="{repo_url}/releases/latest">Última release</a>' if stable else ""
     )
+    updated = ""
+    if not pending:
+        published = (updated_at or datetime.now(timezone.utc)).astimezone(
+            ZoneInfo("America/Argentina/Cordoba"))
+        updated = (
+            '<p class="updated-at"><strong>Última actualización<br>'
+            f'<time datetime="{published.isoformat()}">'
+            f'{published:%d/%m/%Y %H:%M}</time> (Argentina)</strong></p>'
+        )
     content = (
         '<p>El PDF de (main) estará disponible después de la primera publicación desde esa rama.</p>'
         if pending
@@ -33,7 +45,9 @@ def render_page(branch: str, sha: str, repository: str, *, pending=False) -> str
   <style>
     body {{ margin: 0; font: 16px system-ui, sans-serif; background: #f3f4f6; color: #172033; }}
     header, main {{ max-width: 1200px; margin: auto; padding: 16px 24px; }}
+    .header-row {{ display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }}
     h1 {{ margin: 0 0 8px; font-size: 1.5rem; }}
+    .updated-at {{ margin: 0 0 8px auto; text-align: right; font-size: 0.9rem; }}
     nav {{ display: flex; flex-wrap: wrap; gap: 16px; }}
     a {{ color: #1457b5; }}
     iframe {{ width: 100%; height: 80vh; border: 1px solid #cbd5e1; background: white; }}
@@ -41,7 +55,10 @@ def render_page(branch: str, sha: str, repository: str, *, pending=False) -> str
 </head>
 <body>
   <header>
-    <h1>McDuck ICPC Handbook — {title}</h1>
+    <div class="header-row">
+      <h1>McDuck ICPC Handbook — {title}</h1>
+      {updated}
+    </div>
     <nav><a href="{other_url}">{other_label}</a>{release}</nav>
   </header>
   <main>{content}</main>

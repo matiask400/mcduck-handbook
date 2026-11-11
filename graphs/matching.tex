@@ -62,7 +62,8 @@ struct HopcroftKarp {
     }
 
     int maximum_matching() {
-        int matching = 0;
+        int matching = count_if(match_left.begin(), match_left.end(),
+                                [](int right) { return right != -1; });
         while (bfs())
             for (int left = 0; left < left_size; ++left)
                 if (match_left[left] == -1 && dfs(left)) ++matching;
@@ -70,6 +71,9 @@ struct HopcroftKarp {
     }
 };
 \end{lstlisting}
+
+Se puede volver a llamar despu\'es de agregar aristas. Conserva las parejas
+anteriores y devuelve el tama\~no total del matching actualizado.
 
 Ejemplo: asignar el m\'aximo n\'umero de personas a trabajos compatibles.
 

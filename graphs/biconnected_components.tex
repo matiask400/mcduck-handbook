@@ -28,7 +28,9 @@ cumple
 su subárbol no puede alcanzar un antecesor de \texttt{vertex} sin pasar por él;
 las aristas de la pila hasta \texttt{vertex--to} forman un bloque completo.
 
-\complexity{Tiempo $O(n+m)$; memoria $O(n+m)$.}
+\complexity{Esta implementaci\'on: tiempo $O(n+m\log(m+1))$ y memoria
+$O(n+m)$. El DFS es lineal, pero ordenar los extremos de las aristas de cada
+bloque para eliminar repetidos agrega el factor logar\'itmico.}
 
 \begin{lstlisting}[style=cpp]
 struct VertexBiconnectedComponents {
@@ -46,7 +48,9 @@ struct VertexBiconnectedComponents {
           low(input_graph.size()), graph(input_graph) {
         for (int vertex = 0; vertex < (int)graph.size(); ++vertex) {
             if (discovery[vertex] != -1) continue;
-            if (graph[vertex].empty()) {
+            bool isolated = all_of(graph[vertex].begin(), graph[vertex].end(),
+                                   [vertex](auto edge) { return edge.first == vertex; });
+            if (isolated) {
                 discovery[vertex] = low[vertex] = timer++;
                 components.push_back({vertex});
             } else {
@@ -123,5 +127,6 @@ for (int vertex = 0; vertex < n; ++vertex)
 \end{lstlisting}
 
 \warning{Cada arista no dirigida debe usar el mismo \texttt{edge\_id} en ambas
-direcciones. Los vértices de articulación aparecen en varias componentes; esto
+direcciones. Los lazos se ignoran; un v\'ertice sin vecinos distintos de s\'i
+mismo forma un bloque de un v\'ertice. Los vértices de articulación aparecen en varias componentes; esto
 es intencional.}

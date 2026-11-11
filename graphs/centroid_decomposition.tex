@@ -1,73 +1,77 @@
-\section{Rerooting DP}
-\whenuse{Calcular una respuesta para cada posible ra\'iz de un \`arbol reutilizando
-la DP de sub\'arbol y la contribuci\'on exterior.}
+\section{Descomposici\'on por centroides}
+\whenuse{Dividir un \'arbol en componentes balanceadas para contar caminos
+ o mantener consultas de distancia, por ejemplo al v\'ertice marcado m\'as cercano.}
 
-Usar cuando se necesita la respuesta para cada posible ra\'iz de un \`arbol.
-Primero se calcula la contribuci\'on de hijos a padre; luego se propaga hacia
-cada hijo la contribuci\'on de todo lo que queda fuera de su sub\'arbol.
+Un centroide de una componente de tama\~no $s$ es un v\'ertice cuya eliminaci\'on
+deja componentes de tama\~no como m\'aximo $s/2$. Se elige un centroide y se
+descompone recursivamente cada componente restante. El \'arbol de centroides
+tiene altura $O(\log n)$; sus aristas no son necesariamente aristas originales.
 
-Ejemplo: suma de distancias desde cada v\'ertice a todos los dem\'as.
-
-\complexity{tiempo $O(n)$; memoria $O(n)$.}
+\complexity{Construcci\'on $O(n\log n)$ tiempo y $O(n)$ memoria, incluyendo
+la pila de los DFS. La profundidad de la descomposici\'on es $O(\log n)$,
+pero un DFS auxiliar puede alcanzar profundidad $O(n)$.}
 
 \begin{lstlisting}[style=cpp]
-struct DistanceRerooting {
-    int node_count;
+struct CentroidDecomposition {
     const vector<vector<int>> &tree;
-    vector<int> subtree_size;
-    vector<ll> distance_sum;
-    explicit DistanceRerooting(const vector<vector<int>> &input_tree)
-        : node_count(input_tree.size()), tree(input_tree),
-          subtree_size(node_count), distance_sum(node_count) {
-        dfs_down(0, -1);
-        dfs_up(0, -1);
+    vector<int> size, parent;
+    vector<char> removed;
+    int root = -1;
+
+    explicit CentroidDecomposition(const vector<vector<int>> &input_tree)
+        : tree(input_tree), size(tree.size()), parent(tree.size(), -1),
+          removed(tree.size(), false) {
+        if (!tree.empty()) root = decompose(0, -1);
     }
-    void dfs_down(int vertex, int parent) {
-        subtree_size[vertex] = 1;
-        for (int to : tree[vertex]) if (to != parent) {
-            dfs_down(to, vertex);
-            subtree_size[vertex] += subtree_size[to];
-            distance_sum[vertex] += distance_sum[to] + subtree_size[to];
-        }
+
+    int calculate_size(int v, int previous) {
+        size[v] = 1;
+        for (int to : tree[v])
+            if (to != previous && !removed[to])
+                size[v] += calculate_size(to, v);
+        return size[v];
     }
-    void dfs_up(int vertex, int parent) {
-        for (int to : tree[vertex]) if (to != parent) {
-            distance_sum[to] = distance_sum[vertex]
-                             - subtree_size[to] + (node_count - subtree_size[to]);
-            dfs_up(to, vertex);
-        }
+
+    int find_centroid(int v, int previous, int total) {
+        for (int to : tree[v])
+            if (to != previous && !removed[to] && size[to] > total / 2)
+                return find_centroid(to, v, total);
+        return v;
+    }
+
+    int decompose(int entry, int previous_centroid) {
+        int total = calculate_size(entry, -1);
+        int centroid = find_centroid(entry, -1, total);
+        parent[centroid] = previous_centroid;
+        removed[centroid] = true;
+        for (int to : tree[centroid])
+            if (!removed[to]) decompose(to, centroid);
+        return centroid;
     }
 };
 \end{lstlisting}
 
-\subsection{Ejemplo pr\'actico: elegir una capital}
-
-Las ciudades forman un \`arbol y cada arista es una carretera:
-
-\begin{verbatim}
-A---B---C
-    |
-    D
-\end{verbatim}
-
-Se quiere construir un hospital en la ciudad que minimice la suma de distancias
-hacia todas las dem\'as. Las respuestas para cada posible ciudad son:
-
-\begin{verbatim}
-Desde A: 0+1+2+2 = 5
-Desde B: 1+0+1+1 = 3
-Desde C: 2+1+0+2 = 5
-Desde D: 2+1+2+0 = 5
-\end{verbatim}
-
-La mejor ciudad es \texttt{B}, porque su suma es $3$:
+\texttt{parent[v]} es el padre de $v$ en el \'arbol de centroides;
+la ra\'iz tiene padre $-1$. La lista de adyacencia original no se modifica.
+Al terminar, todos los v\'ertices quedan marcados en \texttt{removed}.
 
 \begin{lstlisting}[style=cpp]
-DistanceRerooting result(tree);
-int best=min_element(result.distance_sum.begin(),
-                     result.distance_sum.end())
-         -result.distance_sum.begin();
+void centroid_example() {
+    vector<vector<int>> tree = {{1}, {0, 2, 3}, {1}, {1, 4}, {3}};
+    CentroidDecomposition decomposition(tree);
+    cout << decomposition.root << '\n'; // 1
+
+    // Ancestros centroides del vertice 4, incluyendo al propio 4.
+    for (int v = 4; v != -1; v = decomposition.parent[v])
+        cout << v << ' '; // 4 3 1
+}
 \end{lstlisting}
 
-Para una combinaci\'on gen\'erica no invertible, usar prefijos y sufijos de las
-contribuciones de los hijos para excluir uno en $O(1)$.
+Para consultas de distancias, agregar la informaci\'on del problema en cada
+centroide y recorrer estos ancestros. Las distancias deben medirse en el
+\'arbol original, mediante LCA o precomput\'andolas durante la construcci\'on.
+
+\warning{Requiere un \'arbol no dirigido conectado; los v\'ertices son
+0-indexados. El constructor conserva una referencia: el \'arbol debe vivir
+m\'as que la estructura. Los DFS recursivos pueden desbordar la pila en cadenas
+largas; usar recorridos iterativos si los l\'imites lo requieren.}

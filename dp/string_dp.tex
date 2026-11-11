@@ -1,0 +1,113 @@
+\section{LCS con reconstrucci\'on}
+\whenuse{Encontrar una subsecuencia com\'un de longitud m\'axima entre dos
+cadenas. No confundir subsecuencia con substring contiguo.}
+\complexity{Tiempo $O(nm)$; memoria $O(nm)$ para reconstruir. Si s\'olo importa
+la longitud, usar dos filas y $O(\min(n,m))$ memoria.}
+
+\begin{lstlisting}[style=cpp]
+string longest_common_subsequence(const string &a, const string &b) {
+    int n = a.size(), m = b.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1));
+    for (int i = 1; i <= n; ++i)
+        for (int j = 1; j <= m; ++j)
+            dp[i][j] = a[i - 1] == b[j - 1] ? dp[i - 1][j - 1] + 1
+                         : max(dp[i - 1][j], dp[i][j - 1]);
+    string answer;
+    for (int i = n, j = m; i && j; ) {
+        if (a[i - 1] == b[j - 1]) {
+            answer.push_back(a[--i]); --j;
+        } else if (dp[i - 1][j] >= dp[i][j - 1]) --i;
+        else --j;
+    }
+    reverse(answer.begin(), answer.end());
+    return answer;
+}
+void lcs_example() {
+    cout << longest_common_subsequence("abcde", "ace") << '\n'; // ace
+}
+\end{lstlisting}
+
+\warning{Con $n=m=5000$, los enteros de la tabla ocupan unos 95.4 MiB;
+con $10000$, unos 381.5 MiB. Esta plantilla no cuenta todas las LCS ni resuelve
+por s\'i sola el problema constructivo Many LCS (SEERC 2021).}
+
+\section{Distancia de edici\'on con operaciones}
+\whenuse{Transformar una cadena en otra usando inserci\'on, borrado y reemplazo,
+cada uno de costo uno. Devuelve costo y una secuencia \`optima de operaciones.}
+\complexity{Tiempo y memoria $O(nm)$. S\'olo la distancia puede calcularse con
+dos filas; recuperar las operaciones requiere la tabla de esta versi\'on.}
+
+Las posiciones de las operaciones son 0-indexadas sobre la cadena
+\emph{tal como queda tras aplicar las operaciones anteriores}.
+
+\begin{lstlisting}[style=cpp]
+struct EditStep { char type; int position; char value; }; // I, D, R
+pair<int, vector<EditStep>> edit_distance(const string &a, const string &b) {
+    int n = a.size(), m = b.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1));
+    for (int i = 0; i <= n; ++i) dp[i][m] = n - i;
+    for (int j = 0; j <= m; ++j) dp[n][j] = m - j;
+    for (int i = n - 1; i >= 0; --i)
+        for (int j = m - 1; j >= 0; --j)
+            dp[i][j] = a[i] == b[j] ? dp[i + 1][j + 1]
+                : 1 + min({dp[i + 1][j], dp[i][j + 1], dp[i + 1][j + 1]});
+    vector<EditStep> steps;
+    for (int i = 0, j = 0, position = 0; i < n || j < m; ) {
+        if (i < n && j < m && a[i] == b[j]) {
+            ++i; ++j; ++position;
+        } else if (i < n && j < m && dp[i][j] == 1 + dp[i + 1][j + 1]) {
+            steps.push_back({'R', position++, b[j++]}); ++i;
+        } else if (i < n && dp[i][j] == 1 + dp[i + 1][j]) {
+            steps.push_back({'D', position, 0}); ++i;
+        } else {
+            steps.push_back({'I', position++, b[j++]});
+        }
+    }
+    return {dp[0][0], steps};
+}
+void edit_distance_example() {
+    auto [cost, steps] = edit_distance("kitten", "sitting");
+    cout << cost << '\n'; // 3
+    for (auto step : steps)
+        cout << step.type << ' ' << step.position << ' ' << step.value << '\n';
+    // R 0 s; R 4 i; I 6 g. En D, value no se utiliza.
+}
+\end{lstlisting}
+
+\section{Distancia al pal\'indromo m\'as cercano}
+\whenuse{Ediciones de costo uno para convertir una cadena en alg\'un pal\'indromo,
+como Palindromic Distance (Taiwan Online Programming Contest 2025).}
+\complexity{Tiempo y memoria $O(n^2)$; reconstrucci\'on $O(n)$. Con suma de
+longitudes $\le3000$, hay a lo sumo $9\cdot10^6$ celdas entre todos los casos.}
+
+\begin{lstlisting}[style=cpp]
+pair<int, string> nearest_palindrome(const string &s) {
+    int n = s.size();
+    if (n == 0) return {0, ""};
+    vector<vector<int>> dp(n, vector<int>(n));
+    auto cost = [&](int l, int r) { return l >= r ? 0 : dp[l][r]; };
+    for (int l = n - 1; l >= 0; --l)
+        for (int r = l + 1; r < n; ++r)
+            dp[l][r] = s[l] == s[r] ? cost(l + 1, r - 1)
+                : 1 + min({cost(l + 1, r), cost(l, r - 1), cost(l + 1, r - 1)});
+    string left, right;
+    for (int l = 0, r = n - 1; l <= r; ) {
+        if (l == r) { left.push_back(s[l]); break; }
+        if (s[l] == s[r] || dp[l][r] == 1 + cost(l + 1, r - 1)) {
+            left.push_back(s[l]); right.push_back(s[l]); ++l; --r;
+        } else if (dp[l][r] == 1 + cost(l + 1, r)) ++l;
+        else --r;
+    }
+    reverse(right.begin(), right.end());
+    return {dp[0][n - 1], left + right};
+}
+void palindrome_edit_example() {
+    auto [cost, palindrome] = nearest_palindrome("hello");
+    cout << cost << '\n'; // 2; palindrome es una solucion valida.
+}
+\end{lstlisting}
+
+Una inserci\'on que empareja un extremo puede sustituirse por borrar ese
+extremo con igual costo. Por eso alcanza reconstruir con borrados y reemplazos.
+Los tres algoritmos trabajan con bytes de \texttt{string}, no con caracteres
+Unicode decodificados.
