@@ -25,38 +25,55 @@ vector<int> topological_sort(const vector<vector<int>> &graph) {
 
 \complexity{$O(V+E)$ tiempo y memoria.}
 
-\section{Componentes fuertemente conexas (Kosaraju)}
+\section{Componentes fuertemente conexas (Tarjan)}
 \whenuse{Contraer ciclos de un grafo dirigido, obtener su DAG de componentes o
 resolver problemas de alcanzabilidad y 2-SAT.}
+
+Tarjan encuentra las componentes en una sola DFS, sin construir el grafo
+transpuesto. Esta adaptación de KACTL (Lukas Polacek) conserva el estado dentro de la función
+y devuelve \texttt{component[v]}, sin globales ni callback obligatorio.
+
+\texttt{discovery[v]} guarda inicialmente el orden de visita; al regresar
+del DFS se reutiliza para el mínimo alcanzable. La pila contiene los vértices
+todavía sin componente. El DFS devuelve el menor orden alcanzable dentro de
+esa zona activa; si coincide con el de \texttt{v}, se desapila una componente
+completa. Las aristas hacia componentes ya cerradas se ignoran.
+
+Tarjan las cierra en orden topológico inverso. Al terminar se invierten los
+IDs para conservar el contrato del handbook: si existe una arista $u\to v$
+entre componentes distintas, \texttt{component[u] < component[v]}.
+Los IDs son consecutivos desde cero; el grafo vacío devuelve un vector vacío.
+Esto mantiene compatible la comparación usada por 2-SAT.
 
 \begin{lstlisting}[style=cpp]
 vector<int> strongly_connected_components(
         const vector<vector<int>> &graph) {
     int n = graph.size();
-    vector<vector<int>> reversed(n);
-    for (int v = 0; v < n; ++v)
-        for (int to : graph[v]) reversed[to].push_back(v);
-
-    vector<char> visited(n, false);
-    vector<int> order;
-    function<void(int)> dfs1 = [&](int v) {
-        visited[v] = true;
-        for (int to : graph[v]) if (!visited[to]) dfs1(to);
-        order.push_back(v);
-    };
-    for (int v = 0; v < n; ++v) if (!visited[v]) dfs1(v);
-
+    vector<int> discovery(n),stack;
     vector<int> component(n, -1);
-    function<void(int,int)> dfs2 = [&](int v, int id) {
-        component[v] = id;
-        for (int to : reversed[v]) if (component[to] == -1) dfs2(to, id);
+    int timer=0,count=0;
+    auto dfs = [&](auto &&self,int v) -> int {
+        int low=discovery[v]=++timer;
+        stack.push_back(v);
+        for (int to : graph[v]) if (component[to]==-1)
+            low=min(low,discovery[to]?discovery[to]:self(self,to));
+        if (low==discovery[v]) {
+            int u;
+            do {
+                u=stack.back(); stack.pop_back();
+                component[u]=count;
+            } while (u!=v);
+            ++count;
+        }
+        return discovery[v]=low;
     };
-    reverse(order.begin(), order.end());
-    int count = 0;
-    for (int v : order) if (component[v] == -1) dfs2(v, count++);
+    for (int v=0;v<n;++v) if (component[v]==-1) dfs(dfs,v);
+    for (int &id : component) id=count-1-id; // Orden topológico del handbook.
     return component;
 }
 \end{lstlisting}
 
-\complexity{$O(V+E)$ tiempo y memoria.}
-\warning{Las DFS recursivas pueden desbordar el stack para grafos muy grandes.}
+\complexity{$O(V+E)$ tiempo y $O(V)$ memoria adicional, incluida la pila
+recursiva; la lista de adyacencia de entrada ocupa $O(V+E)$.}
+\warning{La DFS recursiva puede agotar la pila en grafos muy profundos, como
+una cadena larga; en ese caso usar una implementación iterativa.}

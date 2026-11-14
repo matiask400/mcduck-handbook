@@ -1,11 +1,16 @@
 \section{BFS, DFS y bipartici\'on}
 \whenuse{Explorar componentes, construir padres/profundidades, detectar ciclos
 o colorear un grafo; BFS da distancias m\'inimas cuando todas las aristas pesan uno.}
+Para recuperar caminos, activar los comentarios de \texttt{Reconstruccion}:
+agrega $O(V)$ memoria; reconstruir cuesta $O(V)$. Los inalcanzables valen $-1$.
 
 \begin{lstlisting}[style=cpp]
-vector<int> bfs_distances(const vector<vector<int>> &graph, int source) {
+vector<int> bfs_distances(const vector<vector<int>> &graph, int source
+    // , vector<int>& parent // Reconstruccion: parametro de salida.
+) {
     int n = graph.size();
     vector<int> distance(n, -1);
+    // parent.assign(n, -1); // Reconstruccion: sin padre inicialmente.
     queue<int> pending;
     distance[source] = 0;
     pending.push(source);
@@ -13,6 +18,7 @@ vector<int> bfs_distances(const vector<vector<int>> &graph, int source) {
         int v = pending.front(); pending.pop();
         for (int to : graph[v]) if (distance[to] == -1) {
             distance[to] = distance[v] + 1;
+            // parent[to] = v; // Reconstruccion: guardar predecesor.
             pending.push(to);
         }
     }
@@ -55,3 +61,19 @@ bool is_bipartite(const vector<vector<int>> &graph) {
 \end{lstlisting}
 
 \complexity{$O(V+E)$ tiempo y $O(V)$ memoria.}
+
+Ejemplo opcional; requiere activar las tres l\'ineas de reconstrucci\'on:
+\begin{lstlisting}[style=cpp]
+// void bfs_path_example() {
+//     vector<vector<int>> graph = {{1,2}, {3}, {3}, {}, {}};
+//     vector<int> parent;
+//     int source = 0, target = 3;
+//     auto distance = bfs_distances(graph, source, parent);
+//     vector<int> path;
+//     if (distance[target] != -1) {
+//         for (int v = target; v != -1; v = parent[v]) path.push_back(v);
+//         reverse(path.begin(), path.end());
+//     }
+//     for (int v : path) cout << v << ' '; // 0 1 3
+// }
+\end{lstlisting}

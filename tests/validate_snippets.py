@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate LaTeX structure and compile/run the handbook's C++ snippets."""
+"""Validate book structure, listing syntax, and the maintained execution suites."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from pathlib import Path
 
 INPUT_RE = re.compile(r"\\input\{([^}]+)\}")
 LISTING_RE = re.compile(
-    r"\\begin\{lstlisting\}(?:\[(?P<options>[^]]*)\])?\s*\n"
+    r"\\begin\{lstlisting\}\s*(?:\[(?P<options>[^]]*)\])?\s*\n"
     r"(?P<code>.*?)\\end\{lstlisting\}",
     re.DOTALL,
 )
@@ -76,11 +76,18 @@ def check_algorithm_documentation(root: Path) -> None:
                 )
 
 
+def is_python_listing(options: str) -> bool:
+    return bool(re.search(
+        r"(?:language|title)\s*=\s*\{?Python\b|style\s*=\s*\{?py\b",
+        options, re.IGNORECASE,
+    ))
+
+
 def extract_cpp(tex: str) -> str:
     snippets = []
     for match in LISTING_RE.finditer(tex):
         options = match.group("options") or ""
-        if re.search(r"(?:language|title)\s*=\s*\{?Python", options, re.IGNORECASE):
+        if is_python_listing(options):
             continue
         snippets.append(match.group("code"))
     return "\n\n".join(snippets)
@@ -90,7 +97,7 @@ def extract_python(tex: str) -> str:
     snippets = []
     for match in LISTING_RE.finditer(tex):
         options = match.group("options") or ""
-        if re.search(r"(?:language|title)\s*=\s*\{?Python", options, re.IGNORECASE):
+        if is_python_listing(options):
             snippets.append(match.group("code"))
     return "\n\n".join(snippets)
 
@@ -108,6 +115,7 @@ def run(command: list[str], **kwargs: object) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--compiler", default="g++")
+    parser.add_argument("--cxxflag", action="append", default=[])
     parser.add_argument("--skip-run", action="store_true")
     args = parser.parse_args()
 
@@ -115,41 +123,58 @@ def main() -> None:
     flattened = flatten_tex(root, root / "main.tex")
     check_environments(flattened)
     check_algorithm_documentation(root)
-    cpp = extract_cpp(flattened)
-    python = extract_python(flattened)
-    smoke_tests = (root / "tests" / "smoke_tests.cpp").read_text(encoding="utf-8")
+    for index, match in enumerate(LISTING_RE.finditer(flattened)):
+        if is_python_listing(match.group("options") or ""):
+            compile(match.group("code"), f"handbook-python-{index}", "exec")
+
+    # Book examples contain local statements and alternative templates. Reuse
+    # the audit's definition selection instead of concatenating them globally.
+    from audit_book import library
+    cpp, _ = library()
+    template_text = (root / "core/template_cpp.tex").read_text(encoding="utf-8")
+    template = next(LISTING_RE.finditer(template_text)).group("code")
+    version = subprocess.check_output([args.compiler, "--version"], text=True)
+    extra_flags = args.cxxflag.copy()
+    if "clang" in version.lower():
+        extra_flags.append("-Wno-unqualified-std-cast-call")
+    flags = ["-std=gnu++17", "-Wall", "-Wextra", "-Werror", *extra_flags]
 
     with tempfile.TemporaryDirectory(prefix="mcduck-handbook-") as temp:
         temp_path = Path(temp)
-        syntax_source = temp_path / "syntax.cpp"
-        syntax_source.write_text(cpp, encoding="utf-8")
-        run([
-            args.compiler, "-std=gnu++17", "-Wall", "-Wextra", "-Wshadow",
-            "-Werror", "-fsyntax-only", str(syntax_source),
-        ])
+        for name, source in (("template", template), ("definitions", cpp)):
+            path = temp_path / f"{name}.cpp"
+            path.write_text(source, encoding="utf-8")
+            run([args.compiler, *flags, "-fsyntax-only", str(path)])
 
-        if python:
-            python_source = temp_path / "syntax.py"
-            python_source.write_text(python, encoding="utf-8")
-            run([sys.executable, "-m", "py_compile", str(python_source)])
+    if args.skip_run:
+        print("OK: docs, LaTeX inputs, Python syntax and selected C++ definitions")
+        return
 
-        if not args.skip_run:
-            test_source = temp_path / "tests.cpp"
-            test_source.write_text(
-                "#define main handbook_template_main\n"
-                + cpp
-                + "\n#undef main\n"
-                + smoke_tests,
-                encoding="utf-8",
-            )
-            executable = temp_path / "tests"
-            run([
-                args.compiler, "-std=gnu++17", "-O2", "-Wall", "-Wextra",
-                "-Wshadow", "-Werror", str(test_source), "-o", str(executable),
-            ])
-            run([str(executable)])
-
-    print("OK: docs, LaTeX inputs, C++/Python syntax and C++ smoke tests")
+    suites = [
+        ("audit_book.py", ["--case", "correctness"]),
+        ("audit_integration.py", ["--with-pbds"]),
+        *[(name, []) for name in (
+            "validate_bellman_ford.py", "validate_bfs_paths.py",
+            "validate_combinatorics.py", "validate_convex_diameter.py",
+            "validate_divide_conquer_partition.py", "validate_dp_strings.py",
+            "validate_floyd_paths.py", "validate_hamiltonian_path.py",
+            "validate_math_helpers.py", "validate_mitm.py",
+            "validate_recovery_examples.py", "validate_rmq.py",
+            "validate_sa_tarjan.py", "validate_segmented_sieve.py",
+            "validate_stl_sums.py", "validate_complexity_examples.py",
+            "validate_edge_fixes.py", "validate_new_modules.py",
+            "factorization_stress.py",
+        )],
+    ]
+    for name, options in suites:
+        command = [sys.executable, str(root / "tests" / name),
+                   "--compiler", args.compiler, *options]
+        command.extend(f"--cxxflag={flag}" for flag in extra_flags)
+        print(f"Checking {name}", flush=True)
+        run(command)
+    run([sys.executable, "-m", "unittest", "discover", "-s", str(root / "tests"),
+         "-p", "test_*.py"])
+    print(f"OK: docs, listing syntax, integration and {len(suites)} execution suites")
 
 
 if __name__ == "__main__":

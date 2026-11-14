@@ -5,30 +5,68 @@ GCD. Elegir Disjoint Sparse Table si la operaci\'on no es idempotente.}
 Para operaciones idempotentes como min, max o gcd. No requiere inversa y no
 admite actualizaciones.
 
+Esta adaptación del RMQ de KACTL (Johan Sannemo y pajenegod) conserva
+\texttt{SparseTableMin(a)} y las consultas \textbf{inclusivas} \texttt{query(l,r)}
+del handbook. La versión activa calcula mínimos. Para cambiar la operación,
+reemplazar sólo la línea activa de \texttt{combine} por una de las alternativas
+comentadas; no hay que modificar la construcción ni la consulta. El nombre
+\texttt{SparseTableMin} se conserva por compatibilidad, aunque se puede
+renombrar si se elige otra operación. \texttt{table[k][i]} guarda el resultado
+para $2^k$ elementos desde $i$; cada fila reserva sólo los bloques completos.
+
+Para consultar, tomar $k=\lfloor\log_2(r-l+1)\rfloor$ y combinar el bloque que
+empieza en $l$ con el que termina en $r$. Cubren todo el rango y pueden
+superponerse: para mínimo, repetir elementos no cambia el resultado. Por eso
+no sirve reemplazar mínimo por suma; en ese caso usar Disjoint Sparse Table.
+El logaritmo se calcula con \texttt{\_\_builtin\_clz}, sin un arreglo auxiliar.
+
 \complexity{build $O(n\log n)$; query $O(1)$; memoria $O(n\log n)$.}
 
 \begin{lstlisting}[style=cpp]
 struct SparseTableMin {
-    vector<int> lg;
+    // MINIMO (activo): cambiar esta linea por UNA alternativa.
+    static ll combine(ll a, ll b) { return min(a, b); }
+    // MAXIMO: static ll combine(ll a, ll b) { return max(a, b); }
+    // GCD:    static ll combine(ll a, ll b) { return gcd(a, b); }
+    // OR:     static ll combine(ll a, ll b) { return a | b; }
+    // AND:    static ll combine(ll a, ll b) { return a & b; }
+
     vector<vector<ll>> table;
 
-    explicit SparseTableMin(const vector<ll> &a) {
+    explicit SparseTableMin(const vector<ll> &a) : table(1,a) {
         int n = a.size();
-        lg.assign(n + 1, 0);
-        for (int i = 2; i <= n; ++i) lg[i] = lg[i / 2] + 1;
-        int levels = n ? lg[n] + 1 : 0;
-        table.assign(levels, vector<ll>(n));
-        if (!n) return;
-        table[0] = a;
-        for (int k = 1; k < levels; ++k)
-            for (int i = 0; i + (1 << k) <= n; ++i)
-                table[k][i] = min(table[k - 1][i],
-                                  table[k - 1][i + (1 << (k - 1))]);
+        for (int half=1,k=1; half<=n/2; half*=2,++k) {
+            int count=n-2*half+1;
+            table.emplace_back(count);
+            for (int i=0;i<count;++i)
+                table[k][i] = combine(table[k - 1][i],
+                                      table[k - 1][i + half]);
+        }
     }
 
-    ll query(int l, int r) const { // [l, r], requiere l <= r
-        int k = lg[r - l + 1];
-        return min(table[k][l], table[k][r - (1 << k) + 1]);
+    ll query(int l, int r) const { // Requiere 0 <= l <= r < n.
+        assert(l<=r); // Longitud positiva: clz(0) no está definido.
+        int k = 31-__builtin_clz((unsigned)(r-l+1));
+        return combine(table[k][l], table[k][r - (1 << k) + 1]);
     }
 };
 \end{lstlisting}
+
+Para m\'aximo, sustituir la l\'inea activa por la de \texttt{MAXIMO}:
+con el mismo arreglo, \texttt{query(1,3)} devuelve $4$. GCD requiere
+C++17, \texttt{<numeric>} y valores cuyo valor absoluto sea representable
+en \texttt{ll}. Esta consulta de dos bloques exige que \texttt{combine} sea
+asociativa e idempotente; suma, producto y XOR no cumplen esta condici\'on.
+Para consultas est\'aticas de estas operaciones, usar la secci\'on
+\textbf{Disjoint Sparse Table}; para suma tambi\'en sirven sumas parciales.
+
+\begin{lstlisting}[style=cpp]
+SparseTableMin rmq(vector<ll>{5,1,4,2,3});
+cout << rmq.query(1,3) << '\n'; // 1: incluye los indices 1, 2 y 3.
+cout << rmq.query(2,2) << '\n'; // 4: un solo elemento.
+\end{lstlisting}
+
+\warning{El arreglo puede ser vacío al construir, pero toda consulta debe
+tener índices válidos y rango no vacío. El RMQ original de KACTL usa $[l,r)$;
+esta interfaz conserva $[l,r]$. Los valores son \texttt{long long} y no se
+modifican al construir. Requiere GCC/Clang para \texttt{\_\_builtin\_clz}.}

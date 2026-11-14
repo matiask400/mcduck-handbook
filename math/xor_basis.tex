@@ -1,0 +1,104 @@
+\section{Base XOR de enteros de 64 bits}
+\whenuse{Consultar si un valor es XOR de un subconjunto o maximizar ese XOR.
+Es eliminaci\'on gaussiana sobre $GF(2)$, sin divisiones.}
+\complexity{Insertar, consultar pertenencia y maximizar: $O(B)$ con $B=64$;
+memoria $O(B)$. El rango indica cu\'antos vectores son independientes.}
+
+\begin{lstlisting}[style=cpp]
+struct XorBasis {
+    array<uint64_t, 64> basis{};
+    int rank = 0;
+    bool insert(uint64_t value) {
+        for (int bit = 63; bit >= 0; --bit) if (value >> bit & 1) {
+            if (basis[bit]) value ^= basis[bit];
+            else { basis[bit] = value; ++rank; return true; }
+        }
+        return false;
+    }
+    bool contains(uint64_t value) const {
+        for (int bit = 63; bit >= 0; --bit)
+            if (value >> bit & 1) value ^= basis[bit];
+        return value == 0;
+    }
+    uint64_t maximum(uint64_t initial = 0) const {
+        for (int bit = 63; bit >= 0; --bit)
+            initial = max(initial, initial ^ basis[bit]);
+        return initial;
+    }
+};
+void xor_basis_example() {
+    XorBasis basis;
+    basis.insert(3); basis.insert(5); basis.insert(6);
+    cout << basis.rank << ' ' << basis.maximum() << ' ' << basis.contains(7)
+         << '\n'; // 2 6 0
+}
+\end{lstlisting}
+
+\section{Dependencia XOR de bitsets con reconstrucci\'on}
+\whenuse{Los vectores tienen m\'as de 64 bits y se necesita recuperar un
+subconjunto no vac\'io con XOR cero, como Brazilian FootXOR.}
+\complexity{Con $n$ vectores de $B$ bits y capacidad $N\ge n$, tiempo
+$O(nB\lceil(B+N)/w\rceil)$ y memoria $O(B(B+N))$ bits, m\'as la entrada.
+Las operaciones de bitset procesan palabras de $w$ bits.}
+
+\begin{lstlisting}[style=cpp]
+template<size_t B, size_t N>
+optional<vector<int>> xor_dependency(const vector<bitset<B>> &input) {
+    assert(input.size() <= N);
+    vector<bitset<B>> basis(B);
+    vector<bitset<N>> combination(B);
+    vector<char> used(B);
+    for (int id = 0; id < (int)input.size(); ++id) {
+        auto value = input[id];
+        bitset<N> chosen; chosen[id] = true;
+        for (int bit = (int)B - 1; bit >= 0; --bit) if (value[bit]) {
+            if (used[bit]) {
+                value ^= basis[bit]; chosen ^= combination[bit];
+            } else {
+                used[bit] = true; basis[bit] = value; combination[bit] = chosen;
+                break;
+            }
+        }
+        if (value.none()) {
+            vector<int> indices;
+            for (int i = 0; i <= id; ++i) if (chosen[i]) indices.push_back(i);
+            return indices;
+        }
+    }
+    return nullopt;
+}
+void xor_dependency_example() {
+    vector<bitset<4>> input = {bitset<4>(3), bitset<4>(5), bitset<4>(6)};
+    auto chosen = xor_dependency<4, 3>(input);
+    if (chosen) for (int i : *chosen) cout << i << ' '; // 0 1 2
+}
+\end{lstlisting}
+
+Para exigir cantidad par de vectores, agregar a cada entrada un bit extra en 1.
+Toda dependencia resultante tendr\'a cardinalidad par; dividir sus \texttt{indices}
+en dos mitades da equipos del mismo tama\~no y XOR igual.
+En Brazilian FootXOR (Latin America Championship 2025), $n,k\le1500$:
+usar \texttt{xor\_dependency<1501,1500>} con el bit 1500 de paridad.
+El siguiente adaptador lee un caso y escribe los dos equipos:
+
+\begin{lstlisting}[style=cpp]
+void brazilian_footxor() {
+    int n, k; cin >> n >> k;
+    assert(1 <= n && n <= 1500 && 1 <= k && k <= 1500);
+    vector<bitset<1501>> players(n);
+    for (auto &player : players) {
+        string s; cin >> s;
+        for (int j = 0; j < k; ++j) player[j] = s[j] == '1';
+        player[1500] = true; // Paridad de la cantidad de integrantes.
+    }
+    auto chosen = xor_dependency<1501,1500>(players);
+    if (!chosen) { cout << "*\n"; return; }
+    string teams(n, '0');
+    for (int i = 0; i < (int)chosen->size(); ++i)
+        teams[(*chosen)[i]] = i < (int)chosen->size() / 2 ? '1' : '2';
+    cout << teams << '\n';
+}
+\end{lstlisting}
+
+\warning{Una base escalar de 64 bits no sustituye esta variante para cadenas
+de 1500 bits. \texttt{nullopt} significa independencia, no un subconjunto vac\'io.}

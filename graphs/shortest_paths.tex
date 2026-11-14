@@ -3,6 +3,9 @@
 0/1 usar 0--1 BFS; con negativos, Bellman--Ford.}
 
 Distancias desde una fuente con pesos no negativos.
+Usa \texttt{i128} internamente para evitar overflow al relajar. Los destinos
+inalcanzables valen \texttt{LINF}; lanza \texttt{overflow\_error} si una distancia
+finita supera \texttt{LLONG\_MAX} o coincide con esa marca.
 Para reconstruir caminos, descomentar las l\'ineas marcadas con
 \texttt{Reconstruccion} y el ejemplo opcional. Guardar padres no cambia
 el orden del tiempo de ejecuci\'on y agrega $O(V)$ de memoria;
@@ -13,10 +16,11 @@ vector<ll> dijkstra(const vector<vector<pair<int,ll>>> &graph, int source
     // , vector<int>& parent // Reconstruccion: parametro de salida.
 ) {
     int n = graph.size();
-    vector<ll> distance(n, LINF);
+    const i128 infinity = (i128)1 << 126;
+    vector<i128> distance(n, infinity);
     // parent.assign(n, -1); // Reconstruccion: sin padre inicialmente.
-    priority_queue<pair<ll,int>, vector<pair<ll,int>>,
-                   greater<pair<ll,int>>> pending;
+    priority_queue<pair<i128,int>, vector<pair<i128,int>>,
+                   greater<pair<i128,int>>> pending;
     distance[source] = 0;
     pending.push({0, source});
 
@@ -32,7 +36,13 @@ vector<ll> dijkstra(const vector<vector<pair<int,ll>>> &graph, int source
             }
         }
     }
-    return distance;
+    vector<ll> result(n, LINF);
+    for (int v = 0; v < n; ++v) if (distance[v] != infinity) {
+        if (distance[v] > numeric_limits<ll>::max() || distance[v] == LINF)
+            throw overflow_error("distance is not representable");
+        result[v] = (ll)distance[v];
+    }
+    return result;
 }
 // Ejemplo de uso: grafo dirigido con pesos no negativos.
 vector<vector<pair<int,ll>>> graph(4);
@@ -63,12 +73,17 @@ cout << distance[3] << '\n'; // 4
 factor logar\'itmico de Dijkstra usando una deque.}
 
 Para pesos exclusivamente cero o uno.
+Para reconstruir caminos, activar las tres l\'ineas de \texttt{Reconstruccion}:
+agrega $O(V)$ memoria y recuperar un camino cuesta $O(V)$.
 
 \begin{lstlisting}[style=cpp]
 vector<int> zero_one_bfs(const vector<vector<pair<int,int>>> &graph,
-                         int source) {
+                         int source
+    // , vector<int>& parent // Reconstruccion: parametro de salida.
+) {
     int n = graph.size();
     vector<int> distance(n, INF);
+    // parent.assign(n, -1); // Reconstruccion: sin padre inicialmente.
     deque<int> q;
     distance[source] = 0; q.push_front(source);
     while (!q.empty()) {
@@ -77,6 +92,7 @@ vector<int> zero_one_bfs(const vector<vector<pair<int,int>>> &graph,
             assert(weight == 0 || weight == 1);
             if (distance[to] > distance[v] + weight) {
                 distance[to] = distance[v] + weight;
+                // parent[to] = v; // Reconstruccion: guardar predecesor.
                 if (weight == 0) q.push_front(to);
                 else q.push_back(to);
             }
@@ -96,60 +112,152 @@ cout << distance[3] << '\n'; // 1
 
 \complexity{$O(V+E)$ tiempo y memoria.}
 
+Ejemplo opcional; \texttt{INF} indica un destino inalcanzable:
+\begin{lstlisting}[style=cpp]
+// void zero_one_bfs_path_example() {
+//     vector<vector<pair<int,int>>> graph(4);
+//     graph[0] = {{1,0}, {2,1}}; graph[1] = {{2,0}}; graph[2] = {{3,1}};
+//     vector<int> parent;
+//     int source = 0, target = 3;
+//     auto distance = zero_one_bfs(graph, source, parent);
+//     vector<int> path;
+//     if (distance[target] != INF) {
+//         for (int v = target; v != -1; v = parent[v]) path.push_back(v);
+//         reverse(path.begin(), path.end());
+//     }
+//     for (int v : path) cout << v << ' '; // 0 1 2 3; costo 1.
+// }
+\end{lstlisting}
+
 \section{Bellman--Ford}
 \whenuse{Caminos m\'inimos con pesos negativos y detecci\'on de ciclos negativos
 alcanzables; s\'olo para grafos moderados por su costo cuadr\'atico.}
 
 Admite pesos negativos. Tras $V-1$ rondas, una relajaci\'on adicional indica
-un ciclo negativo alcanzable desde la fuente.
+un ciclo negativo alcanzable desde la fuente. Usa \texttt{i128} internamente,
+sin recortar distancias durante la detecci\'on. Devuelve \texttt{\{distancias,false\}}
+o \texttt{\{\{\},true\}} si hay ciclo negativo alcanzable. Los inalcanzables valen
+\texttt{LINF}; lanza \texttt{overflow\_error} si una distancia finita no entra en
+\texttt{long long} o coincide con esa marca.
+Para reconstruir, descomentar las l\'ineas marcadas \texttt{Reconstruccion} y
+el ejemplo opcional: agrega $O(V)$ memoria; recuperar un camino cuesta $O(V)$.
 
 \begin{lstlisting}[style=cpp]
 struct WeightedEdge { int from, to; ll weight; };
 
 pair<vector<ll>, bool> bellman_ford(
-        int n, const vector<WeightedEdge> &edges, int source) {
-    vector<ll> distance(n, LINF);
+        int n, const vector<WeightedEdge> &edges, int source
+        // , vector<int>& parent // Reconstruccion: parametro de salida.
+) {
+    assert(n > 0 && 0 <= source && source < n);
+    // parent.assign(n, -1); // Reconstruccion: sin padre inicialmente.
+    const i128 INF128 = (i128)1 << 126;
+    vector<i128> distance(n, INF128);
     distance[source] = 0;
     for (int iteration = 0; iteration < n - 1; ++iteration) {
         bool changed = false;
         for (auto [from, to, weight] : edges) {
-            if (distance[from] == LINF) continue;
-            i128 raw = (i128)distance[from] + weight;
-            ll candidate = raw < -LINF ? -LINF
-                         : raw > LINF ? LINF : (ll)raw;
+            if (distance[from] == INF128) continue;
+            i128 candidate = distance[from] + weight;
             if (candidate < distance[to]) {
                 distance[to] = candidate;
+                // parent[to] = from; // Reconstruccion: guardar predecesor.
                 changed = true;
             }
         }
         if (!changed) break;
     }
-    bool negative_cycle = false;
     for (auto [from, to, weight] : edges)
-        if (distance[from] != LINF &&
-            (i128)distance[from] + weight < distance[to])
-            negative_cycle = true;
-    return {distance, negative_cycle};
+        if (distance[from] != INF128 && distance[from] + weight < distance[to])
+            return {{}, true};
+    vector<ll> result(n, LINF);
+    for (int v = 0; v < n; ++v) if (distance[v] != INF128) {
+        if (distance[v] < numeric_limits<ll>::min() ||
+            distance[v] > numeric_limits<ll>::max() || distance[v] == LINF)
+            throw overflow_error("distance outside output range");
+        result[v] = (ll)distance[v];
+    }
+    return {std::move(result), false};
 }
+
+// Ejemplo opcional: activar antes las tres lineas de Reconstruccion.
+// vector<WeightedEdge> edges = {{0,1,4}, {0,2,5}, {1,2,-2}, {2,3,3}};
+// vector<int> parent;
+// int source = 0, target = 3;
+// auto [distance, negative_cycle] = bellman_ford(4, edges, source, parent);
+// vector<int> path;
+// if (!negative_cycle && distance[target] != LINF) {
+//     for (int v = target; v != -1; v = parent[v]) path.push_back(v);
+//     reverse(path.begin(), path.end());
+// }
+// for (int v : path) cout << v << ' '; // 0 1 2 3, costo 5
+// Si no hay ciclo y target == source, path contiene solo source.
 \end{lstlisting}
 
 \complexity{$O(VE)$ tiempo y $O(V)$ memoria.}
+\warning{Requiere v\'ertices 0-indexados y pesos \texttt{long long}.
+No usar las distancias si el indicador de ciclo es verdadero.}
+
+Ejemplo de manejo de salida: cada arista entra en \texttt{long long}, pero
+la suma de dos costos m\'aximos no. El \texttt{catch} imprime \texttt{overflow}.
+
+\begin{lstlisting}[style=cpp]
+void bellman_ford_output_example() {
+    ll weight = numeric_limits<ll>::max();
+    vector<WeightedEdge> edges = {{0,1,weight}, {1,2,weight}};
+    try {
+        auto [distance, negative_cycle] = bellman_ford(3, edges, 0);
+        if (negative_cycle) cout << "Ciclo negativo\n";
+        else if (distance[2] == LINF) cout << "Inalcanzable\n";
+        else cout << distance[2] << '\n';
+    } catch (const overflow_error&) {
+        cout << "overflow\n";
+    }
+}
+\end{lstlisting}
 
 \section{Floyd--Warshall}
-\whenuse{Distancias entre todos los pares cuando $V$ es peque\~no; tambi\'en para
-clausura transitiva o detectar ciclos negativos mediante la diagonal.}
+\whenuse{Floyd--Warshall se usa cuando necesit\'as caminos m\'inimos entre muchos
+o todos los pares de v\'ertices y el grafo es peque\~no.}
 
 Todos contra todos. Inicializar diagonal en cero, aristas en su peso m\'inimo y
 el resto en \texttt{LINF}.
+Usar pesos y distancias finitas estrictamente entre $-\texttt{LINF}$ y
+$\texttt{LINF}$; alcanza con $V\max|w|<\texttt{LINF}$.
+Al detectar una diagonal negativa se activa la saturaci\'on por debajo en
+$-\texttt{LINF}$, antes de procesar ese v\'ertice como intermediario. Evita
+que los ciclos negativos hagan decrecer los valores hasta desbordar y
+conserva el bucle sin saturaci\'on mientras no se detecta un ciclo negativo.
+Un par afectado por un ciclo negativo no tiene distancia m\'inima finita:
+consultar \texttt{negative\_cycle\_between}, no interpretar su valor num\'erico.
+Para reconstruir, activar las l\'ineas comentadas: \texttt{next[a][b]} guarda
+el siguiente v\'ertice hacia $b$. Agrega $O(V^2)$ memoria; recuperar un camino
+cuesta $O(V)$, incluido el chequeo de ciclos negativos.
 
 \begin{lstlisting}[style=cpp]
-void floyd_warshall(vector<vector<ll>> &distance) {
+void floyd_warshall(vector<vector<ll>> &distance
+    // , vector<vector<int>>& next // Reconstruccion: parametro de salida.
+) {
     int n = distance.size();
-    for (int k = 0; k < n; ++k)
-        for (int i = 0; i < n; ++i) if (distance[i][k] != LINF)
-            for (int j = 0; j < n; ++j) if (distance[k][j] != LINF)
-                distance[i][j] = min(distance[i][j],
-                    distance[i][k] + distance[k][j]);
+    bool negative_cycle = false;
+    // next.assign(n, vector<int>(n, -1)); // Reconstruccion: inicializar saltos.
+    // for (int i = 0; i < n; ++i) for (int j = 0; j < n; ++j)
+    //     if (distance[i][j] != LINF) next[i][j] = j;
+    for (int k = 0; k < n; ++k) {
+        negative_cycle = negative_cycle || distance[k][k] < 0;
+        auto relax = [&](bool saturate) {
+            for (int i = 0; i < n; ++i) if (distance[i][k] != LINF)
+                for (int j = 0; j < n; ++j) if (distance[k][j] != LINF) {
+                    ll candidate = distance[i][k] + distance[k][j];
+                    if (saturate) candidate = max(-LINF, candidate);
+                    // if (candidate < distance[i][j])
+                    //     next[i][j] = next[i][k]; // Reconstruccion: primer salto.
+                    distance[i][j] = min(distance[i][j], candidate);
+                }
+        };
+        if (negative_cycle) relax(true);
+        else relax(false);
+    }
 }
 
 bool negative_cycle_between(const vector<vector<ll>> &d, int a, int b) {
@@ -158,6 +266,32 @@ bool negative_cycle_between(const vector<vector<ll>> &d, int a, int b) {
             return true;
     return false;
 }
+
+// vector<int> floyd_path(const vector<vector<ll>>& distance,
+//                        const vector<vector<int>>& next, int a, int b) {
+//     if (distance[a][b] == LINF || negative_cycle_between(distance, a, b))
+//         return {}; // Inalcanzable o sin minimo finito.
+//     vector<int> path{a};
+//     while (a != b) { a = next[a][b]; path.push_back(a); }
+//     return path; // Si a == b y no hay ciclo negativo, contiene solo a.
+// }
 \end{lstlisting}
 
 \complexity{$O(V^3)$ tiempo y $O(V^2)$ memoria.}
+
+Ejemplo opcional de reconstrucci\'on; activar tambi\'en los comentarios anteriores:
+
+\begin{lstlisting}[style=cpp]
+// void floyd_path_example() {
+//     vector<vector<ll>> distance(4, vector<ll>(4, LINF));
+//     for (int v = 0; v < 4; ++v) distance[v][v] = 0;
+//     distance[0][1] = 4; distance[0][2] = 5;
+//     distance[1][2] = -2; distance[2][3] = 3;
+//     vector<vector<int>> next;
+//     floyd_warshall(distance, next);
+//     if (negative_cycle_between(distance, 0, 3)) cout << "Ciclo negativo\n";
+//     else if (distance[0][3] == LINF) cout << "Inalcanzable\n";
+//     else for (int v : floyd_path(distance, next, 0, 3)) cout << v << ' ';
+//     // Imprime 0 1 2 3; costo 5.
+// }
+\end{lstlisting}

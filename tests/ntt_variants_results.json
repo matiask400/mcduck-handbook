@@ -1,0 +1,2195 @@
+{
+  "kactl_revision": "b3548e973f8772010c1ef84e6d427c749733fd2c",
+  "sha256": {
+    "math/ntt.tex": "669c41549957d7ca5c6ba29ced91300163d70673bb0f24b51c2d085bca5e4dc2",
+    "math/gcd_and_modular.tex": "0edf41f1fd30c5765b7cf88ea5cee67f38d997f52e274249dcb291ee74b1e86e",
+    "tests/ntt_variants_test.cpp": "3d4fb129e3b0de9c7abaef77174d0ea16a73e8cedb5a643771fa22d1ab7ea448",
+    "tests/ntt_variants/cached_transform.hpp": "0e29d159d12986fbd58a744fd00da895fc78b13ddee571ca8f73a34c69dcb356",
+    "tests/ntt_variants/kactl_adapter.hpp": "8adfd3187c6ea95a16238615d4b04bd521a2cb58d0f4b3c91688daa27d434b89",
+    "tests/ntt_variants/vendor/NumberTheoreticTransform.h": "b074dc79fe8f74ffb1585901f46a3c8dd135288da898cb71fdf1fd7a2a79d512",
+    "tests/ntt_variants/vendor/ModPow.h": "3a52df066bc643b2c98946702d8a7d6fc88c47a142cf38c19d414228df3b7ecb",
+    "tests/compare_ntt_variants.py": "4f6dc802308d0f3b50983978c1058f87463b7815aa38f180ca924458f219f208"
+  },
+  "active_lines": {
+    "current": {
+      "algorithm": 48,
+      "dependency": 19
+    },
+    "cached": {
+      "algorithm": 47,
+      "dependency": 19
+    },
+    "kactl": {
+      "core_and_power": 40,
+      "adapter": 15
+    }
+  },
+  "adaptations": [
+    "KACTL modulus configured to 998244353; duplicate declaration removed.",
+    "Root 62 -> 3 to preserve exact forward-transform values.",
+    "Minimum power-of-two padding, including s=1, preserves full 2^23 result limit.",
+    "Public vector<int> transform/inverse/convolution wrappers included in all measurements."
+  ],
+  "compiler": "g++-15 (Homebrew GCC 15.2.0) 15.2.0",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "seed": 20261028,
+  "flags": [
+    "-std=c++17",
+    "-O2",
+    "-isysroot",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+    "-idirafter",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+  ],
+  "benchmarks": [
+    {
+      "case": "large",
+      "state": "cold",
+      "samples": {
+        "current": [
+          {
+            "ms": 112.004,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 111.98,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 111.637,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 112.218,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 112.14,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          }
+        ],
+        "cached": [
+          {
+            "ms": 45.379,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 44.62,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 44.979,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.6875
+          },
+          {
+            "ms": 45.256,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 44.692,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 51.984,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 51.403,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 52.224,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 52.538,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 51.16,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          }
+        ]
+      },
+      "current": {
+        "ms": 112.004,
+        "peak_rss_mib": 10.640625,
+        "convolutions": 1,
+        "a_size": 262144,
+        "b_size": 262144
+      },
+      "cached": {
+        "ms": 44.979,
+        "peak_rss_mib": 13.703125,
+        "convolutions": 1,
+        "a_size": 262144,
+        "b_size": 262144
+      },
+      "kactl": {
+        "ms": 51.984,
+        "peak_rss_mib": 34.734375,
+        "convolutions": 1,
+        "a_size": 262144,
+        "b_size": 262144
+      }
+    },
+    {
+      "case": "large",
+      "state": "warm",
+      "samples": {
+        "current": [
+          {
+            "ms": 113.072,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 112.334,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 112.001,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 112.067,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 111.866,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 10.640625
+          }
+        ],
+        "cached": [
+          {
+            "ms": 42.809,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 42.984,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 42.634,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 42.9,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 43.103,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 13.703125
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 47.812,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 49.334,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 48.508,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 48.561,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 47.969,
+            "convolutions": 1,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "16455385147306367906",
+            "peak_rss_mib": 34.734375
+          }
+        ]
+      },
+      "current": {
+        "ms": 112.067,
+        "peak_rss_mib": 10.640625,
+        "convolutions": 1,
+        "a_size": 262144,
+        "b_size": 262144
+      },
+      "cached": {
+        "ms": 42.9,
+        "peak_rss_mib": 13.703125,
+        "convolutions": 1,
+        "a_size": 262144,
+        "b_size": 262144
+      },
+      "kactl": {
+        "ms": 48.508,
+        "peak_rss_mib": 34.734375,
+        "convolutions": 1,
+        "a_size": 262144,
+        "b_size": 262144
+      }
+    },
+    {
+      "case": "boundary",
+      "state": "cold",
+      "samples": {
+        "current": [
+          {
+            "ms": 52.601,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 53.506,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.847,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.949,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.509,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 20.86,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 21.464,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 21.134,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 21.134,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.999,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 24.637,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 16.734375
+          },
+          {
+            "ms": 24.731,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 16.734375
+          },
+          {
+            "ms": 24.117,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 16.734375
+          },
+          {
+            "ms": 24.201,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 16.734375
+          },
+          {
+            "ms": 23.98,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 16.734375
+          }
+        ]
+      },
+      "current": {
+        "ms": 52.847,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 131072,
+        "b_size": 131073
+      },
+      "cached": {
+        "ms": 21.134,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 131072,
+        "b_size": 131073
+      },
+      "kactl": {
+        "ms": 24.201,
+        "peak_rss_mib": 16.734375,
+        "convolutions": 1,
+        "a_size": 131072,
+        "b_size": 131073
+      }
+    },
+    {
+      "case": "boundary",
+      "state": "warm",
+      "samples": {
+        "current": [
+          {
+            "ms": 52.439,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.366,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.686,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.442,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.4,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 20.281,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.004,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.404,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.157,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.164,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 22.489,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 18.21875
+          },
+          {
+            "ms": 22.403,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 18.21875
+          },
+          {
+            "ms": 22.824,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 18.21875
+          },
+          {
+            "ms": 22.251,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 18.21875
+          },
+          {
+            "ms": 22.666,
+            "convolutions": 1,
+            "a_size": 131072,
+            "b_size": 131073,
+            "checksum": "16391283344943923072",
+            "peak_rss_mib": 18.21875
+          }
+        ]
+      },
+      "current": {
+        "ms": 52.439,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 131072,
+        "b_size": 131073
+      },
+      "cached": {
+        "ms": 20.164,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 131072,
+        "b_size": 131073
+      },
+      "kactl": {
+        "ms": 22.489,
+        "peak_rss_mib": 18.21875,
+        "convolutions": 1,
+        "a_size": 131072,
+        "b_size": 131073
+      }
+    },
+    {
+      "case": "above_boundary",
+      "state": "cold",
+      "samples": {
+        "current": [
+          {
+            "ms": 112.01,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 111.87,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 111.875,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 111.69,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 112.082,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 44.833,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 11.65625
+          },
+          {
+            "ms": 44.228,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 11.65625
+          },
+          {
+            "ms": 44.365,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 11.671875
+          },
+          {
+            "ms": 44.515,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 11.671875
+          },
+          {
+            "ms": 44.208,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 11.671875
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 50.223,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          },
+          {
+            "ms": 49.938,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          },
+          {
+            "ms": 51.789,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          },
+          {
+            "ms": 50.246,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          },
+          {
+            "ms": 50.115,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          }
+        ]
+      },
+      "current": {
+        "ms": 111.875,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 131073,
+        "b_size": 131073
+      },
+      "cached": {
+        "ms": 44.365,
+        "peak_rss_mib": 11.671875,
+        "convolutions": 1,
+        "a_size": 131073,
+        "b_size": 131073
+      },
+      "kactl": {
+        "ms": 50.223,
+        "peak_rss_mib": 26.84375,
+        "convolutions": 1,
+        "a_size": 131073,
+        "b_size": 131073
+      }
+    },
+    {
+      "case": "above_boundary",
+      "state": "warm",
+      "samples": {
+        "current": [
+          {
+            "ms": 111.912,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 111.514,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 111.586,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 111.748,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 112.155,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 42.819,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 12.765625
+          },
+          {
+            "ms": 42.705,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 12.765625
+          },
+          {
+            "ms": 43.177,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 12.75
+          },
+          {
+            "ms": 42.649,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 12.765625
+          },
+          {
+            "ms": 42.507,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 12.765625
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 47.711,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          },
+          {
+            "ms": 47.233,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          },
+          {
+            "ms": 47.878,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          },
+          {
+            "ms": 47.45,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          },
+          {
+            "ms": 47.166,
+            "convolutions": 1,
+            "a_size": 131073,
+            "b_size": 131073,
+            "checksum": "16419236982945345502",
+            "peak_rss_mib": 26.84375
+          }
+        ]
+      },
+      "current": {
+        "ms": 111.748,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 131073,
+        "b_size": 131073
+      },
+      "cached": {
+        "ms": 42.705,
+        "peak_rss_mib": 12.765625,
+        "convolutions": 1,
+        "a_size": 131073,
+        "b_size": 131073
+      },
+      "kactl": {
+        "ms": 47.45,
+        "peak_rss_mib": 26.84375,
+        "convolutions": 1,
+        "a_size": 131073,
+        "b_size": 131073
+      }
+    },
+    {
+      "case": "tiny_batch",
+      "state": "cold",
+      "samples": {
+        "current": [
+          {
+            "ms": 136.559,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 136.753,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 136.298,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 136.487,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 136.691,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 16.583,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 16.507,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 16.647,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 16.455,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 16.637,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 15.916,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 15.958,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 15.927,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 15.93,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 15.973,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          }
+        ]
+      },
+      "current": {
+        "ms": 136.559,
+        "peak_rss_mib": 9.5,
+        "convolutions": 10000,
+        "a_size": 16,
+        "b_size": 17
+      },
+      "cached": {
+        "ms": 16.583,
+        "peak_rss_mib": 9.5,
+        "convolutions": 10000,
+        "a_size": 16,
+        "b_size": 17
+      },
+      "kactl": {
+        "ms": 15.93,
+        "peak_rss_mib": 9.5,
+        "convolutions": 10000,
+        "a_size": 16,
+        "b_size": 17
+      }
+    },
+    {
+      "case": "tiny_batch",
+      "state": "warm",
+      "samples": {
+        "current": [
+          {
+            "ms": 136.658,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 136.236,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 136.57,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 136.568,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 136.192,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 16.334,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 16.465,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 16.412,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 16.773,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 16.394,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 15.904,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 15.692,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 15.946,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 15.999,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 15.704,
+            "convolutions": 10000,
+            "a_size": 16,
+            "b_size": 17,
+            "checksum": "13700148275616464661",
+            "peak_rss_mib": 9.5
+          }
+        ]
+      },
+      "current": {
+        "ms": 136.568,
+        "peak_rss_mib": 9.5,
+        "convolutions": 10000,
+        "a_size": 16,
+        "b_size": 17
+      },
+      "cached": {
+        "ms": 16.412,
+        "peak_rss_mib": 9.5,
+        "convolutions": 10000,
+        "a_size": 16,
+        "b_size": 17
+      },
+      "kactl": {
+        "ms": 15.904,
+        "peak_rss_mib": 9.5,
+        "convolutions": 10000,
+        "a_size": 16,
+        "b_size": 17
+      }
+    },
+    {
+      "case": "medium_batch",
+      "state": "cold",
+      "samples": {
+        "current": [
+          {
+            "ms": 25.181,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 25.283,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 25.252,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 25.196,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 25.283,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 9.893,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 9.899,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 9.85,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 9.933,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 9.945,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 10.205,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 10.312,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 10.28,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 10.266,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 10.256,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          }
+        ]
+      },
+      "current": {
+        "ms": 25.252,
+        "peak_rss_mib": 9.5,
+        "convolutions": 100,
+        "a_size": 1024,
+        "b_size": 1025
+      },
+      "cached": {
+        "ms": 9.899,
+        "peak_rss_mib": 9.5,
+        "convolutions": 100,
+        "a_size": 1024,
+        "b_size": 1025
+      },
+      "kactl": {
+        "ms": 10.266,
+        "peak_rss_mib": 9.5,
+        "convolutions": 100,
+        "a_size": 1024,
+        "b_size": 1025
+      }
+    },
+    {
+      "case": "medium_batch",
+      "state": "warm",
+      "samples": {
+        "current": [
+          {
+            "ms": 25.233,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 25.355,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 25.203,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 25.249,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 25.363,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 9.787,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 9.837,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 9.82,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 9.824,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 9.796,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 10.233,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 10.201,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 10.217,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 10.257,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 10.174,
+            "convolutions": 100,
+            "a_size": 1024,
+            "b_size": 1025,
+            "checksum": "13104014834774844723",
+            "peak_rss_mib": 9.5
+          }
+        ]
+      },
+      "current": {
+        "ms": 25.249,
+        "peak_rss_mib": 9.5,
+        "convolutions": 100,
+        "a_size": 1024,
+        "b_size": 1025
+      },
+      "cached": {
+        "ms": 9.82,
+        "peak_rss_mib": 9.5,
+        "convolutions": 100,
+        "a_size": 1024,
+        "b_size": 1025
+      },
+      "kactl": {
+        "ms": 10.217,
+        "peak_rss_mib": 9.5,
+        "convolutions": 100,
+        "a_size": 1024,
+        "b_size": 1025
+      }
+    },
+    {
+      "case": "large_batch",
+      "state": "cold",
+      "samples": {
+        "current": [
+          {
+            "ms": 559.937,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 557.967,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 562.786,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 615.639,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 564.752,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          }
+        ],
+        "cached": [
+          {
+            "ms": 215.746,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 215.975,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 226.755,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.6875
+          },
+          {
+            "ms": 217.961,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 214.755,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.6875
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 244.804,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 242.298,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 244.861,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 241.582,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 244.983,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          }
+        ]
+      },
+      "current": {
+        "ms": 562.786,
+        "peak_rss_mib": 10.640625,
+        "convolutions": 5,
+        "a_size": 262144,
+        "b_size": 262144
+      },
+      "cached": {
+        "ms": 215.975,
+        "peak_rss_mib": 13.703125,
+        "convolutions": 5,
+        "a_size": 262144,
+        "b_size": 262144
+      },
+      "kactl": {
+        "ms": 244.804,
+        "peak_rss_mib": 34.734375,
+        "convolutions": 5,
+        "a_size": 262144,
+        "b_size": 262144
+      }
+    },
+    {
+      "case": "large_batch",
+      "state": "warm",
+      "samples": {
+        "current": [
+          {
+            "ms": 565.487,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 560.284,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 562.543,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 565.263,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          },
+          {
+            "ms": 561.486,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 10.640625
+          }
+        ],
+        "cached": [
+          {
+            "ms": 214.742,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.84375
+          },
+          {
+            "ms": 214.092,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 220.959,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.703125
+          },
+          {
+            "ms": 215.763,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.6875
+          },
+          {
+            "ms": 218.476,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 13.703125
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 241.749,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 238.924,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 251.673,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          },
+          {
+            "ms": 243.771,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 36.75
+          },
+          {
+            "ms": 244.831,
+            "convolutions": 5,
+            "a_size": 262144,
+            "b_size": 262144,
+            "checksum": "623454942583775313",
+            "peak_rss_mib": 34.734375
+          }
+        ]
+      },
+      "current": {
+        "ms": 562.543,
+        "peak_rss_mib": 10.640625,
+        "convolutions": 5,
+        "a_size": 262144,
+        "b_size": 262144
+      },
+      "cached": {
+        "ms": 215.763,
+        "peak_rss_mib": 13.84375,
+        "convolutions": 5,
+        "a_size": 262144,
+        "b_size": 262144
+      },
+      "kactl": {
+        "ms": 243.771,
+        "peak_rss_mib": 36.75,
+        "convolutions": 5,
+        "a_size": 262144,
+        "b_size": 262144
+      }
+    },
+    {
+      "case": "unbalanced",
+      "state": "cold",
+      "samples": {
+        "current": [
+          {
+            "ms": 53.429,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.886,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.478,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.46,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.936,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 21.129,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.969,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.711,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.75,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 20.761,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 25.255,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.65625
+          },
+          {
+            "ms": 24.215,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.65625
+          },
+          {
+            "ms": 23.278,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.65625
+          },
+          {
+            "ms": 24.017,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.671875
+          },
+          {
+            "ms": 23.721,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.65625
+          }
+        ]
+      },
+      "current": {
+        "ms": 52.886,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 1,
+        "b_size": 262144
+      },
+      "cached": {
+        "ms": 20.761,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 1,
+        "b_size": 262144
+      },
+      "kactl": {
+        "ms": 24.017,
+        "peak_rss_mib": 17.671875,
+        "convolutions": 1,
+        "a_size": 1,
+        "b_size": 262144
+      }
+    },
+    {
+      "case": "unbalanced",
+      "state": "warm",
+      "samples": {
+        "current": [
+          {
+            "ms": 52.143,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.353,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.199,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.929,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          },
+          {
+            "ms": 52.283,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.5
+          }
+        ],
+        "cached": [
+          {
+            "ms": 19.76,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.625
+          },
+          {
+            "ms": 19.694,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.625
+          },
+          {
+            "ms": 19.655,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.609375
+          },
+          {
+            "ms": 20.388,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.625
+          },
+          {
+            "ms": 19.853,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 9.625
+          }
+        ],
+        "kactl": [
+          {
+            "ms": 21.997,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.65625
+          },
+          {
+            "ms": 21.982,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.65625
+          },
+          {
+            "ms": 22.231,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.65625
+          },
+          {
+            "ms": 22.52,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 19.671875
+          },
+          {
+            "ms": 21.966,
+            "convolutions": 1,
+            "a_size": 1,
+            "b_size": 262144,
+            "checksum": "17187945363035978915",
+            "peak_rss_mib": 17.65625
+          }
+        ]
+      },
+      "current": {
+        "ms": 52.283,
+        "peak_rss_mib": 9.5,
+        "convolutions": 1,
+        "a_size": 1,
+        "b_size": 262144
+      },
+      "cached": {
+        "ms": 19.76,
+        "peak_rss_mib": 9.625,
+        "convolutions": 1,
+        "a_size": 1,
+        "b_size": 262144
+      },
+      "kactl": {
+        "ms": 21.997,
+        "peak_rss_mib": 19.671875,
+        "convolutions": 1,
+        "a_size": 1,
+        "b_size": 262144
+      }
+    }
+  ],
+  "correctness": "OK: 3230 convolutions per variant; 147 transform cases per variant; naive convolution/DFT, empty, singleton, zeros, p-1, power boundaries, cache grow/shrink",
+  "maximum_transform": [
+    "OK: variant 0 forward/inverse at 2^23; forward vs powers of primitive root",
+    "OK: variant 1 forward/inverse at 2^23; forward vs powers of primitive root",
+    "OK: variant 2 forward/inverse at 2^23; forward vs powers of primitive root"
+  ],
+  "generated_cpp_sha256": "394a42abe1225934cbc2590e6f4b1e16dc3d137c70f1ddbdb1375e62f26d5ffc"
+}

@@ -73,6 +73,7 @@ struct TwoSAT {
             if (component[is_false] == component[is_true])
                 return nullopt;
 
+            // SCC del handbook: IDs en orden topologico.
             assignment[variable] =
                 component[is_true] > component[is_false];
         }
@@ -101,7 +102,7 @@ if (!answer) { cout << "Imposible\n";
 }
 \end{lstlisting}
 
-\warning{\texttt{strongly\_connected\_components} debe devolver las componentes
-en orden topológico compatible con la comparación usada en \texttt{solve}.
-Según la implementación de SCC, puede ser necesario cambiar
-\texttt{>} por \texttt{<}. También se requiere \texttt{\#include <optional>}.}
+\warning{La SCC del handbook invierte los IDs internos de Tarjan para devolverlos
+en orden topológico; por eso \texttt{solve} conserva la comparación \texttt{>}.
+Si se copia otra SCC que devuelve orden topológico inverso, usar \texttt{<}.
+También se requiere \texttt{\#include <optional>}.}

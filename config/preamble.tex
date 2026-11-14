@@ -1,22 +1,30 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
-\usepackage[a4paper,landscape,margin=1.1cm]{geometry}
+\usepackage[a4paper,landscape,margin=7mm,includefoot,footskip=4mm]{geometry}
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{graphicx}
+\usepackage{multicol}
+\pagestyle{plain}
 
-\setlength{\columnsep}{0.8cm}
+\setlength{\columnsep}{5mm}
+\setlength{\columnseprule}{0.3pt}
+\setlength{\multicolsep}{0pt}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.2em}
+\setlength{\parskip}{0.1em}
 \setlist{nosep,leftmargin=*}
 \setcounter{tocdepth}{1}
-\titleformat{\chapter}[hang]{\Large\bfseries}{\thechapter.}{0.5em}{}
-\titlespacing*{\chapter}{0pt}{-1.5em}{0.6em}
-\titlespacing*{\section}{0pt}{0.8em}{0.25em}
-\titlespacing*{\subsection}{0pt}{0.5em}{0.15em}
+% Chapters flow inside the columns instead of forcing a new page.
+\titleclass{\chapter}{straight}
+\titleformat{\chapter}[hang]{\large\bfseries}{\thechapter.}{0.4em}{}
+\titleformat{\section}[hang]{\normalsize\bfseries}{\thesection}{0.4em}{}
+\titleformat{\subsection}[hang]{\small\bfseries}{\thesubsection}{0.4em}{}
+\titlespacing*{\chapter}{0pt}{0.7em}{0.3em}
+\titlespacing*{\section}{0pt}{0.6em}{0.2em}
+\titlespacing*{\subsection}{0pt}{0.4em}{0.15em}
 
 \newcommand{\complexity}[1]{\textbf{Complejidad:} #1\par}
 \newcommand{\whenuse}[1]{\textbf{Cu\'ando usar:} #1\par}

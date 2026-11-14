@@ -1,0 +1,104 @@
+\section{Mochila ilimitada}
+\whenuse{Cada tipo de objeto puede repetirse, sus pesos son enteros positivos
+y se maximiza valor sin superar una capacidad $W$.}
+\complexity{Tiempo $O(nW)$; memoria $O(W)$ m\'as los objetos recuperados.
+La capacidad se recorre en orden ascendente para permitir repeticiones.}
+
+\begin{lstlisting}[style=cpp]
+pair<ll, vector<int>> unbounded_knapsack(const vector<int> &weight,
+                                        const vector<ll> &value, int capacity) {
+    assert(capacity >= 0 && weight.size() == value.size());
+    vector<ll> dp(capacity + 1);
+    vector<int> last(capacity + 1, -1);
+    for (int i = 0; i < (int)weight.size(); ++i) {
+        assert(weight[i] > 0);
+        for (int c = weight[i]; c <= capacity; ++c)
+            if (dp[c - weight[i]] + value[i] > dp[c]) {
+                dp[c] = dp[c - weight[i]] + value[i]; last[c] = i;
+            }
+    }
+    vector<int> chosen;
+    for (int c = capacity; last[c] != -1; c -= weight[last[c]])
+        chosen.push_back(last[c]);
+    return {dp[capacity], chosen};
+}
+void unbounded_example() {
+    auto [value, items] = unbounded_knapsack({3,5}, {4,7}, 10);
+    cout << value << '\n'; // 14; items = {1,1}.
+}
+\end{lstlisting}
+
+\warning{Peso cero y valor positivo dar\'ian un \`optimo infinito. Los valores y
+sumas deben entrar en \texttt{long long}. Se permite elegir cero objetos.}
+
+\section{Suma exacta 0/1 con m\'inima cantidad de objetos}
+\whenuse{Cada objeto se usa a lo sumo una vez y se necesita sumar exactamente
+$W$, minimizando la cantidad elegida. Sirve como componente de Nine Packs.}
+\complexity{Tiempo $O(nW)$; memoria $O(W)$ enteros y $O(nW)$ bits de decisiones
+para reconstruir. Para s\'olo obtener el costo, omitir \texttt{take}.}
+
+\begin{lstlisting}[style=cpp]
+optional<vector<int>> minimum_items_exact(const vector<int> &weight, int target,
+                                         vector<int> *all_costs = nullptr) {
+    assert(target >= 0);
+    int n = weight.size(), infinity = n + 1;
+    vector<int> dp(target + 1, infinity);
+    vector<vector<bool>> take(n, vector<bool>(target + 1));
+    dp[0] = 0;
+    for (int i = 0; i < n; ++i) {
+        assert(weight[i] >= 0);
+        for (int s = target; s >= weight[i]; --s)
+            if (dp[s - weight[i]] + 1 < dp[s]) {
+                dp[s] = dp[s - weight[i]] + 1; take[i][s] = true;
+            }
+    }
+    if (all_costs) *all_costs = dp;
+    if (dp[target] == infinity) return nullopt;
+    vector<int> chosen;
+    for (int i = n - 1, s = target; i >= 0; --i)
+        if (take[i][s]) { chosen.push_back(i); s -= weight[i]; }
+    reverse(chosen.begin(), chosen.end());
+    return chosen;
+}
+void exact_sum_example() {
+    auto items = minimum_items_exact({8,10,12}, 20);
+    if (items) for (int i : *items) cout << i << ' '; // 0 2
+    // nullopt: imposible; vector vacio: target == 0.
+}
+\end{lstlisting}
+
+Pasar \texttt{\&costs} como tercer argumento permite consultar el m\'inimo para
+\emph{todas} las sumas, con \texttt{weight.size()+1} como marca de imposible.
+En Nine Packs se calcula una tabla por lado y se busca la mejor suma positiva
+com\'un; no llamar a la funci\'on de nuevo para cada suma. Copiar esa tabla
+agrega $O(W)$ tiempo y memoria, sin cambiar la cota total.
+
+\section{Subset sum con bitset}
+\whenuse{S\'olo importa qu\'e sumas son alcanzables con objetos 0/1 de peso no
+negativo. Procesar muchas sumas en paralelo reduce el costo de la DP booleana.}
+\complexity{Para $n$ objetos y $S$ posiciones, $O(n\lceil S/w\rceil)$
+operaciones de palabra, con $w$ bits por palabra (usualmente 64); memoria $O(S)$
+bits. La aceleraci\'on concreta depende de la implementaci\'on de bitset.}
+
+\begin{lstlisting}[style=cpp]
+template<size_t S>
+bitset<S> subset_sums(const vector<int> &weight) {
+    static_assert(S > 0);
+    bitset<S> reachable;
+    reachable[0] = true;
+    for (int w : weight) {
+        assert(w >= 0);
+        reachable |= reachable << (size_t)w;
+    }
+    return reachable;
+}
+void subset_sum_example() {
+    auto reachable = subset_sums<21>({8,10,12}); // S debe ser > target.
+    cout << reachable[20] << ' ' << reachable[19] << '\n'; // 1 0
+}
+\end{lstlisting}
+
+\warning{Esta variante no devuelve los objetos ni la m\'inima cantidad.
+Una suma fuera de $[0,S)$ se descarta. Evitar bitsets locales gigantes si el juez
+tiene poco stack; se puede dar almacenamiento \texttt{static} a la estructura.
+Para muchos pesos repetidos, agrupar cantidades puede ser necesario para pasar.}

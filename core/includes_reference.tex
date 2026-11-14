@@ -4,15 +4,15 @@
 est\'andar. Si el juez usa Clang/MSVC o exige portabilidad, incluir uno por uno:
 
 \begin{center}
-\begin{tabular}{ll}
+\begin{tabular}{@{}p{0.36\columnwidth}p{0.59\columnwidth}@{}}
 Necesidad & Header \\
 \hline
-entrada/salida & \texttt{<iostream>, <iomanip>, <sstream>} \\
-vector/arreglos/tuplas & \texttt{<vector>, <array>, <tuple>, <utility>} \\
+entrada/salida & \texttt{<iostream>}, \texttt{<iomanip>}, \texttt{<sstream>} \\
+vector, arreglos, tuplas & \texttt{<vector>}, \texttt{<array>}, \texttt{<tuple>}, \texttt{<utility>} \\
 strings & \texttt{<string>, <cstring>} \\
-sort/b\'usquedas/num\'ericos & \texttt{<algorithm>, <numeric>} \\
+orden y num\'ericos & \texttt{<algorithm>, <numeric>} \\
 stack/colas & \texttt{<stack>, <queue>, <deque>} \\
-set/map/hash & \texttt{<set>, <map>, <unordered\_set>, <unordered\_map>} \\
+set/map/hash & \texttt{<set>}, \texttt{<map>}, \texttt{<unordered\_set>}, \texttt{<unordered\_map>} \\
 matem\'atica & \texttt{<cmath>, <complex>, <limits>, <bitset>} \\
 random/tiempo & \texttt{<random>, <chrono>} \\
 funciones/opcionales & \texttt{<functional>, <optional>} \\
@@ -37,6 +37,7 @@ Template portable m\'inimo:
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <climits>
 \end{lstlisting}
 
 Agregar headers s\'olo cuando se usen. Para ICPC con GCC,

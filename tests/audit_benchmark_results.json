@@ -1,0 +1,420 @@
+{
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "cxxflags": [],
+  "stack_mib": 8,
+  "seed": 20261026,
+  "source_sha256": "1d07e73b24d4a49fd06e873a7f5fe696222f91cd6b905fd1e0cd7e2001b2273d",
+  "file_sha256": {
+    "data_structures/dsu.tex": "76c2b14f72491d5867b2629cbef3f1c3990b93b2d65520338528896e3d8dadaa",
+    "data_structures/segment_tree.tex": "3d98e1d46350b05132d6dd6f329326cca024be7970d75889cf1eaa16e9adb75e",
+    "data_structures/lazy_segment_tree.tex": "d82862708ac381599a4b1076b53c7f9e6b2df5be3f5559b373dbb81a27456fbe",
+    "data_structures/persistent_segment_tree.tex": "3971946a4d9cac0566fbe6c46bc07f6c6512c372c43c58c984b65ec418fdc9b7",
+    "data_structures/sparse_table.tex": "378c2c18de345daf0b66b9283d5c44ae54df88294a57d0bf35cbdacd9f393c84",
+    "data_structures/disjoint_sparse_table.tex": "3cd57545c4a75627b862694e760b3984d009955a3de964217152792fdfe4551a",
+    "data_structures/monotonic_structures.tex": "05f1191a008b963812e2c35aee6295a10f38252929aa18b4e1232a16900037a1",
+    "data_structures/fenwick_2d_offline.tex": "e6c8fb0c3120ce30fb9cd79d3eb16a0ce6135101684ca72099471a80ac0c0be3",
+    "data_structures/wavelet_tree.tex": "082c3d04450ca5a278b77e6fda480fbfe3fcd2a4f018a87a8c90795e61e7566a",
+    "data_structures/implicit_treap.tex": "0138502613748657733b1c622c2756ea4b49f3faaee1e066cbcae8c4068febee",
+    "data_structures/cht_li_chao.tex": "4713952338aea1c9f055250020d6ae13a5f4f6dfbc8b0b5a483ddd0f756692b5",
+    "data_structures/fenwick.tex": "0d7efeb5812b93497b8c7b97a95f8a2ef58ebbe45441dcfecd6952a5c8a0046b",
+    "data_structures/disjoint_intervals.tex": "bc5575ca7648b3eb8a4c20accf49272778b037b2a406d513b806ec30cb405fb4",
+    "graphs/bridges_articulation.tex": "810828552e45f13709bc436b2b6d779d88a74c3d9d57b4cee89486295afe8c5e",
+    "graphs/biconnected_components.tex": "b47b948054b85294af974372812240e837cd5d76a85120dc2d77578ba0491d8c",
+    "graphs/dag_and_scc.tex": "67c05e07ff8c3ed6cb923935b8065b00caebf63e025dcc460e753353a3c5dbbf",
+    "graphs/two_sat.tex": "1ddd83cb3f39136498416202ab626a32a9cf7a9e406219f4e67be8f9e09c77d0",
+    "graphs/eulerian_path.tex": "f72eb87d45546836d63255b19258afc7107150851587220004d5154907836937",
+    "graphs/flows.tex": "8310ee89097fb24194aa85473266fbc7a04cf00425b02c0f0e8bfca6aca89a74",
+    "graphs/matching.tex": "20125622ce1322b4fe7fbcdac377def5e37488bb2671032bb84087e31cbaadab",
+    "graphs/mst.tex": "cd7bbb4ba76cb59a7829878233be21bcf0110e59c159f4becd34e0c1eb52b14e",
+    "graphs/trees_lca.tex": "a8678670f370a019769204bcdbef0c0382691a4cab8441b9339cfbb6935fcedd",
+    "graphs/lca_euler_rmq.tex": "15b129cb17e00472ff560e83fb121e3c76a0b6bd25877c8d983625b6aae33375",
+    "graphs/heavy_light_decomposition.tex": "7b0e45773eb7470e78917cdef8efe07b9db8cefcc5cf4dc5f1483089a7986335",
+    "graphs/centroid_decomposition.tex": "b72188f2b90ef278672a4ccbce640ce6449a9c7aff42a0902b10fe047f6c90b5",
+    "graphs/rerooting_dp.tex": "e84f1eae5dc9d4346489386a7683883f52f38eb6e34f98dc5b4ded1fff8a1a58",
+    "graphs/virtual_tree.tex": "70a8748fe33929b3b467209f34dd6729a699db9bcd08ab67fdb7bccdbd554157",
+    "graphs/shortest_paths.tex": "c6e2dfe1d2b7b295fd85c95fb60128dc4e053ede1e38259ec6c28c193da0e645",
+    "math/gcd_and_modular.tex": "0edf41f1fd30c5765b7cf88ea5cee67f38d997f52e274249dcb291ee74b1e86e",
+    "math/gaussian_elimination.tex": "4330e5df97845d75d79145f5da28dbf18208132d20dcc75e1562efca5edbc612",
+    "math/matrices.tex": "340f8236660af9f4751417369fcac1198419d9a11b4e820262a23bcf3513d66f",
+    "math/lucas.tex": "ca8c1d4b298c34dec80dfbf849cfacb6891bb1727205546042b03ed69bb682ee",
+    "math/ntt.tex": "669c41549957d7ca5c6ba29ced91300163d70673bb0f24b51c2d085bca5e4dc2",
+    "math/miller_rabin_pollard_rho.tex": "389bc896c11ce0918ae3a49b2fdc042788025ee763d07cd1cdf1c8cffb758ffa",
+    "geometry/geometry_2d.tex": "b21b80305e5190d45a154136631cac110bc22a3f0b4ee929279105e13033e97a",
+    "geometry/lines_circles_polygons.tex": "7fb8c847aa34520a1954e166e7a314df5ff219f9a89d5892e95936ba6dcf0660",
+    "geometry/geometry_3d.tex": "1380061380aea4285d63691d74d991d53382eb270205f76ba2d44074134d8a1f",
+    "techniques/bitmasks_and_bases.tex": "4a7cfbfd78dc4bebe8405fbdeb1c19f7a7d3c5860fc9de9096f4d054315e4871",
+    "techniques/mos_algorithm.tex": "dbe90f32bacc77e46df73641ec183fff504130b5934495883c3c6b7db4e88557",
+    "dp/divide_conquer_optimization.tex": "866e76d5256373340804e1c67f09f5bdf5073b2e236dccc1cb3ce9e6dd092076",
+    "dp/triangular_bound_dp.tex": "555a8022c8d3a35fd91b6066b9b58cb960f57443ffed680c4ec12cc14a29c5f8",
+    "techniques/prefix_sums.tex": "7787a18abc5792910c1e5574495f6ddd41f64c4b46695f3a23e778e5e821f5b4",
+    "techniques/coordinate_compression.tex": "0947e588f0e4a612592e4d70492fe385ad0007e2e397e90ff7044d6db67a17d3",
+    "techniques/sqrt_heavy_light.tex": "1e0a2f17bf442c10d749bb62364679117ee7c9ae40d3d27f9eaa1c409560c640",
+    "techniques/two_pointers.tex": "d7d216e4aa9674c96b223b69cd6b7ffa5221e547285ed1604d43f89531410995",
+    "core/parsing.tex": "ea3be8869677c46a7c4422c2e1c138d8797e650941c97201d671100389ad7aed",
+    "strings/suffix_array_lcp.tex": "790f17a6c4b308c6a440dd19a9498eef11d63493297b77fed5465c62b258ab0f",
+    "techniques/binary_search.tex": "6b601466eab80f009ec634983002e255ba9d9f573a65463d82595273996fb5fc"
+  },
+  "results": [
+    {
+      "case": "bench_structures",
+      "exit_code": 0,
+      "wall_s": 0.06184666699846275,
+      "peak_rss_mib": 5.671875,
+      "output": "n=200000; 1000000 point updates and range queries; checksum=34125458221625\nOK bench_structures: 0 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "bench_structures",
+          "exit_code": 0,
+          "wall_s": 0.2629826670017792,
+          "peak_rss_mib": 5.671875,
+          "output": "n=200000; 1000000 point updates and range queries; checksum=34125458221625\nOK bench_structures: 0 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_structures",
+          "exit_code": 0,
+          "wall_s": 0.06184666699846275,
+          "peak_rss_mib": 5.671875,
+          "output": "n=200000; 1000000 point updates and range queries; checksum=34125458221625\nOK bench_structures: 0 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_structures",
+          "exit_code": 0,
+          "wall_s": 0.06137433300318662,
+          "peak_rss_mib": 5.671875,
+          "output": "n=200000; 1000000 point updates and range queries; checksum=34125458221625\nOK bench_structures: 0 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "bench_scc",
+      "exit_code": 0,
+      "wall_s": 0.04521712499263231,
+      "peak_rss_mib": 18.625,
+      "output": "DAG V=200000,E=399998; SCC=200000\nOK bench_scc: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "bench_scc",
+          "exit_code": 0,
+          "wall_s": 0.04521712499263231,
+          "peak_rss_mib": 18.609375,
+          "output": "DAG V=200000,E=399998; SCC=200000\nOK bench_scc: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_scc",
+          "exit_code": 0,
+          "wall_s": 0.04634295900177676,
+          "peak_rss_mib": 18.609375,
+          "output": "DAG V=200000,E=399998; SCC=200000\nOK bench_scc: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_scc",
+          "exit_code": 0,
+          "wall_s": 0.04461095901206136,
+          "peak_rss_mib": 18.625,
+          "output": "DAG V=200000,E=399998; SCC=200000\nOK bench_scc: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "bench_ntt",
+      "exit_code": 0,
+      "wall_s": 0.08973841699480545,
+      "peak_rss_mib": 8.71875,
+      "output": "NTT two arrays n=262144; coefficients=524287\nOK bench_ntt: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "bench_ntt",
+          "exit_code": 0,
+          "wall_s": 0.08893549999629613,
+          "peak_rss_mib": 8.71875,
+          "output": "NTT two arrays n=262144; coefficients=524287\nOK bench_ntt: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_ntt",
+          "exit_code": 0,
+          "wall_s": 0.08973841699480545,
+          "peak_rss_mib": 8.71875,
+          "output": "NTT two arrays n=262144; coefficients=524287\nOK bench_ntt: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_ntt",
+          "exit_code": 0,
+          "wall_s": 0.09034054199582897,
+          "peak_rss_mib": 8.71875,
+          "output": "NTT two arrays n=262144; coefficients=524287\nOK bench_ntt: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "bench_suffix",
+      "exit_code": 0,
+      "wall_s": 0.04621079198841471,
+      "peak_rss_mib": 4.21875,
+      "output": "suffix array + LCP, n=200000, alphabet=4\nOK bench_suffix: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "bench_suffix",
+          "exit_code": 0,
+          "wall_s": 0.04649616600363515,
+          "peak_rss_mib": 4.21875,
+          "output": "suffix array + LCP, n=200000, alphabet=4\nOK bench_suffix: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_suffix",
+          "exit_code": 0,
+          "wall_s": 0.04621079198841471,
+          "peak_rss_mib": 4.21875,
+          "output": "suffix array + LCP, n=200000, alphabet=4\nOK bench_suffix: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_suffix",
+          "exit_code": 0,
+          "wall_s": 0.045737958993413486,
+          "peak_rss_mib": 4.21875,
+          "output": "suffix array + LCP, n=200000, alphabet=4\nOK bench_suffix: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "bench_dijkstra",
+      "exit_code": 0,
+      "wall_s": 0.058257500000763685,
+      "peak_rss_mib": 17.21875,
+      "output": "Dijkstra V=200000,E=399999; d[last]=284\nOK bench_dijkstra: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "bench_dijkstra",
+          "exit_code": 0,
+          "wall_s": 0.05895266600418836,
+          "peak_rss_mib": 17.1875,
+          "output": "Dijkstra V=200000,E=399999; d[last]=284\nOK bench_dijkstra: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_dijkstra",
+          "exit_code": 0,
+          "wall_s": 0.058257500000763685,
+          "peak_rss_mib": 17.1875,
+          "output": "Dijkstra V=200000,E=399999; d[last]=284\nOK bench_dijkstra: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_dijkstra",
+          "exit_code": 0,
+          "wall_s": 0.05715041699295398,
+          "peak_rss_mib": 17.21875,
+          "output": "Dijkstra V=200000,E=399999; d[last]=284\nOK bench_dijkstra: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "bench_trees",
+      "exit_code": 0,
+      "wall_s": 0.046559416005038656,
+      "peak_rss_mib": 22.171875,
+      "output": "bench_trees n=200000\nOK bench_trees: 1 checks",
+      "error": "",
+      "runs": [
+        {
+          "case": "bench_trees",
+          "exit_code": 0,
+          "wall_s": 0.047937875002389774,
+          "peak_rss_mib": 22.140625,
+          "output": "bench_trees n=200000\nOK bench_trees: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_trees",
+          "exit_code": 0,
+          "wall_s": 0.04547208300209604,
+          "peak_rss_mib": 22.140625,
+          "output": "bench_trees n=200000\nOK bench_trees: 1 checks",
+          "error": ""
+        },
+        {
+          "case": "bench_trees",
+          "exit_code": 0,
+          "wall_s": 0.046559416005038656,
+          "peak_rss_mib": 22.171875,
+          "output": "bench_trees n=200000\nOK bench_trees: 1 checks",
+          "error": ""
+        }
+      ],
+      "all_passed": true,
+      "expected_finding": false
+    },
+    {
+      "case": "stack_hld",
+      "exit_code": -11,
+      "wall_s": 0.050554457993712276,
+      "peak_rss_mib": 29.6875,
+      "output": "",
+      "error": "",
+      "runs": [
+        {
+          "case": "stack_hld",
+          "exit_code": -11,
+          "wall_s": 0.04852616699645296,
+          "peak_rss_mib": 29.671875,
+          "output": "",
+          "error": ""
+        },
+        {
+          "case": "stack_hld",
+          "exit_code": -11,
+          "wall_s": 0.050554457993712276,
+          "peak_rss_mib": 29.6875,
+          "output": "",
+          "error": ""
+        },
+        {
+          "case": "stack_hld",
+          "exit_code": -11,
+          "wall_s": 0.053294249999453314,
+          "peak_rss_mib": 29.671875,
+          "output": "",
+          "error": ""
+        }
+      ],
+      "all_passed": false,
+      "expected_finding": false
+    },
+    {
+      "case": "stack_lowlink",
+      "exit_code": -11,
+      "wall_s": 0.0552009170060046,
+      "peak_rss_mib": 26.84375,
+      "output": "",
+      "error": "",
+      "runs": [
+        {
+          "case": "stack_lowlink",
+          "exit_code": -11,
+          "wall_s": 0.0552009170060046,
+          "peak_rss_mib": 26.828125,
+          "output": "",
+          "error": ""
+        },
+        {
+          "case": "stack_lowlink",
+          "exit_code": -11,
+          "wall_s": 0.05513975000940263,
+          "peak_rss_mib": 26.84375,
+          "output": "",
+          "error": ""
+        },
+        {
+          "case": "stack_lowlink",
+          "exit_code": -11,
+          "wall_s": 0.05794774999958463,
+          "peak_rss_mib": 26.84375,
+          "output": "",
+          "error": ""
+        }
+      ],
+      "all_passed": false,
+      "expected_finding": false
+    },
+    {
+      "case": "stack_reroot",
+      "exit_code": -11,
+      "wall_s": 0.04382537500350736,
+      "peak_rss_mib": 19.71875,
+      "output": "",
+      "error": "",
+      "runs": [
+        {
+          "case": "stack_reroot",
+          "exit_code": -11,
+          "wall_s": 0.04377466699224897,
+          "peak_rss_mib": 19.71875,
+          "output": "",
+          "error": ""
+        },
+        {
+          "case": "stack_reroot",
+          "exit_code": -11,
+          "wall_s": 0.04382537500350736,
+          "peak_rss_mib": 19.703125,
+          "output": "",
+          "error": ""
+        },
+        {
+          "case": "stack_reroot",
+          "exit_code": -11,
+          "wall_s": 0.049825540991150774,
+          "peak_rss_mib": 19.703125,
+          "output": "",
+          "error": ""
+        }
+      ],
+      "all_passed": false,
+      "expected_finding": false
+    },
+    {
+      "case": "stack_euler_lca",
+      "exit_code": -11,
+      "wall_s": 0.046526624995749444,
+      "peak_rss_mib": 19.46875,
+      "output": "",
+      "error": "",
+      "runs": [
+        {
+          "case": "stack_euler_lca",
+          "exit_code": -11,
+          "wall_s": 0.04412624999531545,
+          "peak_rss_mib": 19.46875,
+          "output": "",
+          "error": ""
+        },
+        {
+          "case": "stack_euler_lca",
+          "exit_code": -11,
+          "wall_s": 0.046526624995749444,
+          "peak_rss_mib": 19.46875,
+          "output": "",
+          "error": ""
+        },
+        {
+          "case": "stack_euler_lca",
+          "exit_code": -11,
+          "wall_s": 0.04963216700707562,
+          "peak_rss_mib": 19.46875,
+          "output": "",
+          "error": ""
+        }
+      ],
+      "all_passed": false,
+      "expected_finding": false
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+[
+  {
+    "test": "tests/validate_bellman_ford.py",
+    "status": 0,
+    "output": "OK: 11014 source/graph checks in both variants; 10892 reconstructed paths checked against 128-bit Floyd\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_bfs_paths.py",
+    "status": 0,
+    "output": "OK: 284893 paths and 52000 nearest-source checks; both variants, examples, ties, empty sources and zero cycles\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_combinatorics.py",
+    "status": 0,
+    "output": "OK: Pascal and factorial combinations, 125 multinomials, 500 bounded distributions, Catalan vs balanced parentheses, derangements vs permutations, Burnside vs explicit rotation classes, and printed examples\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_complexity_examples.py",
+    "status": 0,
+    "output": "OK: binary search, 5000 windows/pairs, 400 Aho cases, 20000 Segment Tree operations, 300 biconnected graphs and 500 virtual trees\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_convex_diameter.py",
+    "status": 0,
+    "output": "OK: 123114 diameter checks against all pairs; both orientations, rotated starts, degeneracies and regressions\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_dp_strings.py",
+    "status": 0,
+    "output": "OK: LCS/edit/palindromes, knapsack variants, digit DP, LIS, 300 optional DP recoveries, 400 Aho cases and KMP/Z/suffix arrays\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_floyd_paths.py",
+    "status": 0,
+    "output": "OK: 56222 source/target pairs; 12504 finite paths, unreachable targets and affected/unaffected negative cycles\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_hamiltonian_path.py",
+    "status": 0,
+    "output": "OK: 2741 matrices checked against all permutations; missing edges, negative/zero costs, disconnected and complete graphs\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_math_helpers.py",
+    "status": 0,
+    "output": "OK: power overflow regressions, shifts, 100000 random square roots and divisions, square boundaries, floating and modular powers\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_mitm.py",
+    "status": 0,
+    "output": "OK: 180 MITM cases vs exhaustive subsets and long long boundaries\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_new_modules.py",
+    "status": 0,
+    "output": "OK: 300 LCS/edit cases, 100 palindrome cases, 400 knapsacks/bitsets, 180 MITM cases, 400 trees, 300 bipartite graphs, digit oracles and 300 XOR bases\nC++ listing lines (including comments/blanks): {\"dp/string_dp.tex\": 75, \"dp/knapsack_variants.tex\": 63, \"dp/digit_dp.tex\": 26, \"techniques/meet_in_the_middle.tex\": 34, \"graphs/tree_diameter.tex\": 37, \"graphs/konig_vertex_cover.tex\": 27, \"math/xor_basis.tex\": 73}\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_recovery_examples.py",
+    "status": 0,
+    "output": "OK: 504 knapsacks, 502 Hamiltonian paths, 502 flow/cut networks and 20000 HLD edge queries; all four examples verified\n",
+    "error": "",
+    "first_attempt": {
+      "status": 1,
+      "error": "/var/folders/41/k22fzssn44qbv635mh0s8cdw0000gn/T/mcduck-recovery-l99j8qo5/test.cpp:304:10: error: unqualified call to 'std::move' [-Werror,-Wunqualified-std-cast-call]\n  304 |     tree(move(tree)),parent(n,-1),depth(n),size(n),heavy(n,-1),\n      |          ^\n      |          std::\n/var/folders/41/k22fzssn44qbv635mh0s8cdw0000gn/T/mcduck-recovery-l99j8qo5/test.cpp:361:10: error: unqualified call to 'std::move' [-Werror,-Wunqualified-std-cast-call]\n  361 |     tree(move(tree)),parent(n,-1),depth(n),size(n),heavy(n,-1),\n      |          ^\n      |          std::\n2 errors generated.\nTraceback (most recent call last):\n  File \"/Users/matiask/Documents/programacion/ICPC/handbook/tests/validate_recovery_examples.py\", line 89, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/matiask/Documents/programacion/ICPC/handbook/tests/validate_recovery_examples.py\", line 81, in main\n    subprocess.run([\n    ~~~~~~~~~~~~~~^^\n        args.compiler, '-std=c++17', '-O2', '-Wall', '-Wextra', '-Werror',\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        *args.cxxflag, str(path), '-o', str(executable),\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ], check=True)\n    ^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py\", line 578, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['clang++', '-std=c++17', '-O2', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined', '-fno-sanitize-recover=all', '/var/folders/41/k22fzssn44qbv635mh0s8cdw0000gn/T/mcduck-recovery-l99j8qo5/test.cpp', '-o', '/var/folders/41/k22fzssn44qbv635mh0s8cdw0000gn/T/mcduck-recovery-l99j8qo5/test']' returned non-zero exit status 1.\n"
+    },
+    "command": [
+      "python3",
+      "tests/validate_recovery_examples.py",
+      "--compiler",
+      "clang++",
+      "--cxxflag=-Wno-unqualified-std-cast-call",
+      "--cxxflag=-fsanitize=address,undefined",
+      "--cxxflag=-fno-sanitize-recover=all"
+    ]
+  },
+  {
+    "test": "tests/validate_segmented_sieve.py",
+    "status": 0,
+    "output": "OK: 22342 interval comparisons plus boundary examples; exhaustive [0,200], random intervals, prime squares, width 1000001 and values near 10^12\n",
+    "error": ""
+  },
+  {
+    "test": "tests/validate_stl_sums.py",
+    "status": 0,
+    "output": "OK: partial_sum example, overflow regressions, empty input and 10000 random arrays\n",
+    "error": ""
+  }
+]

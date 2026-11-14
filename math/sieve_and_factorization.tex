@@ -43,7 +43,6 @@ $O(B\log\log B+\pi(B)+W\log\log R)$ y memoria $O(B+W)$ bits para las marcas,
 m\'as $O(k)$ palabras para devolver los $k$ primos. Las cotas se entienden
 asint\'oticamente; intervalos con $R<2$ se resuelven directamente.}
 
-\noindent\begin{minipage}{\linewidth}
 \begin{lstlisting}[style=cpp]
 // Requiere 0 <= L <= R y memoria/tiempo suficientes para sqrt(R) y el ancho.
 vector<ll> segmented_primes(ll L, ll R) {
@@ -84,7 +83,6 @@ vector<ll> segmented_primes(ll L, ll R) {
     return answer;
 }
 \end{lstlisting}
-\end{minipage}
 
 Ejemplo: \texttt{segmented\_primes(100,120)} devuelve
 $101,103,107,109,113$. Se marca desde

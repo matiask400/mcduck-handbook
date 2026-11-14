@@ -1,0 +1,27 @@
+{
+  "compiler": "clang++",
+  "cxxflags": [],
+  "architecture": "arm64",
+  "system": "Darwin",
+  "n": 40,
+  "runs": 3,
+  "median_wall_s": 0.18888858299760614,
+  "max_peak_rss_mib": 33.59375,
+  "samples": [
+    {
+      "wall_s": 0.21725379199779127,
+      "peak_rss_mib": 33.59375,
+      "output": "algorithm_ms=213.686"
+    },
+    {
+      "wall_s": 0.18888858299760614,
+      "peak_rss_mib": 33.59375,
+      "output": "algorithm_ms=186.042"
+    },
+    {
+      "wall_s": 0.18240379200142343,
+      "peak_rss_mib": 33.59375,
+      "output": "algorithm_ms=179.700"
+    }
+  ]
+}

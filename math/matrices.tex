@@ -20,9 +20,9 @@ Matrix matrix_multiply(const Matrix &a, const Matrix &b, ll mod) {
 
 Matrix matrix_power(Matrix base, unsigned long long exponent, ll mod) {
     int n = base.size();
-    assert(n > 0 && (int)base[0].size() == n);
+    assert(n > 0 && (int)base[0].size() == n && mod > 0);
     Matrix result(n, vector<ll>(n, 0));
-    for (int i = 0; i < n; ++i) result[i][i] = 1;
+    for (int i = 0; i < n; ++i) result[i][i] = 1 % mod;
     while (exponent) {
         if (exponent & 1ULL) result = matrix_multiply(result, base, mod);
         base = matrix_multiply(base, base, mod);

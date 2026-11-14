@@ -1,20 +1,28 @@
-% Estilo intencionalmente liviano: analizar y colorear 100+ bloques con
-% language=C++ hace que Overleaf Free alcance su timeout. El c\'odigo y los
-% saltos de l\'inea se conservan, pero no se carga ning\'un lexer de lenguaje.
+% Compact monochrome code for the three-column print layout.
 
-\definecolor{backcolour}{RGB}{245,245,245}      % Fondo claro
-\definecolor{codecomment}{RGB}{90,105,120}
-\definecolor{codekeyword}{RGB}{0,87,170}
-\definecolor{codestring}{RGB}{145,40,130}
+% listings procesa los bytes UTF-8 por separado con pdfLaTeX. Declarar los
+% caracteres usados en comentarios y archivos importados conserva sus glifos.
+\lstset{literate=
+  {á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{i}}}1
+  {ó}{{\'{o}}}1 {ú}{{\'{u}}}1 {ü}{{\"{u}}}1 {ñ}{{\~{n}}}1
+  {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1
+  {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1 {Ü}{{\"{U}}}1 {Ñ}{{\~{N}}}1
+  {å}{{\aa}}1 {Å}{{\AA}}1
+}
+
+\definecolor{backcolour}{RGB}{255,255,255}
+\definecolor{codecomment}{RGB}{0,0,0}
+\definecolor{codekeyword}{RGB}{0,0,0}
+\definecolor{codestring}{RGB}{0,0,0}
 
 \lstdefinestyle{cpp}{
   language=C++,
   backgroundcolor=\color{backcolour},
-  basicstyle=\ttfamily\small,
+  basicstyle=\ttfamily\fontsize{7}{8}\selectfont,
   keywordstyle=\color{codekeyword}\bfseries,
   commentstyle=\color{codecomment}\itshape,
   stringstyle=\color{codestring},
-  numbers=left,
+  numbers=none,
   numberstyle=\tiny\color{codecomment},
   numbersep=5pt,
   breaklines=true,
@@ -22,19 +30,24 @@
   tabsize=2,
   columns=fullflexible,
   keepspaces=true,
-  frame=single,
+  frame=t,
+  framerule=0.3pt,
+  rulecolor=\color{black},
+  framesep=2pt,
+  aboveskip=3pt,
+  belowskip=3pt,
   morekeywords={cout,cin,endl,string,vector,map,set,bool,true,false,class,public,private,protected,template,typename,using,namespace,int,float,double,char,long,short,return,if,else,for,while,do,switch,case,break,continue,new,delete,try,catch,throw,constexpr,auto}
 }
 
-% --- ESTILO PARA PYTHON (Mantiene tu paleta de colores) ---
+% Same typography for Python.
 \lstdefinestyle{py}{
   language=Python,
   backgroundcolor=\color{backcolour},
-  basicstyle=\ttfamily\small,
+  basicstyle=\ttfamily\fontsize{7}{8}\selectfont,
   keywordstyle=\color{codekeyword}\bfseries,
   commentstyle=\color{codecomment}\itshape,
   stringstyle=\color{codestring},
-  numbers=left,
+  numbers=none,
   numberstyle=\tiny\color{codecomment},
   numbersep=5pt,
   breaklines=true,
@@ -42,7 +55,12 @@
   tabsize=4,                  % En Python se suelen usar 4 espacios por tabulación
   columns=fullflexible,
   keepspaces=true,
-  frame=single,
+  frame=t,
+  framerule=0.3pt,
+  rulecolor=\color{black},
+  framesep=2pt,
+  aboveskip=3pt,
+  belowskip=3pt,
   % Palabras clave adicionales, funciones nativas y tipos de datos en Python
   morekeywords={as,assert,async,await,breakpoint,class,def,del,elif,else,except,finally,for,from,global,if,import,in,is,lambda,nonlocal,not,or,and,pass,raise,return,try,while,with,yield,True,False,None},
   keywordstyle=[2]{\color{codekeyword}}, % Resalta funciones integradas (opcional)

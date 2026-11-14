@@ -1,0 +1,105 @@
+{
+  "baseline_ref": "3a4aa53",
+  "active_lines": {
+    "odt": {
+      "before": 19,
+      "after": 20
+    },
+    "matrix": {
+      "before": 25,
+      "after": 25
+    },
+    "divide": {
+      "before": 22,
+      "after": 33
+    },
+    "hld": {
+      "before": 44,
+      "after": 48
+    },
+    "lowlink": {
+      "before": 35,
+      "after": 46
+    },
+    "reroot": {
+      "before": 27,
+      "after": 28
+    },
+    "euler": {
+      "before": 47,
+      "after": 57
+    },
+    "floyd": {
+      "before": 14,
+      "after": 24
+    },
+    "binary": {
+      "before": 10,
+      "after": 10
+    }
+  },
+  "file_sha256": {
+    "data_structures/disjoint_intervals.tex": "e1b19ae2e64d3e1022fba713cdc7a3d7098e6161486f17473ded70bb2507ba5e",
+    "math/matrices.tex": "aec68e6b225d82c03a1a602c7f5d22854ab424a664bc22262f7ab3d32f9a9a32",
+    "dp/divide_conquer_optimization.tex": "a77b2e3376c10c6da88f3e97228f5557bc3ca7f3850bb526eb2baafe4527b7f0",
+    "graphs/heavy_light_decomposition.tex": "71f187b22715fadc111e599f6a64d1589a15778efd78896a296a0c14ec7f5046",
+    "graphs/bridges_articulation.tex": "60b708d4aa842b91694c7f6b8d6c34bf17dc58f2482ba28e14f931ab25c187e0",
+    "graphs/rerooting_dp.tex": "ad376dd67579b4ca6f7bffefa0f29aafbfaa8ca9fe41261539d058b2dd10dd68",
+    "graphs/lca_euler_rmq.tex": "08b7f0c4854c603ef3279ef5f727d3005d0ff6e73ef2c3dc0b99408ae29f2f3a",
+    "graphs/shortest_paths.tex": "2da649d5b11df12128b722412db56efcfe24268c16a8bb1f5240a96cd60379e2",
+    "techniques/binary_search.tex": "64631171da4127018a8d8c2bb678280bc124090e4cff05e3b19d9f548e22887d"
+  },
+  "generated_cpp_sha256": "6bee13ac90525979aabb5ffb1fe873a8f1dc75a6e72edde9d6c19e700dbaeb42",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "flags": [
+    "-std=c++17",
+    "-O2",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-Wno-unqualified-std-cast-call"
+  ],
+  "seed": 20261028,
+  "stack_mib": 8,
+  "benchmarks": [],
+  "correctness": {
+    "exit_code": 0,
+    "output": "OK: 2736149 edge-case and differential checks",
+    "error": "",
+    "peak_rss_mib": 173.859375
+  },
+  "deep_chains": {
+    "hld": {
+      "exit_code": 0,
+      "output": "{\"ms\":78.230917,\"checksum\":\"400000\"}",
+      "error": "",
+      "ms": 78.230917,
+      "checksum": "400000",
+      "peak_rss_mib": 61.234375
+    },
+    "lowlink": {
+      "exit_code": 0,
+      "output": "{\"ms\":27.88125,\"checksum\":\"199999\"}",
+      "error": "",
+      "ms": 27.88125,
+      "checksum": "199999",
+      "peak_rss_mib": 76.6875
+    },
+    "reroot": {
+      "exit_code": 0,
+      "output": "{\"ms\":12.92375,\"checksum\":\"19999900000\"}",
+      "error": "",
+      "ms": 12.92375,
+      "checksum": "19999900000",
+      "peak_rss_mib": 45.53125
+    },
+    "euler": {
+      "exit_code": 0,
+      "output": "{\"ms\":90.116167,\"checksum\":\"599998\"}",
+      "error": "",
+      "ms": 90.116167,
+      "checksum": "599998",
+      "peak_rss_mib": 85.484375
+    }
+  }
+}

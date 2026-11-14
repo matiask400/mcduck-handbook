@@ -1,0 +1,43 @@
+\section{Cobertura m\'inima bipartita: K\"onig}
+\whenuse{Elegir el menor conjunto de v\'ertices que toca todas las aristas de un
+grafo bipartito. El complemento es un conjunto independiente m\'aximo.}
+\complexity{Con matching m\'aximo ya calculado: tiempo $O(V+E)$ y memoria
+$O(V)$. Incluyendo Hopcroft--Karp, tiempo $O(E\sqrt V+V+E)$.}
+
+Usar el \texttt{HopcroftKarp} de la secci\'on de matching. Desde los v\'ertices
+izquierdos libres se recorren caminos alternantes; si $Z$ son los alcanzados,
+la cobertura es $(L\setminus Z)\cup(R\cap Z)$.
+
+\begin{lstlisting}[style=cpp]
+pair<vector<int>, vector<int>> minimum_vertex_cover(const HopcroftKarp &matching) {
+    vector<char> left(matching.left_size), right(matching.right_size);
+    queue<int> q;
+    for (int u = 0; u < matching.left_size; ++u)
+        if (matching.match_left[u] == -1) { left[u] = true; q.push(u); }
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        for (int v : matching.graph[u]) {
+            if (matching.match_left[u] == v || right[v]) continue;
+            right[v] = true;
+            int next = matching.match_right[v];
+            assert(next != -1); // Si llega a uno libre, el matching no era maximo.
+            if (!left[next]) { left[next] = true; q.push(next); }
+        }
+    }
+    vector<int> cover_left, cover_right;
+    for (int u = 0; u < matching.left_size; ++u) if (!left[u]) cover_left.push_back(u);
+    for (int v = 0; v < matching.right_size; ++v) if (right[v]) cover_right.push_back(v);
+    return {cover_left, cover_right};
+}
+void konig_example() {
+    HopcroftKarp matching(3, 2);
+    matching.add_edge(0,0); matching.add_edge(1,0); matching.add_edge(2,1);
+    int size = matching.maximum_matching();
+    auto [left, right] = minimum_vertex_cover(matching);
+    cout << size << ' ' << left.size() + right.size() << '\n'; // 2 2
+}
+\end{lstlisting}
+
+\warning{Calcular el matching m\'aximo antes y recalcularlo si se agregan
+aristas. Los IDs izquierdos y derechos pertenecen a conjuntos distintos.
+El teorema no permite sustituir cobertura por matching en grafos generales.}

@@ -1,0 +1,48 @@
+{
+  "kactl_revision": "b3548e973f8772010c1ef84e6d427c749733fd2c",
+  "baseline_ref": "cd5adda",
+  "baseline_ntt_sha256": "669c41549957d7ca5c6ba29ced91300163d70673bb0f24b51c2d085bca5e4dc2",
+  "installed_variant": "cached",
+  "generated_cpp_sha256": "e48582b9f9906ab4c0bd9e11f006f63a3289cea9020775c31c71900681ed07d2",
+  "sha256": {
+    "math/ntt.tex": "6490db43b7833f54b1ebe4a122b7d15bc0c91e3257f6303e1b7f9ffe1e547ca6",
+    "math/gcd_and_modular.tex": "0edf41f1fd30c5765b7cf88ea5cee67f38d997f52e274249dcb291ee74b1e86e",
+    "tests/ntt_variants_test.cpp": "3d4fb129e3b0de9c7abaef77174d0ea16a73e8cedb5a643771fa22d1ab7ea448",
+    "tests/ntt_variants/cached_transform.hpp": "0e29d159d12986fbd58a744fd00da895fc78b13ddee571ca8f73a34c69dcb356",
+    "tests/ntt_variants/kactl_adapter.hpp": "8adfd3187c6ea95a16238615d4b04bd521a2cb58d0f4b3c91688daa27d434b89",
+    "tests/ntt_variants/vendor/NumberTheoreticTransform.h": "b074dc79fe8f74ffb1585901f46a3c8dd135288da898cb71fdf1fd7a2a79d512",
+    "tests/ntt_variants/vendor/ModPow.h": "3a52df066bc643b2c98946702d8a7d6fc88c47a142cf38c19d414228df3b7ecb",
+    "tests/compare_ntt_variants.py": "52324b03f0e010d57301d581ca920aae2fccf7878019cde7de7e73943170aaf8"
+  },
+  "active_lines": {
+    "current": {
+      "algorithm": 48,
+      "dependency": 19
+    },
+    "cached": {
+      "algorithm": 47,
+      "dependency": 19
+    },
+    "kactl": {
+      "core_and_power": 40,
+      "adapter": 15
+    }
+  },
+  "adaptations": [
+    "KACTL modulus configured to 998244353; duplicate declaration removed.",
+    "Root 62 -> 3 to preserve exact forward-transform values.",
+    "Minimum power-of-two padding, including s=1, preserves full 2^23 result limit.",
+    "Public vector<int> transform/inverse/convolution wrappers included in all measurements."
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "seed": 20261028,
+  "flags": [
+    "-std=c++17",
+    "-O2",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all"
+  ],
+  "benchmarks": [],
+  "correctness": "OK: 3230 convolutions per variant; 147 transform cases per variant; naive convolution/DFT, empty, singleton, zeros, p-1, power boundaries, cache grow/shrink"
+}

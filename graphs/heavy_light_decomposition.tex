@@ -5,6 +5,8 @@ con Fenwick o Segment Tree.}
 Para cada vértice se elige como hijo pesado al hijo con mayor subárbol. Las
 aristas pesadas forman cadenas cuyos vértices ocupan posiciones consecutivas.
 Así, un camino se divide en $O(\log n)$ intervalos del arreglo base.
+La construcción usa recorridos iterativos, sin depender de la altura para
+consumir pila de llamadas.
 
 \complexity{Build $O(n)$; camino con Segment Tree $O(\log^2 n)$; subárbol
 $O(\log n)$; memoria $O(n)$.}
@@ -18,27 +20,31 @@ struct HLD {
     tree(move(tree)),parent(n,-1),depth(n),size(n),heavy(n,-1),
         head(n),pos(n) {
         assert(n>0);
-        dfs_size(root);
-        dfs_decompose(root,root);
-    }
-    int dfs_size(int v) {
-        size[v]=1;
-        int largest=0;
-        for(int to:tree[v]) if(to!=parent[v]) {
-            parent[to]=v;
-            depth[to]=depth[v]+1;
-            int child_size=dfs_size(to);
-            size[v]+=child_size;
-            if(child_size>largest) largest=child_size,heavy[v]=to;
+        vector<int> order{root};
+        for(int at=0;at<(int)order.size();++at) {
+            int v=order[at];
+            for(int to:this->tree[v]) if(to!=parent[v]) {
+                parent[to]=v; depth[to]=depth[v]+1; order.push_back(to);
+            }
         }
-        return size[v];
-    }
-    void dfs_decompose(int v,int chain_head) {
-        head[v]=chain_head;
-        pos[v]=timer++;
-        if(heavy[v]!=-1) dfs_decompose(heavy[v],chain_head);
-        for(int to:tree[v])
-            if(to!=parent[v]&&to!=heavy[v]) dfs_decompose(to,to);
+        for(int at=n-1;at>=0;--at) {
+            int v=order[at]; size[v]=1;
+            for(int to:this->tree[v]) if(to!=parent[v]) {
+                size[v]+=size[to];
+                if(heavy[v]==-1||size[to]>size[heavy[v]]) heavy[v]=to;
+            }
+        }
+        head[root]=root; order.clear(); order.push_back(root);
+        while(!order.empty()) {
+            int v=order.back(); order.pop_back(); pos[v]=timer++;
+            for(auto it=this->tree[v].rbegin();it!=this->tree[v].rend();++it)
+                if(*it!=parent[v]&&*it!=heavy[v]) {
+                    head[*it]=*it; order.push_back(*it);
+                }
+            if(heavy[v]!=-1) {
+                head[heavy[v]]=head[v]; order.push_back(heavy[v]);
+            }
+        }
     }
     // Intervalos [l,r) que cubren el camino a--b.
     template<class Callback>
@@ -51,6 +57,16 @@ struct HLD {
         if(depth[a]>depth[b]) swap(a,b);
         callback(pos[a],pos[b]+1);
     }
+    // template<class Callback>
+    // void for_each_edge_path(int a, int b, Callback callback) const {
+    //     while (head[a] != head[b]) {
+    //         if (depth[head[a]] < depth[head[b]]) swap(a,b);
+    //         callback(pos[head[a]], pos[a]+1);
+    //         a = parent[head[a]];
+    //     }
+    //     if (depth[a] > depth[b]) swap(a,b);
+    //     if (a != b) callback(pos[a]+1, pos[b]+1); // Excluye solo el LCA.
+    // }
     // Los vertices del subarbol de v son consecutivos.
     pair<int,int> subtree_interval(int v) const {
         return {pos[v],pos[v]+size[v]};
@@ -81,12 +97,28 @@ ll subtree_sum=segment.query(l,r);
 \end{lstlisting}
 
 Para guardar valores en aristas, almacenar cada arista en la posición de su
-vértice hijo. Para excluir el LCA de la consulta:
+vértice hijo y dejar cero en la raíz. Activar \texttt{for\_each\_edge\_path}:
+excluye el LCA sólo en el último segmento; los anteriores se incluyen completos.
+Si los extremos coinciden, el camino no tiene aristas. Mantiene $O(\log^2 n)$
+por consulta con Segment Tree y $O(1)$ memoria adicional.
 
 \begin{lstlisting}[style=cpp]
-hld.for_each_path(a,b,[&](int l,int r) {
-    // Adaptar para excluir la posicion del LCA.
-});
+// void hld_edge_example() {
+//     vector<vector<int>> tree = {{1,2}, {0,3,4}, {0}, {1}, {1}};
+//     HLD hld(tree,0);
+//     vector<ll> edge_to_parent = {0,4,7,2,3}, base(5);
+//     for (int v = 0; v < 5; ++v) base[hld.pos[v]] = edge_to_parent[v];
+//     SegmentTree segment(base);
+//     auto path_sum = [&](int a, int b) {
+//         ll sum = 0;
+//         hld.for_each_edge_path(a,b,[&](int l, int r) { sum += segment.query(l,r); });
+//         return sum;
+//     };
+//     cout << path_sum(3,2) << '\n'; // 13: 2+4+7
+//     segment.set_value(hld.pos[3],5); // Cambia la arista 1--3.
+//     cout << path_sum(3,2) << '\n'; // 16
+//     cout << path_sum(1,1) << '\n'; // 0
+// }
 \end{lstlisting}
 
 \warning{El callback no entrega necesariamente los segmentos en el orden del

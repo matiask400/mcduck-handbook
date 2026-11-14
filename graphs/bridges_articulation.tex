@@ -4,6 +4,7 @@ componentes de un grafo no dirigido.}
 
 Versi\'on para multigrafos no dirigidos: identifica la arista padre por ID, no
 solamente por v\'ertice.
+La DFS usa una pila expl\'icita en memoria din\'amica y admite cadenas largas.
 
 \begin{lstlisting}[style=cpp]
 struct LowLink {
@@ -21,28 +22,38 @@ struct LowLink {
         graph[v].push_back({u, id});
     }
 
-    void dfs(int v, int parent_edge = -1) {
-        tin[v] = low[v] = timer++;
-        int children = 0;
-        for (auto [to, edge_id] : graph[v]) {
-            if (edge_id == parent_edge) continue;
-            if (tin[to] != -1) {
-                low[v] = min(low[v], tin[to]);
-            } else {
-                dfs(to, edge_id);
-                low[v] = min(low[v], low[to]);
-                if (low[to] > tin[v]) bridges.push_back({v, to});
-                if (parent_edge != -1 && low[to] >= tin[v])
-                    articulation[v] = true;
-                ++children;
+    void run() {
+        struct Frame { int v, parent_edge, next = 0, children = 0; };
+        vector<Frame> pending;
+        for (int root = 0; root < (int)graph.size(); ++root) {
+            if (tin[root] != -1) continue;
+            tin[root] = low[root] = timer++;
+            pending.push_back({root, -1});
+            while (!pending.empty()) {
+                auto &frame = pending.back();
+                int v = frame.v;
+                if (frame.next < (int)graph[v].size()) {
+                    auto [to, id] = graph[v][frame.next++];
+                    if (id == frame.parent_edge) continue;
+                    if (tin[to] != -1) low[v] = min(low[v], tin[to]);
+                    else {
+                        ++frame.children;
+                        tin[to] = low[to] = timer++;
+                        pending.push_back({to, id});
+                    }
+                } else {
+                    if (frame.parent_edge == -1 && frame.children > 1)
+                        articulation[v] = true;
+                    pending.pop_back();
+                    if (pending.empty()) continue;
+                    int p = pending.back().v;
+                    low[p] = min(low[p], low[v]);
+                    if (low[v] > tin[p]) bridges.push_back({p, v});
+                    if (pending.back().parent_edge != -1 && low[v] >= tin[p])
+                        articulation[p] = true;
+                }
             }
         }
-        if (parent_edge == -1 && children > 1) articulation[v] = true;
-    }
-
-    void run() {
-        for (int v = 0; v < (int)graph.size(); ++v)
-            if (tin[v] == -1) dfs(v);
     }
 };
 

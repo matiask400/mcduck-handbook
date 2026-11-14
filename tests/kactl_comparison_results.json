@@ -1,0 +1,5370 @@
+{
+  "our_code_metrics": {
+    "data_structures/dsu.tex": {
+      "0": {
+        "code_lines": 17,
+        "code_chars": 406
+      }
+    },
+    "data_structures/segment_tree.tex": {
+      "0": {
+        "code_lines": 29,
+        "code_chars": 764
+      }
+    },
+    "data_structures/sparse_table.tex": {
+      "0": {
+        "code_lines": 21,
+        "code_chars": 539
+      }
+    },
+    "data_structures/cht_li_chao.tex": {
+      "0": {
+        "code_lines": 52,
+        "code_chars": 1688
+      }
+    },
+    "data_structures/fenwick.tex": {
+      "0": {
+        "code_lines": 34,
+        "code_chars": 685
+      },
+      "1": {
+        "code_lines": 21,
+        "code_chars": 404
+      }
+    },
+    "graphs/dag_and_scc.tex": {
+      "0": {
+        "code_lines": 15,
+        "code_chars": 437
+      },
+      "1": {
+        "code_lines": 24,
+        "code_chars": 732
+      }
+    },
+    "graphs/flows.tex": {
+      "0": {
+        "code_lines": 39,
+        "code_chars": 985
+      },
+      "1": {
+        "code_lines": 48,
+        "code_chars": 1349
+      },
+      "3": {
+        "code_lines": 47,
+        "code_chars": 1598
+      }
+    },
+    "graphs/matching.tex": {
+      "0": {
+        "code_lines": 49,
+        "code_chars": 1305
+      },
+      "2": {
+        "code_lines": 44,
+        "code_chars": 1382
+      }
+    },
+    "graphs/trees_lca.tex": {
+      "1": {
+        "code_lines": 53,
+        "code_chars": 1071
+      }
+    },
+    "graphs/lca_euler_rmq.tex": {
+      "0": {
+        "code_lines": 47,
+        "code_chars": 1220
+      }
+    },
+    "graphs/shortest_paths.tex": {
+      "3": {
+        "code_lines": 32,
+        "code_chars": 999
+      },
+      "5": {
+        "code_lines": 16,
+        "code_chars": 476
+      }
+    },
+    "math/gcd_and_modular.tex": {
+      "0": {
+        "code_lines": 18,
+        "code_chars": 484
+      },
+      "1": {
+        "code_lines": 39,
+        "code_chars": 1045
+      },
+      "2": {
+        "code_lines": 17,
+        "code_chars": 555
+      }
+    },
+    "math/ntt.tex": {
+      "0": {
+        "code_lines": 48,
+        "code_chars": 1575
+      }
+    },
+    "math/miller_rabin_pollard_rho.tex": {
+      "0": {
+        "code_lines": 36,
+        "code_chars": 1014
+      },
+      "1": {
+        "code_lines": 50,
+        "code_chars": 1336
+      },
+      "2": {
+        "code_lines": 141,
+        "code_chars": 3470
+      }
+    },
+    "geometry/geometry_2d.tex": {
+      "0": {
+        "code_lines": 28,
+        "code_chars": 1301
+      },
+      "2": {
+        "code_lines": 30,
+        "code_chars": 823
+      }
+    },
+    "geometry/lines_circles_polygons.tex": {
+      "6": {
+        "code_lines": 38,
+        "code_chars": 1198
+      }
+    },
+    "strings/suffix_array_lcp.tex": {
+      "0": {
+        "code_lines": 43,
+        "code_chars": 1043
+      }
+    },
+    "strings/manacher.tex": {
+      "0": {
+        "code_lines": 20,
+        "code_chars": 714
+      }
+    },
+    "strings/prefix_and_z.tex": {
+      "0": {
+        "code_lines": 30,
+        "code_chars": 733
+      },
+      "3": {
+        "code_lines": 10,
+        "code_chars": 263
+      }
+    },
+    "strings/aho_corasick.tex": {
+      "0": {
+        "code_lines": 61,
+        "code_chars": 1578
+      }
+    },
+    "dp/lis.tex": {
+      "0": {
+        "code_lines": 23,
+        "code_chars": 609
+      }
+    },
+    "graphs/konig_vertex_cover.tex": {
+      "0": {
+        "code_lines": 20,
+        "code_chars": 767
+      }
+    }
+  },
+  "kactl_code_metrics": {
+    "kbit": {
+      "files": [
+        "data-structures/FenwickTree.h"
+      ],
+      "dependencies": {
+        "content/data-structures/FenwickTree.h": {
+          "code_lines": 21,
+          "code_chars": 400
+        }
+      },
+      "total": {
+        "code_lines": 21,
+        "code_chars": 400
+      },
+      "adaptations": []
+    },
+    "ksegment": {
+      "files": [
+        "data-structures/SegmentTree.h"
+      ],
+      "dependencies": {
+        "content/data-structures/SegmentTree.h": {
+          "code_lines": 19,
+          "code_chars": 442
+        }
+      },
+      "total": {
+        "code_lines": 19,
+        "code_chars": 429
+      },
+      "adaptations": [
+        "Documented T/f/unit configuration: ll, addition, identity 0."
+      ]
+    },
+    "krmq": {
+      "files": [
+        "data-structures/RMQ.h"
+      ],
+      "dependencies": {
+        "content/data-structures/RMQ.h": {
+          "code_lines": 16,
+          "code_chars": 379
+        }
+      },
+      "total": {
+        "code_lines": 16,
+        "code_chars": 379
+      },
+      "adaptations": []
+    },
+    "kdsu": {
+      "files": [
+        "data-structures/UnionFind.h"
+      ],
+      "dependencies": {
+        "content/data-structures/UnionFind.h": {
+          "code_lines": 14,
+          "code_chars": 336
+        }
+      },
+      "total": {
+        "code_lines": 14,
+        "code_chars": 336
+      },
+      "adaptations": []
+    },
+    "kscc": {
+      "files": [
+        "graph/SCC.h"
+      ],
+      "dependencies": {
+        "content/graph/SCC.h": {
+          "code_lines": 23,
+          "code_chars": 527
+        }
+      },
+      "total": {
+        "code_lines": 23,
+        "code_chars": 527
+      },
+      "adaptations": []
+    },
+    "ktopo": {
+      "files": [
+        "graph/TopoSort.h"
+      ],
+      "dependencies": {
+        "content/graph/TopoSort.h": {
+          "code_lines": 8,
+          "code_chars": 236
+        }
+      },
+      "total": {
+        "code_lines": 8,
+        "code_chars": 236
+      },
+      "adaptations": []
+    },
+    "klift": {
+      "files": [
+        "graph/BinaryLifting.h"
+      ],
+      "dependencies": {
+        "content/graph/BinaryLifting.h": {
+          "code_lines": 23,
+          "code_chars": 527
+        }
+      },
+      "total": {
+        "code_lines": 23,
+        "code_chars": 527
+      },
+      "adaptations": []
+    },
+    "klca": {
+      "files": [
+        "graph/LCA.h"
+      ],
+      "dependencies": {
+        "content/graph/LCA.h": {
+          "code_lines": 18,
+          "code_chars": 373
+        },
+        "content/data-structures/RMQ.h": {
+          "code_lines": 16,
+          "code_chars": 379
+        }
+      },
+      "total": {
+        "code_lines": 34,
+        "code_chars": 752
+      },
+      "adaptations": []
+    },
+    "kflow": {
+      "files": [
+        "graph/Dinic.h"
+      ],
+      "dependencies": {
+        "content/graph/Dinic.h": {
+          "code_lines": 42,
+          "code_chars": 929
+        }
+      },
+      "total": {
+        "code_lines": 42,
+        "code_chars": 929
+      },
+      "adaptations": []
+    },
+    "kmatch": {
+      "files": [
+        "graph/HopcroftKarp.h"
+      ],
+      "dependencies": {
+        "content/graph/HopcroftKarp.h": {
+          "code_lines": 20,
+          "code_chars": 541
+        }
+      },
+      "total": {
+        "code_lines": 20,
+        "code_chars": 541
+      },
+      "adaptations": []
+    },
+    "khungarian": {
+      "files": [
+        "graph/WeightedMatching.h"
+      ],
+      "dependencies": {
+        "content/graph/WeightedMatching.h": {
+          "code_lines": 24,
+          "code_chars": 651
+        }
+      },
+      "total": {
+        "code_lines": 24,
+        "code_chars": 651
+      },
+      "adaptations": []
+    },
+    "ksuffix": {
+      "files": [
+        "strings/SuffixArray.h"
+      ],
+      "dependencies": {
+        "content/strings/SuffixArray.h": {
+          "code_lines": 22,
+          "code_chars": 664
+        }
+      },
+      "total": {
+        "code_lines": 22,
+        "code_chars": 664
+      },
+      "adaptations": []
+    },
+    "kmanacher": {
+      "files": [
+        "strings/Manacher.h"
+      ],
+      "dependencies": {
+        "content/strings/Manacher.h": {
+          "code_lines": 13,
+          "code_chars": 311
+        }
+      },
+      "total": {
+        "code_lines": 13,
+        "code_chars": 311
+      },
+      "adaptations": []
+    },
+    "kkmp": {
+      "files": [
+        "strings/KMP.h"
+      ],
+      "dependencies": {
+        "content/strings/KMP.h": {
+          "code_lines": 15,
+          "code_chars": 306
+        }
+      },
+      "total": {
+        "code_lines": 15,
+        "code_chars": 306
+      },
+      "adaptations": []
+    },
+    "kz": {
+      "files": [
+        "strings/Zfunc.h"
+      ],
+      "dependencies": {
+        "content/strings/Zfunc.h": {
+          "code_lines": 12,
+          "code_chars": 216
+        }
+      },
+      "total": {
+        "code_lines": 12,
+        "code_chars": 216
+      },
+      "adaptations": []
+    },
+    "kaho": {
+      "files": [
+        "strings/AhoCorasick.h"
+      ],
+      "dependencies": {
+        "content/strings/AhoCorasick.h": {
+          "code_lines": 63,
+          "code_chars": 1215
+        }
+      },
+      "total": {
+        "code_lines": 63,
+        "code_chars": 1215
+      },
+      "adaptations": [
+        "Documented alphabet configuration: lowercase a..z."
+      ]
+    },
+    "kntt": {
+      "files": [
+        "numerical/NumberTheoreticTransform.h"
+      ],
+      "dependencies": {
+        "content/numerical/NumberTheoreticTransform.h": {
+          "code_lines": 33,
+          "code_chars": 953
+        },
+        "content/number-theory/ModPow.h": {
+          "code_lines": 7,
+          "code_chars": 137
+        }
+      },
+      "total": {
+        "code_lines": 40,
+        "code_chars": 1066
+      },
+      "adaptations": [
+        "Set ModPow.h modulus to NTT modulus 998244353 and remove duplicate mod declaration."
+      ]
+    },
+    "klis": {
+      "files": [
+        "various/LIS.h"
+      ],
+      "dependencies": {
+        "content/various/LIS.h": {
+          "code_lines": 16,
+          "code_chars": 412
+        }
+      },
+      "total": {
+        "code_lines": 16,
+        "code_chars": 412
+      },
+      "adaptations": []
+    },
+    "khull": {
+      "files": [
+        "geometry/ConvexHull.h",
+        "geometry/HullDiameter.h"
+      ],
+      "dependencies": {
+        "content/geometry/ConvexHull.h": {
+          "code_lines": 13,
+          "code_chars": 337
+        },
+        "content/geometry/Point.h": {
+          "code_lines": 26,
+          "code_chars": 1038
+        },
+        "content/geometry/HullDiameter.h": {
+          "code_lines": 12,
+          "code_chars": 309
+        }
+      },
+      "total": {
+        "code_lines": 51,
+        "code_chars": 1684
+      },
+      "adaptations": []
+    },
+    "kfactor": {
+      "files": [
+        "number-theory/Factor.h"
+      ],
+      "dependencies": {
+        "content/number-theory/Factor.h": {
+          "code_lines": 18,
+          "code_chars": 455
+        },
+        "content/number-theory/ModMulLL.h": {
+          "code_lines": 11,
+          "code_chars": 291
+        },
+        "content/number-theory/MillerRabin.h": {
+          "code_lines": 12,
+          "code_chars": 326
+        }
+      },
+      "total": {
+        "code_lines": 41,
+        "code_chars": 1072
+      },
+      "adaptations": []
+    },
+    "kline": {
+      "files": [
+        "data-structures/LineContainer.h"
+      ],
+      "dependencies": {
+        "content/data-structures/LineContainer.h": {
+          "code_lines": 28,
+          "code_chars": 762
+        }
+      },
+      "total": {
+        "code_lines": 28,
+        "code_chars": 762
+      },
+      "adaptations": []
+    },
+    "kfloyd": {
+      "files": [
+        "graph/FloydWarshall.h"
+      ],
+      "dependencies": {
+        "content/graph/FloydWarshall.h": {
+          "code_lines": 12,
+          "code_chars": 372
+        }
+      },
+      "total": {
+        "code_lines": 12,
+        "code_chars": 372
+      },
+      "adaptations": []
+    },
+    "kbellman": {
+      "files": [
+        "graph/BellmanFord.h"
+      ],
+      "dependencies": {
+        "content/graph/BellmanFord.h": {
+          "code_lines": 21,
+          "code_chars": 586
+        }
+      },
+      "total": {
+        "code_lines": 21,
+        "code_chars": 586
+      },
+      "adaptations": []
+    },
+    "kcover": {
+      "files": [
+        "graph/MinimumVertexCover.h"
+      ],
+      "dependencies": {
+        "content/graph/MinimumVertexCover.h": {
+          "code_lines": 20,
+          "code_chars": 518
+        },
+        "content/graph/DFSMatching.h": {
+          "code_lines": 22,
+          "code_chars": 400
+        }
+      },
+      "total": {
+        "code_lines": 42,
+        "code_chars": 918
+      },
+      "adaptations": []
+    },
+    "kmcmf": {
+      "files": [
+        "graph/MinCostMaxFlow.h"
+      ],
+      "dependencies": {
+        "content/graph/MinCostMaxFlow.h": {
+          "code_lines": 67,
+          "code_chars": 1610
+        }
+      },
+      "total": {
+        "code_lines": 67,
+        "code_chars": 1610
+      },
+      "adaptations": []
+    }
+  },
+  "our_file_sha256": {
+    "data_structures/dsu.tex": "76c2b14f72491d5867b2629cbef3f1c3990b93b2d65520338528896e3d8dadaa",
+    "data_structures/segment_tree.tex": "3d98e1d46350b05132d6dd6f329326cca024be7970d75889cf1eaa16e9adb75e",
+    "data_structures/sparse_table.tex": "378c2c18de345daf0b66b9283d5c44ae54df88294a57d0bf35cbdacd9f393c84",
+    "data_structures/cht_li_chao.tex": "4713952338aea1c9f055250020d6ae13a5f4f6dfbc8b0b5a483ddd0f756692b5",
+    "data_structures/fenwick.tex": "0d7efeb5812b93497b8c7b97a95f8a2ef58ebbe45441dcfecd6952a5c8a0046b",
+    "graphs/dag_and_scc.tex": "67c05e07ff8c3ed6cb923935b8065b00caebf63e025dcc460e753353a3c5dbbf",
+    "graphs/flows.tex": "8310ee89097fb24194aa85473266fbc7a04cf00425b02c0f0e8bfca6aca89a74",
+    "graphs/matching.tex": "20125622ce1322b4fe7fbcdac377def5e37488bb2671032bb84087e31cbaadab",
+    "graphs/trees_lca.tex": "a8678670f370a019769204bcdbef0c0382691a4cab8441b9339cfbb6935fcedd",
+    "graphs/lca_euler_rmq.tex": "15b129cb17e00472ff560e83fb121e3c76a0b6bd25877c8d983625b6aae33375",
+    "graphs/shortest_paths.tex": "c6e2dfe1d2b7b295fd85c95fb60128dc4e053ede1e38259ec6c28c193da0e645",
+    "math/gcd_and_modular.tex": "0edf41f1fd30c5765b7cf88ea5cee67f38d997f52e274249dcb291ee74b1e86e",
+    "math/ntt.tex": "669c41549957d7ca5c6ba29ced91300163d70673bb0f24b51c2d085bca5e4dc2",
+    "math/miller_rabin_pollard_rho.tex": "389bc896c11ce0918ae3a49b2fdc042788025ee763d07cd1cdf1c8cffb758ffa",
+    "geometry/geometry_2d.tex": "b21b80305e5190d45a154136631cac110bc22a3f0b4ee929279105e13033e97a",
+    "geometry/lines_circles_polygons.tex": "7fb8c847aa34520a1954e166e7a314df5ff219f9a89d5892e95936ba6dcf0660",
+    "strings/suffix_array_lcp.tex": "790f17a6c4b308c6a440dd19a9498eef11d63493297b77fed5465c62b258ab0f",
+    "strings/manacher.tex": "ae74dbdfcae4f9f307c845547dfd2fd9c04d359c89b137694f2c2b33f7a5c440",
+    "strings/prefix_and_z.tex": "9d38d3e082a8264ec95d8e63733d41d5e9e371efc7688baee720c6ed7ffec504",
+    "strings/aho_corasick.tex": "8f0d833962b9c547f6b6da830994b68fddda9c703debf16bcda5c64e1249cec0",
+    "dp/lis.tex": "d61065a4d1671a3db30a3619c6c1d0c41c444c179aa20c9179702ee0d45db1f3",
+    "graphs/konig_vertex_cover.tex": "33d712acc7e92be9e2f28eced8ca411718c67b078f66cdc41cd7448eddba9a2f"
+  },
+  "compiler": "g++-15 (Homebrew GCC 15.2.0) 15.2.0",
+  "kactl_commit": "b3548e973f8772010c1ef84e6d427c749733fd2c",
+  "seed": 20261026,
+  "flags": [
+    "-std=c++17",
+    "-O2",
+    "-isysroot",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+    "-idirafter",
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+  ],
+  "source_sha256": "aadde44b260b72618f4c1110ee6a9395ede731a2f26ef990e332ddd1b9aa7082",
+  "results": [
+    {
+      "case": "fenwick",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 29.374,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 29.089,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 29.371,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 35.062,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 54.628,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 30.012,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 32.042,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 27.144,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 49.518,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 26.984375,
+            "result": {
+              "algorithm_ms": 35.794,
+              "checksum": "256850088104529417",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 29.374,
+        "peak_rss_mib": 27.0,
+        "checksums": [
+          "256850088104529417"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 32.042,
+        "peak_rss_mib": 26.984375,
+        "checksums": [
+          "256850088104529417"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.9167342862492978,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "fenwick_lower_bound",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 56.262,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 65.866,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.015625,
+            "result": {
+              "algorithm_ms": 56.979,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 47.215,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 45.795,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 64.206,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 61.084,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 73.769,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 51.236,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 27.0,
+            "result": {
+              "algorithm_ms": 48.724,
+              "checksum": "13555649961828704869",
+              "scenario": "n=200000; 1000000 update+query pairs; ll sums; nonnegative values",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 56.262,
+        "peak_rss_mib": 27.015625,
+        "checksums": [
+          "13555649961828704869"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 61.084,
+        "peak_rss_mib": 27.0,
+        "checksums": [
+          "13555649961828704869"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.9210595245890904,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "segment_sum",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 29.46875,
+            "result": {
+              "algorithm_ms": 151.876,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 29.46875,
+            "result": {
+              "algorithm_ms": 85.448,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 29.46875,
+            "result": {
+              "algorithm_ms": 83.232,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 29.46875,
+            "result": {
+              "algorithm_ms": 85.746,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 29.46875,
+            "result": {
+              "algorithm_ms": 81.615,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.53125,
+            "result": {
+              "algorithm_ms": 95.275,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.53125,
+            "result": {
+              "algorithm_ms": 94.089,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.53125,
+            "result": {
+              "algorithm_ms": 95.292,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.53125,
+            "result": {
+              "algorithm_ms": 94.792,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.53125,
+            "result": {
+              "algorithm_ms": 92.027,
+              "checksum": "10893573227549411993",
+              "scenario": "n=200000; 1000000 point assignments+sum queries; both ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 85.448,
+        "peak_rss_mib": 29.46875,
+        "checksums": [
+          "10893573227549411993"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 94.792,
+        "peak_rss_mib": 28.53125,
+        "checksums": [
+          "10893573227549411993"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.901426280698793,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "sparse_rmq",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 41.75,
+            "result": {
+              "algorithm_ms": 8.35,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 41.75,
+            "result": {
+              "algorithm_ms": 8.054,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 41.75,
+            "result": {
+              "algorithm_ms": 6.955,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 41.75,
+            "result": {
+              "algorithm_ms": 12.659,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 41.765625,
+            "result": {
+              "algorithm_ms": 12.895,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 37.46875,
+            "result": {
+              "algorithm_ms": 5.36,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 37.46875,
+            "result": {
+              "algorithm_ms": 5.15,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 37.46875,
+            "result": {
+              "algorithm_ms": 5.702,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 37.46875,
+            "result": {
+              "algorithm_ms": 5.874,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 37.46875,
+            "result": {
+              "algorithm_ms": 6.759,
+              "checksum": "7992400012523190065",
+              "scenario": "n=200000; preprocessing+1000000 nonempty min queries; ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 8.35,
+        "peak_rss_mib": 41.765625,
+        "checksums": [
+          "7992400012523190065"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 5.702,
+        "peak_rss_mib": 37.46875,
+        "checksums": [
+          "7992400012523190065"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.464398456681866,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "dsu",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.96875,
+            "result": {
+              "algorithm_ms": 5.988,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.96875,
+            "result": {
+              "algorithm_ms": 5.727,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.96875,
+            "result": {
+              "algorithm_ms": 5.716,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.96875,
+            "result": {
+              "algorithm_ms": 5.74,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.96875,
+            "result": {
+              "algorithm_ms": 5.821,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.984375,
+            "result": {
+              "algorithm_ms": 5.623,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.984375,
+            "result": {
+              "algorithm_ms": 5.697,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.984375,
+            "result": {
+              "algorithm_ms": 5.51,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.984375,
+            "result": {
+              "algorithm_ms": 5.948,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 10.984375,
+            "result": {
+              "algorithm_ms": 5.81,
+              "checksum": "11822581387976118764",
+              "scenario": "n=200000; 1000000 union+connectivity pairs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 5.74,
+        "peak_rss_mib": 10.96875,
+        "checksums": [
+          "11822581387976118764"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 5.697,
+        "peak_rss_mib": 10.984375,
+        "checksums": [
+          "11822581387976118764"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.007547832192382,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "scc",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.46875,
+            "result": {
+              "algorithm_ms": 15.731,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.4375,
+            "result": {
+              "algorithm_ms": 15.503,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.4375,
+            "result": {
+              "algorithm_ms": 15.197,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.46875,
+            "result": {
+              "algorithm_ms": 15.509,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.453125,
+            "result": {
+              "algorithm_ms": 15.469,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.328125,
+            "result": {
+              "algorithm_ms": 0.892,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.328125,
+            "result": {
+              "algorithm_ms": 0.924,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.328125,
+            "result": {
+              "algorithm_ms": 0.937,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.328125,
+            "result": {
+              "algorithm_ms": 0.946,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.328125,
+            "result": {
+              "algorithm_ms": 0.944,
+              "checksum": "10301817731100077568",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 15.503,
+        "peak_rss_mib": 19.46875,
+        "checksums": [
+          "10301817731100077568"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 0.937,
+        "peak_rss_mib": 13.328125,
+        "checksums": [
+          "10301817731100077568"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 16.545357524012807,
+      "harness_sha256": "aadde44b260b72618f4c1110ee6a9395ede731a2f26ef990e332ddd1b9aa7082"
+    },
+    {
+      "case": "scc_cycles",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.984375,
+            "result": {
+              "algorithm_ms": 14.736,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.984375,
+            "result": {
+              "algorithm_ms": 14.825,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.984375,
+            "result": {
+              "algorithm_ms": 14.554,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.96875,
+            "result": {
+              "algorithm_ms": 14.314,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.984375,
+            "result": {
+              "algorithm_ms": 14.253,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.34375,
+            "result": {
+              "algorithm_ms": 2.494,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.34375,
+            "result": {
+              "algorithm_ms": 2.445,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.34375,
+            "result": {
+              "algorithm_ms": 2.436,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.34375,
+            "result": {
+              "algorithm_ms": 2.43,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.34375,
+            "result": {
+              "algorithm_ms": 2.431,
+              "checksum": "11035922735068637952",
+              "scenario": "V=200000 E=400000; 2000 cyclic SCCs of size 100",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 14.554,
+        "peak_rss_mib": 19.984375,
+        "checksums": [
+          "11035922735068637952"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 2.436,
+        "peak_rss_mib": 13.34375,
+        "checksums": [
+          "11035922735068637952"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 5.974548440065682,
+      "harness_sha256": "aadde44b260b72618f4c1110ee6a9395ede731a2f26ef990e332ddd1b9aa7082"
+    },
+    {
+      "case": "topological",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.046875,
+            "result": {
+              "algorithm_ms": 3.229,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.0625,
+            "result": {
+              "algorithm_ms": 3.16,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.0625,
+            "result": {
+              "algorithm_ms": 3.019,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.0625,
+            "result": {
+              "algorithm_ms": 3.119,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.0625,
+            "result": {
+              "algorithm_ms": 3.034,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 12.765625,
+            "result": {
+              "algorithm_ms": 3.275,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 12.765625,
+            "result": {
+              "algorithm_ms": 3.407,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 12.75,
+            "result": {
+              "algorithm_ms": 3.466,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 12.75,
+            "result": {
+              "algorithm_ms": 3.043,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 12.765625,
+            "result": {
+              "algorithm_ms": 3.187,
+              "checksum": "174363753080052285",
+              "scenario": "DAG V=200000 E=399998; full result",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 3.119,
+        "peak_rss_mib": 13.0625,
+        "checksums": [
+          "174363753080052285"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 3.275,
+        "peak_rss_mib": 12.765625,
+        "checksums": [
+          "174363753080052285"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.9523664122137405,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "lca_binary",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.421875,
+            "result": {
+              "algorithm_ms": 301.704,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.4375,
+            "result": {
+              "algorithm_ms": 159.562,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.4375,
+            "result": {
+              "algorithm_ms": 130.068,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.421875,
+            "result": {
+              "algorithm_ms": 133.026,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.421875,
+            "result": {
+              "algorithm_ms": 163.08,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.359375,
+            "result": {
+              "algorithm_ms": 124.567,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.359375,
+            "result": {
+              "algorithm_ms": 348.659,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.34375,
+            "result": {
+              "algorithm_ms": 260.065,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.359375,
+            "result": {
+              "algorithm_ms": 256.482,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 34.34375,
+            "result": {
+              "algorithm_ms": 134.753,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 159.562,
+        "peak_rss_mib": 34.4375,
+        "checksums": [
+          "10976120480980745817"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 256.482,
+        "peak_rss_mib": 34.359375,
+        "checksums": [
+          "10976120480980745817"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.6221177314587378,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "lca_rmq",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 50.03125,
+            "result": {
+              "algorithm_ms": 20.423,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 50.03125,
+            "result": {
+              "algorithm_ms": 15.115,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 50.03125,
+            "result": {
+              "algorithm_ms": 15.492,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 50.0625,
+            "result": {
+              "algorithm_ms": 14.86,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 50.0625,
+            "result": {
+              "algorithm_ms": 14.318,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 33.78125,
+            "result": {
+              "algorithm_ms": 10.895,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 33.78125,
+            "result": {
+              "algorithm_ms": 11.13,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 33.796875,
+            "result": {
+              "algorithm_ms": 11.543,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 33.796875,
+            "result": {
+              "algorithm_ms": 10.618,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 33.8125,
+            "result": {
+              "algorithm_ms": 17.208,
+              "checksum": "10976120480980745817",
+              "scenario": "random tree n=200000; full preprocessing+1000000 LCA queries; root 0",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 15.115,
+        "peak_rss_mib": 50.0625,
+        "checksums": [
+          "10976120480980745817"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 11.13,
+        "peak_rss_mib": 33.8125,
+        "checksums": [
+          "10976120480980745817"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.358041329739443,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "dinic",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.178,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.528,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.507,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.473,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.614,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 17.015,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 16.296,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 15.478,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 16.354,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 18.323,
+              "checksum": "113641",
+              "scenario": "layered network V=7202 E=35640; capacities 1..1000; build+maxflow",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 7.528,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "113641"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 16.354,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "113641"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.46031551913904856,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "hopcroft_karp",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 8.261,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 8.466,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 8.689,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 8.144,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 8.106,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 5.603,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 5.483,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 5.751,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 5.657,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 5.577,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 8.261,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "29931"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 5.603,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "29931"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.4743887203283954,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "hungarian",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.694,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.694,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.888,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.824,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.771,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.52,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.335,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.579,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.277,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.325,
+              "checksum": "18446744073411114691",
+              "scenario": "complete 600x600 cost matrix; negative and positive ll costs",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 9.771,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "18446744073411114691"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 9.335,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "18446744073411114691"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.0467059453668988,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "suffix_random",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 88.674,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 87.921,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 87.318,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 87.749,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 86.496,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.15625,
+            "result": {
+              "algorithm_ms": 17.507,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.15625,
+            "result": {
+              "algorithm_ms": 18.659,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.15625,
+            "result": {
+              "algorithm_ms": 17.31,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.15625,
+            "result": {
+              "algorithm_ms": 18.013,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.15625,
+            "result": {
+              "algorithm_ms": 17.425,
+              "checksum": "15914620510164700782",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 87.749,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "15914620510164700782"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 17.507,
+        "peak_rss_mib": 14.15625,
+        "checksums": [
+          "15914620510164700782"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 5.012223681955788,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "suffix_repeated",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 136.377,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 138.68,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 137.155,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 140.16,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 139.157,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 42.744,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 43.758,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 48.328,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 44.139,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 45.299,
+              "checksum": "10420141378782570678",
+              "scenario": "500000 characters; suffix array+LCP; sentinel removed outside timing",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 138.68,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "10420141378782570678"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 44.139,
+        "peak_rss_mib": 14.140625,
+        "checksums": [
+          "10420141378782570678"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 3.1418926572872063,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "manacher",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 51.328125,
+            "result": {
+              "algorithm_ms": 24.158,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 51.328125,
+            "result": {
+              "algorithm_ms": 24.89,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 51.328125,
+            "result": {
+              "algorithm_ms": 24.648,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 51.328125,
+            "result": {
+              "algorithm_ms": 25.036,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 51.328125,
+            "result": {
+              "algorithm_ms": 25.57,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.390625,
+            "result": {
+              "algorithm_ms": 20.747,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.390625,
+            "result": {
+              "algorithm_ms": 20.912,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.390625,
+            "result": {
+              "algorithm_ms": 20.675,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.390625,
+            "result": {
+              "algorithm_ms": 20.724,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 28.390625,
+            "result": {
+              "algorithm_ms": 21.902,
+              "checksum": "13183764916229407678",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 24.89,
+        "peak_rss_mib": 51.328125,
+        "checksums": [
+          "13183764916229407678"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 20.747,
+        "peak_rss_mib": 28.390625,
+        "checksums": [
+          "13183764916229407678"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.199691521665783,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "kmp",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.149,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.236,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.262,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.559,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 10.006,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.8125,
+            "result": {
+              "algorithm_ms": 10.579,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.8125,
+            "result": {
+              "algorithm_ms": 10.897,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.8125,
+            "result": {
+              "algorithm_ms": 10.823,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.8125,
+            "result": {
+              "algorithm_ms": 10.619,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 19.8125,
+            "result": {
+              "algorithm_ms": 12.301,
+              "checksum": "4953191943955620807",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 9.262,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "4953191943955620807"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 10.823,
+        "peak_rss_mib": 19.8125,
+        "checksums": [
+          "4953191943955620807"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.8557701191906126,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "z",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 10.246,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 10.062,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 10.151,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 9.598,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 14.006,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 11.537,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 11.278,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 10.391,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 10.239,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 16.921875,
+            "result": {
+              "algorithm_ms": 10.105,
+              "checksum": "9934283054885523479",
+              "scenario": "text length 3000000 alphabet=4; KMP pattern length 500",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 10.151,
+        "peak_rss_mib": 16.921875,
+        "checksums": [
+          "9934283054885523479"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 10.391,
+        "peak_rss_mib": 16.921875,
+        "checksums": [
+          "9934283054885523479"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.9769030892118179,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "aho_random",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 113.328125,
+            "result": {
+              "algorithm_ms": 53.203,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 113.328125,
+            "result": {
+              "algorithm_ms": 45.203,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 113.328125,
+            "result": {
+              "algorithm_ms": 45.897,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 113.328125,
+            "result": {
+              "algorithm_ms": 45.843,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 113.328125,
+            "result": {
+              "algorithm_ms": 45.618,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 102.53125,
+            "result": {
+              "algorithm_ms": 43.546,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 102.515625,
+            "result": {
+              "algorithm_ms": 42.495,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 102.53125,
+            "result": {
+              "algorithm_ms": 43.125,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 102.53125,
+            "result": {
+              "algorithm_ms": 43.908,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 102.53125,
+            "result": {
+              "algorithm_ms": 49.464,
+              "checksum": "0",
+              "scenario": "20000 patterns length 20; text 1000000; build+enumerate",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 45.843,
+        "peak_rss_mib": 113.328125,
+        "checksums": [
+          "0"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 43.546,
+        "peak_rss_mib": 102.53125,
+        "checksums": [
+          "0"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.0527488173425803,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "aho_suffixes",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 112.453125,
+            "result": {
+              "algorithm_ms": 21.406,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 112.453125,
+            "result": {
+              "algorithm_ms": 22.212,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 112.453125,
+            "result": {
+              "algorithm_ms": 23.316,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 112.453125,
+            "result": {
+              "algorithm_ms": 22.56,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 112.4375,
+            "result": {
+              "algorithm_ms": 21.95,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 42.46875,
+            "result": {
+              "algorithm_ms": 17.507,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 42.46875,
+            "result": {
+              "algorithm_ms": 17.839,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 42.453125,
+            "result": {
+              "algorithm_ms": 18.038,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 42.453125,
+            "result": {
+              "algorithm_ms": 18.05,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 42.46875,
+            "result": {
+              "algorithm_ms": 17.614,
+              "checksum": "12335125990171803388",
+              "scenario": "patterns a^1..a^300; text a^20000; build+all matches; output layouts differ",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 22.212,
+        "peak_rss_mib": 112.453125,
+        "checksums": [
+          "12335125990171803388"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 17.839,
+        "peak_rss_mib": 42.46875,
+        "checksums": [
+          "12335125990171803388"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.2451370592522004,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "ntt",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.640625,
+            "result": {
+              "algorithm_ms": 63.235,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.640625,
+            "result": {
+              "algorithm_ms": 63.935,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.640625,
+            "result": {
+              "algorithm_ms": 63.671,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.640625,
+            "result": {
+              "algorithm_ms": 62.681,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.640625,
+            "result": {
+              "algorithm_ms": 63.556,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 32.6875,
+            "result": {
+              "algorithm_ms": 29.055,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 32.6875,
+            "result": {
+              "algorithm_ms": 29.285,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 32.6875,
+            "result": {
+              "algorithm_ms": 29.483,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 32.6875,
+            "result": {
+              "algorithm_ms": 29.411,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 32.6875,
+            "result": {
+              "algorithm_ms": 29.308,
+              "checksum": "2494161408525579524",
+              "scenario": "convolution 262144+262144 coefficients; modulo 998244353",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 63.556,
+        "peak_rss_mib": 14.640625,
+        "checksums": [
+          "2494161408525579524"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 29.308,
+        "peak_rss_mib": 32.6875,
+        "checksums": [
+          "2494161408525579524"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 2.168554660843456,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "ntt_boundary",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 29.994,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 29.503,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 29.212,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 29.432,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 28.791,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 23.703125,
+            "result": {
+              "algorithm_ms": 29.114,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 23.703125,
+            "result": {
+              "algorithm_ms": 29.661,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 23.703125,
+            "result": {
+              "algorithm_ms": 28.825,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 23.703125,
+            "result": {
+              "algorithm_ms": 28.656,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 23.703125,
+            "result": {
+              "algorithm_ms": 28.819,
+              "checksum": "12019598326523888754",
+              "scenario": "convolution 131072+131073; result length exactly 262144",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 29.432,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "12019598326523888754"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 28.825,
+        "peak_rss_mib": 23.703125,
+        "checksums": [
+          "12019598326523888754"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.0210581092801387,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "lis",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.125,
+            "result": {
+              "algorithm_ms": 33.399,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 34.912,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 32.538,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 34.212,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 32.361,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 36.124,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 36.148,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 39.025,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 36.518,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 14.140625,
+            "result": {
+              "algorithm_ms": 35.926,
+              "checksum": "1976",
+              "scenario": "1000000 ll values; reconstruct one strict LIS; output values versus indices",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 33.399,
+        "peak_rss_mib": 14.140625,
+        "checksums": [
+          "1976"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 36.148,
+        "peak_rss_mib": 14.140625,
+        "checksums": [
+          "1976"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.9239515325882482,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "convex_hull",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 40.375,
+            "result": {
+              "algorithm_ms": 31.227,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 40.375,
+            "result": {
+              "algorithm_ms": 30.747,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 40.375,
+            "result": {
+              "algorithm_ms": 32.246,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 40.375,
+            "result": {
+              "algorithm_ms": 31.483,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 40.375,
+            "result": {
+              "algorithm_ms": 30.516,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 48.03125,
+            "result": {
+              "algorithm_ms": 29.704,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 48.03125,
+            "result": {
+              "algorithm_ms": 30.004,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 48.03125,
+            "result": {
+              "algorithm_ms": 31.5,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 48.03125,
+            "result": {
+              "algorithm_ms": 31.478,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 48.03125,
+            "result": {
+              "algorithm_ms": 30.077,
+              "checksum": "11832095004009699332",
+              "scenario": "500000 integer points; coordinates within +/-1000000; ours cross i128; KACTL cross ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 31.227,
+        "peak_rss_mib": 40.375,
+        "checksums": [
+          "11832095004009699332"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 30.077,
+        "peak_rss_mib": 48.03125,
+        "checksums": [
+          "11832095004009699332"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.0382351963294212,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "calipers",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.451,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.449,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.449,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.419,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.46,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.264,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.249,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.244,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.239,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.245,
+              "checksum": "6249500017499700002",
+              "scenario": "50000 convex vertices CCW; squared distances fit signed ll",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 0.449,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "6249500017499700002"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 0.245,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "6249500017499700002"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.8326530612244898,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "line_queries",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.234375,
+            "result": {
+              "algorithm_ms": 20.685,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.234375,
+            "result": {
+              "algorithm_ms": 20.712,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.234375,
+            "result": {
+              "algorithm_ms": 20.187,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.234375,
+            "result": {
+              "algorithm_ms": 20.064,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 13.234375,
+            "result": {
+              "algorithm_ms": 20.197,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 29.26,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 24.151,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 21.256,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 21.383,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 93.948,
+              "checksum": "11487643990150878388",
+              "scenario": "100000 active lines in random order +100000 integer min queries; max negated for KACTL",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 20.197,
+        "peak_rss_mib": 13.234375,
+        "checksums": [
+          "11487643990150878388"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 24.151,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "11487643990150878388"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.836280071218583,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "miller_rabin",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.608,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.607,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.609,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.607,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.607,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.594,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.559,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.563,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.609,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.564,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 0.607,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "18372637184500266626"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 1.564,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "18372637184500266626"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.3881074168797954,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "miller_rabin_simple",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 2.135,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 2.106,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 2.168,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 2.195,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 2.103,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.628,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.625,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.604,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.582,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1.561,
+              "checksum": "18372637184500266626",
+              "scenario": "10000 primality queries <=10^12; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 2.135,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "18372637184500266626"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 1.604,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "18372637184500266626"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 1.3310473815461346,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "factorization",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 8.993,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 4.56,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 4.486,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 4.467,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 4.385,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.759,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.353,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.526,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.514,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.533,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 4.486,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "11271309748363942858"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 7.526,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "11271309748363942858"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.5960669678448046,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "factorization_simple",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 18.817,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 18.774,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 19.758,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 18.098,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 18.447,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.512,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.69,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.518,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.548,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 7.697,
+              "checksum": "11271309748363942858",
+              "scenario": "500 semiprimes around 10^12; sorted prime factors; common supported range",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 18.774,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "11271309748363942858"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 7.548,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "11271309748363942858"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 2.487281399046105,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "floyd",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 17.801,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 18.202,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 17.347,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 17.326,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 18.569,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 26.08,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 26.078,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 26.435,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 26.086,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 27.526,
+              "checksum": "4231019178012732436",
+              "scenario": "dense positive 350x350; KACTL also supports negative-cycle propagation",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 17.801,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "4231019178012732436"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 26.086,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "4231019178012732436"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.6823966878785556,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "bellman_ford",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.77,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.763,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.724,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.794,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 0.793,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 13.262,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 12.869,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 12.9,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 12.536,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 12.526,
+              "checksum": "18292042112536681751",
+              "scenario": "DAG V=1500 E=13499; negative weights; every vertex reachable",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 0.77,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "18292042112536681751"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 12.869,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "18292042112536681751"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.05983370891289145,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "vertex_cover",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 8.897,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.45,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.261,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 9.026,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 8.738,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1098.269,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1097.27,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1078.459,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1046.658,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.546875,
+            "result": {
+              "algorithm_ms": 1025.833,
+              "checksum": "29931",
+              "scenario": "bipartite 30000+30000 vertices E=180000; includes maximum matching",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 9.026,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "29931"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 1078.459,
+        "peak_rss_mib": 9.546875,
+        "checksums": [
+          "29931"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.008369349228853391,
+      "harness_sha256": "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139"
+    },
+    {
+      "case": "min_cost_flow",
+      "samples": {
+        "ours": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 48.939,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 48.765,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 48.868,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 50.419,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 48.577,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ],
+        "kactl": [
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 108.71,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 107.137,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 109.243,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 112.085,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          },
+          {
+            "exit_code": 0,
+            "peak_rss_mib": 9.5625,
+            "result": {
+              "algorithm_ms": 109.193,
+              "checksum": "17832464519214117292",
+              "scenario": "weighted bipartite flow V=1602 E=9600; unit capacities; negative costs; includes potentials initialization",
+              "long_double_mantissa_bits": 53
+            },
+            "error": ""
+          }
+        ]
+      },
+      "ours": {
+        "all_passed": true,
+        "median_ms": 48.868,
+        "peak_rss_mib": 9.5625,
+        "checksums": [
+          "17832464519214117292"
+        ]
+      },
+      "kactl": {
+        "all_passed": true,
+        "median_ms": 109.193,
+        "peak_rss_mib": 9.5625,
+        "checksums": [
+          "17832464519214117292"
+        ]
+      },
+      "equal_outputs": true,
+      "kactl_speedup": 0.44753784583260836,
+      "harness_sha256": "aadde44b260b72618f4c1110ee6a9395ede731a2f26ef990e332ddd1b9aa7082"
+    }
+  ],
+  "verification": {
+    "small_case_checks": 8041,
+    "kmp_empty_ours_count": 4,
+    "kmp_empty_kactl_count": 3,
+    "kactl_floyd_negative_cycle": true,
+    "large_prime": {
+      "n": "754221686909783899",
+      "ours_simple": 1,
+      "ours_optimized": 1,
+      "kactl": 0
+    },
+    "long_double_mantissa_bits": 53
+  },
+  "harness_revisions": [
+    "c88577ba58d35eaa1cd45d87f510c1262a5d0ed9bb1c73425b1c6432b6b96139",
+    "aadde44b260b72618f4c1110ee6a9395ede731a2f26ef990e332ddd1b9aa7082"
+  ],
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "run_note": "Original full run plus targeted SCC canonical-partition verification and added min-cost-flow workload. Each row retains its exact harness hash."
+}

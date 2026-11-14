@@ -1,0 +1,59 @@
+NTT comparison: original baseline, cached roots, adapted KACTL
+
+The measured original baseline is math/ntt.tex at cd5adda. The chosen cached-root variant is now installed in the book.
+In the benchmark tables, current refers to that original baseline, not the installed version.
+KACTL revision: b3548e973f8772010c1ef84e6d427c749733fd2c
+Compiler: g++-15 (Homebrew GCC 15.2.0) 15.2.0
+Platform: macOS-27.2-arm64-arm-64bit-Mach-O
+Flags: -std=c++17 -O2 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -idirafter /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+Method: five independent processes per variant/case/state; rotated order; median times; maximum process RSS.
+Cold = no untimed preparation before batch; warm = one same-sized convolution before timing.
+Time includes input copies, padding, root generation when needed, transform, inverse and API conversions.
+Input generation and output hashing excluded; checksums match for all three variants.
+RSS includes process/input/output storage and allocator/cache retention; tiny cases hit process RSS floor.
+These are local measurements, not a prediction of judge time limits.
+
+case / state | current ms/MiB | cached ms/MiB | adapted KACTL ms/MiB
+large / cold | 112.004 / 10.64 | 44.979 / 13.70 | 51.984 / 34.73
+large / warm | 112.067 / 10.64 | 42.900 / 13.70 | 48.508 / 34.73
+boundary / cold | 52.847 / 9.50 | 21.134 / 9.50 | 24.201 / 16.73
+boundary / warm | 52.439 / 9.50 | 20.164 / 9.50 | 22.489 / 18.22
+above_boundary / cold | 111.875 / 9.50 | 44.365 / 11.67 | 50.223 / 26.84
+above_boundary / warm | 111.748 / 9.50 | 42.705 / 12.77 | 47.450 / 26.84
+tiny_batch / cold | 136.559 / 9.50 | 16.583 / 9.50 | 15.930 / 9.50
+tiny_batch / warm | 136.568 / 9.50 | 16.412 / 9.50 | 15.904 / 9.50
+medium_batch / cold | 25.252 / 9.50 | 9.899 / 9.50 | 10.266 / 9.50
+medium_batch / warm | 25.249 / 9.50 | 9.820 / 9.50 | 10.217 / 9.50
+large_batch / cold | 562.786 / 10.64 | 215.975 / 13.70 | 244.804 / 34.73
+large_batch / warm | 562.543 / 10.64 | 215.763 / 13.84 | 243.771 / 36.75
+unbalanced / cold | 52.886 / 9.50 | 20.761 / 9.50 | 24.017 / 17.67
+unbalanced / warm | 52.283 / 9.50 | 19.760 / 9.62 | 21.997 / 19.67
+
+Active lines exclude comments/blank lines:
+Current: algorithm 48 + required modular helpers 19 = 67.
+Cached: algorithm 47 + same required modular helpers 19 = 66.
+KACTL: core including modular power 40 + int API/inverse adapters 15 = 55.
+Required original helpers: mod_normalize, mod_multiply, mod_power. Existing shared helpers need not be recopied.
+
+Correctness (GCC and Clang ASan/UBSan):
+OK: 3230 convolutions per variant; 147 transform cases per variant; naive convolution/DFT, empty, singleton, zeros, p-1, power boundaries, cache grow/shrink
+OK: variant 0 forward/inverse at 2^23; forward vs powers of primitive root
+OK: variant 1 forward/inverse at 2^23; forward vs powers of primitive root
+OK: variant 2 forward/inverse at 2^23; forward vs powers of primitive root
+
+KACTL adaptations:
+KACTL modulus configured to 998244353; duplicate declaration removed.
+Root 62 -> 3 to preserve exact forward-transform values.
+Minimum power-of-two padding, including s=1, preserves full 2^23 result limit.
+Public vector<int> transform/inverse/convolution wrappers included in all measurements.
+
+Recommendation: cached roots. Faster than baseline in all tested workloads; faster than adapted KACTL in 6/7 cold and warm cases.
+Tradeoff: O(Nmax) persistent int root cache (about 2 MiB for a 2^19 transform; 32 MiB at 2^23).
+A later small convolution retains the cache of the largest previous transform.
+Asymptotics unchanged: O(N log N) convolution and O(N) memory; no support added for updates, negative coefficients or arbitrary moduli.
+KACTL core alone is smaller/faster than its public adapters may suggest: int<->ll conversions are deliberately charged here.
+KACTL uses vector<ll> roots and transform buffers plus bit-reversal array; our cached variant keeps int buffers and computes bit reversal in place.
+KACTL tiny-batch advantage is small; no claim of a universal winner.
+Applied cached roots to math/ntt.tex, retaining convolution and transform/inverse interfaces.
+Post-install validation reads the installed listing itself; see ntt_installed_results.json and ntt_installed_sanitized_results.json.
+The full main.tex document compiled successfully in the desktop editor.

@@ -61,3 +61,60 @@ struct PersistentSegmentTree {
 
 Guardar cada ra\'iz en un vector: \texttt{roots[v]} representa la versi\'on
 \texttt{v}. No modificar nodos existentes.
+
+\subsection{Cu\'ando usar persistencia}
+La se\~nal es que una consulta necesita un \textbf{estado anterior}, o que
+un update puede partir de una versi\'on elegida en lugar de la \textit{\'ultima}.
+Por ejemplo: ``suma de $[l,r)$ en la versi\'on $v$'' o ``crear una copia
+de la versi\'on $v$ y cambiar su posici\'on $p$''.
+
+\begin{enumerate}
+\item Representar cada estado con una ra\'iz. Copiar una versi\'on sin
+cambios es copiar ese entero, en $O(1)$; no copiar todo el arreglo.
+\item Al actualizar, crear nodos s\'olo en el camino a la hoja modificada.
+Los sub\'arboles que no cambian se comparten con las versiones anteriores.
+Por eso cada update cuesta $O(\log n)$ en tiempo y nodos nuevos.
+\item Guardar la ra\'iz devuelta: \texttt{set\_value} no cambia la ra\'iz
+recibida. Para consultar, pasar expl\'icitamente la ra\'iz de la versi\'on.
+\item Revisar la memoria: $q$ updates acumulan $O(n+q\log n)$ nodos.
+Si no se consulta el pasado ni se crean ramas, usar el normal (o lazy
+si las actualizaciones son por rango).
+\end{enumerate}
+
+\subsection{Ejemplo: consultar y ramificar versiones}
+El constructor reserva memoria; \textbf{hay que llamar a build} para
+obtener la primera ra\'iz. Requiere un arreglo no vac\'io y posiciones
+v\'alidas. Copiar el cuerpo del ejemplo dentro del \texttt{main}.
+
+\begin{lstlisting}[style=cpp]
+void example_persistent_segment_tree() {
+    vector<ll> a = {2, 1, 3, 4};
+    PersistentSegmentTree st(a);
+    vector<int> roots = {st.build(a)};
+
+    // Version 1 desde version 0: [2, 7, 3, 4].
+    roots.push_back(st.set_value(roots[0], 1, 7));
+    // Version 2 tambien desde 0: [2, 1, 3, 0].
+    roots.push_back(st.set_value(roots[0], 3, 0));
+
+    cout << st.query(roots[0], 0, 4) << '\n'; // 10.
+    cout << st.query(roots[1], 0, 4) << '\n'; // 16.
+    cout << st.query(roots[2], 0, 4) << '\n'; // 6.
+    cout << st.query(roots[1], 1, 3) << '\n'; // 10.
+}
+\end{lstlisting}
+
+Las consultas sobre la versi\'on 0 conservan sus resultados aunque se
+creen versiones nuevas. Para adaptar este struct a m\'inimos, cambiar la
+suma por m\'inimo en build, update y query, y el neutro por infinito.
+La copia de caminos y el manejo de ra\'ices se conservan.
+
+\textbf{Otro patr\'on: versiones por prefijo.} En un arreglo est\'atico,
+crear una versi\'on de frecuencias por cada prefijo, indexada por valores
+comprimidos. La diferencia entre las frecuencias de las versiones $r$ y
+$l$ describe el subarreglo $[l,r)$. Permite contar valores en un rango
+consultando ambas ra\'ices; descendiendo por sus diferencias se puede
+buscar el $k$-\'esimo menor en $O(\log \sigma)$, con $\sigma$ valores distintos.
+Esto requiere construir frecuencias y agregar el descenso para $k$-\'esimo;
+el struct anterior no incluye ese m\'etodo. La resta de ra\'ices significa
+restar sus conteos: no funciona restando m\'inimos o m\'aximos.

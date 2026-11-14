@@ -1,0 +1,57 @@
+{
+  "2sat_asan": {
+    "command": [
+      "g++-15",
+      "-std=c++17",
+      "-O2",
+      "-isysroot",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-idirafter",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+      "-fsanitize=address",
+      "-fno-omit-frame-pointer",
+      "-g",
+      "/private/tmp/kactl-comparison-20261026/stress-tests/graph/2sat.cpp",
+      "-o",
+      "/var/folders/41/k22fzssn44qbv635mh0s8cdw0000gn/T/kactl-diagnostic-nsrly0li/2sat-asan"
+    ],
+    "compile_exit": 1,
+    "compiler_output": "ld: library 'asan' not found\ncollect2: error: ld returned 1 exit status\n"
+  },
+  "modsum": {
+    "exit_code": -6,
+    "output": "DIAG 134456 1129900996 6490600292 246235914 16554116784994\n",
+    "error": "Assertion failed: (abs(modsum(t, c, k, m) / ((long double)m/2 * t) - 1)<1e-5), function main, file diagnostic.cpp, line 72.\n",
+    "adaptation": "Only inserted a diagnostic print before the original failing assertion; algorithm unchanged.",
+    "inputs": {
+      "n": 134456,
+      "c": 1129900996,
+      "k": 6490600292,
+      "m": 246235914
+    },
+    "actual": 16554116784994,
+    "python_exact": 16554116784994,
+    "correct_value": true,
+    "relative_error_to_test_approx": 1.0194462476853516e-05
+  },
+  "2sat_clang_asan": {
+    "compile_exit": 0,
+    "command": [
+      "clang++",
+      "-std=c++17",
+      "-O1",
+      "-fsanitize=address",
+      "-fno-omit-frame-pointer",
+      "-g",
+      "-I",
+      "/var/folders/41/k22fzssn44qbv635mh0s8cdw0000gn/T/kactl-asan-clang-k8nbg5yi",
+      "/private/tmp/kactl-comparison-20261026/stress-tests/graph/2sat.cpp",
+      "-o",
+      "/var/folders/41/k22fzssn44qbv635mh0s8cdw0000gn/T/kactl-asan-clang-k8nbg5yi/test"
+    ],
+    "compiler_output": "",
+    "adaptation": "Only bits/stdc++.h supplied as a standard-header umbrella for Apple Clang; original stress source and algorithm untouched.",
+    "exit_code": -6,
+    "error": "AddressSanitizer:DEADLYSIGNAL\n=================================================================\n==97927==ERROR: AddressSanitizer: stack-overflow on address 0x00016f40bf70 (pc 0x000100abf624 bp 0x00016f40c810 sp 0x00016f40bfb0 T0)\n==97927==WARNING: external symbolizer didn't start up correctly!\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x100abf624\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbe24\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING: atos failed to symbolize address \"0x1001fbf94\"\n==97927==WARNING: Can't read from symbolizer at fd 3\n==97927==WARNING"
+  }
+}

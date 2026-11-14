@@ -87,13 +87,22 @@ int char_to_digit(char c) {
 }
 
 ll from_base(const string& text, int base) {
-    ll value = 0;
-    for (char c : text) {
-        int digit = char_to_digit(c);
+    if (base < 2 || base > 36)
+        throw invalid_argument("base fuera de [2,36]");
+    bool negative = !text.empty() && text[0] == '-';
+    size_t first = negative ? 1 : 0;
+    if (first == text.size()) throw invalid_argument("sin digitos");
+    i128 value = 0, limit = (i128)numeric_limits<ll>::max() + negative;
+    for (size_t i = first; i < text.size(); ++i) {
+        int digit = char_to_digit(text[i]);
         if (digit < 0 || digit >= base)
             throw invalid_argument("digito invalido");
         value = value * base + digit;
+        if (value > limit) throw overflow_error("entero fuera de rango");
     }
-    return value;
+    return (ll)(negative ? -value : value);
 }
 \end{lstlisting}
+
+\texttt{from\_base} admite un signo menos inicial y bases entre 2 y 36.
+Rechaza cadenas vac\'ias, d\'igitos inv\'alidos y valores fuera de \texttt{ll}.

@@ -23,7 +23,7 @@ struct FordFulkerson {
 
     void add_edge(int from, int to, ll capacity) {
         assert(capacity >= 0);
-        Edge forward{to, (int)graph[to].size(), capacity};
+        Edge forward{to, (int)graph[to].size() + (from == to), capacity};
         Edge backward{from, (int)graph[from].size(), 0};
         graph[from].push_back(forward);
         graph[to].push_back(backward);
@@ -81,7 +81,7 @@ struct Dinic {
         : n(size), graph(size), level(size), next_edge(size) {}
 
     void add_edge(int from, int to, ll capacity) {
-        Edge forward{to, (int)graph[to].size(), capacity};
+        Edge forward{to, (int)graph[to].size() + (from == to), capacity};
         Edge backward{from, (int)graph[from].size(), 0};
         graph[from].push_back(forward);
         graph[to].push_back(backward);
@@ -123,18 +123,70 @@ struct Dinic {
         }
         return answer;
     }
+
+    // pair<int,int> add_tracked_edge(int from, int to, ll capacity) {
+    //     assert(from != to && capacity >= 0);
+    //     int index = graph[from].size();
+    //     add_edge(from, to, capacity);
+    //     return {from, index}; // ID estable de la arista original.
+    // }
+    // ll edge_flow(pair<int,int> id) const {
+    //     const Edge& edge = graph[id.first][id.second];
+    //     return graph[edge.to][edge.reverse].capacity;
+    // }
+    // vector<char> min_cut_side(int source) const {
+    //     vector<char> side(n, false);
+    //     queue<int> q; q.push(source); side[source] = true;
+    //     while (!q.empty()) {
+    //         int v = q.front(); q.pop();
+    //         for (const Edge& edge : graph[v])
+    //             if (edge.capacity > 0 && !side[edge.to]) {
+    //                 side[edge.to] = true; q.push(edge.to);
+    //             }
+    //     }
+    //     return side;
+    // }
 };
 \end{lstlisting}
 
 \complexity{general $O(V^2E)$ tiempo; memoria $O(V+E)$; suele ser mucho m\'as
 r\'apido en pr\'actica.}
 
+Opcional: activar los helpers comentados y guardar el ID al crear cada arista
+con extremos distintos. \texttt{edge\_flow} cuesta $O(1)$. Despu\'es de
+\texttt{max\_flow}, \texttt{min\_cut\_side} devuelve el lado de la fuente en
+$O(V+E)$ tiempo y $O(V)$ memoria; el corte cruza de ese lado al otro.
+Capacidades no negativas y flujo total representable en \texttt{long long}.
+
+\begin{lstlisting}[style=cpp]
+// void dinic_recovery_example() {
+//     Dinic flow(4);
+//     vector<pair<int,int>> ids;
+//     ids.push_back(flow.add_tracked_edge(0,1,3));
+//     ids.push_back(flow.add_tracked_edge(0,2,2));
+//     ids.push_back(flow.add_tracked_edge(1,2,1));
+//     ids.push_back(flow.add_tracked_edge(1,3,2));
+//     ids.push_back(flow.add_tracked_edge(2,3,3));
+//     cout << flow.max_flow(0,3) << '\n'; // 5
+//     auto side = flow.min_cut_side(0);
+//     for (auto id : ids) {
+//         const auto& edge = flow.graph[id.first][id.second];
+//         cout << id.first << "->" << edge.to << ": " << flow.edge_flow(id) << '\n';
+//         if (side[id.first] && !side[edge.to])
+//             cout << "Corte: " << id.first << "->" << edge.to << '\n';
+//     }
+// }
+\end{lstlisting}
+
 \section{Flujo de costo m\'inimo}
 \whenuse{Enviar cierta cantidad de flujo optimizando un costo: transporte,
 matching ponderado con capacidades o asignaci\'on de recursos.}
 
-SPFA por aumento; admite costos negativos si no hay ciclos negativos de costo
-alcanzables con capacidad residual positiva.
+SPFA por aumento; admite costos negativos si el grafo inicial no tiene ciclos
+de costo negativo con capacidad positiva en ninguna componente.
+La precondici\'on tambi\'en incluye componentes desconectadas de la fuente.
+La plantilla aumenta caminos fuente--sumidero; no optimiza circulaciones
+negativas independientes. Verificar esta restricci\'on al modelar el problema.
 
 Cada arista tiene capacidad y costo por unidad. En cada iteraci\'on se busca el
 camino residual de menor costo, se env\'ia todo lo permitido y se acumula
@@ -151,7 +203,7 @@ struct MinCostMaxFlow {
     explicit MinCostMaxFlow(int size) : n(size), graph(size) {}
 
     void add_edge(int from, int to, ll capacity, ll cost) {
-        Edge forward{to, (int)graph[to].size(), capacity, cost};
+        Edge forward{to, (int)graph[to].size() + (from == to), capacity, cost};
         Edge backward{from, (int)graph[from].size(), 0, -cost};
         graph[from].push_back(forward);
         graph[to].push_back(backward);
